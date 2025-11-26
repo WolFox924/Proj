@@ -1,0 +1,439 @@
+INFO:sim.faassim:initializing simulation, benchmark: ExampleBenchmark, topology nodes: 117
+INFO:sim.faassim:starting resource monitor
+INFO:sim.faassim:setting up benchmark
+INFO:__main__:python-pi-cpu, latest, [ImageProperties(name='python-pi-cpu', size=58000000, tag='latest', arch='arm32'), ImageProperties(name='python-pi-cpu', size=58000000, tag='latest', arch='x86'), ImageProperties(name='python-pi-cpu', size=58000000, tag='latest', arch='aarch64')]
+INFO:__main__:resnet50-inference-cpu, latest, [ImageProperties(name='resnet50-inference-cpu', size=56000000, tag='latest', arch='arm32'), ImageProperties(name='resnet50-inference-cpu', size=56000000, tag='latest', arch='x86'), ImageProperties(name='resnet50-inference-cpu', size=56000000, tag='latest', arch='aarch64')]
+INFO:__main__:resnet50-inference-gpu, latest, [ImageProperties(name='resnet50-inference-gpu', size=56000000, tag='latest', arch='arm32'), ImageProperties(name='resnet50-inference-gpu', size=56000000, tag='latest', arch='x86'), ImageProperties(name='resnet50-inference-gpu', size=56000000, tag='latest', arch='aarch64')]
+INFO:sim.faassim:starting faas system
+INFO:sim.faassim:starting benchmark process
+INFO:sim.faassim:executing simulation
+INFO:sim.faas.system:deploying function python-pi with scale_min=1
+INFO:sim.faas.system:deploying function resnet50-inference with scale_min=1
+DEBUG:sim.faas.system:scheduling next replica python-pi
+DEBUG:root:Received a new pod to schedule: pod-python-pi-1
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_0: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_0 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_0 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_1: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_1 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_1 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_2: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_2 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_2 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_3: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_3 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_3 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node nuc_0: 4000 / 17179869184.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node nuc_0 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node nuc_0 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_0: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_0 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_0 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_1: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_1 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_1 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_2: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_2 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_2 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_3: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_3 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_3 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_4: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_4 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_4 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_5: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_5 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_5 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_6: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_6 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_6 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_7: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_7 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_7 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node nuc_1: 4000 / 17179869184.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node nuc_1 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node nuc_1 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_4: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_4 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_4 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_5: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_5 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_5 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_6: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_6 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_6 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_7: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_7 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_7 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_8: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_8 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_8 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_9: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_9 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_9 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_10: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_10 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_10 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_11: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_11 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_11 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_12: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_12 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_12 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_13: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_13 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_13 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_14: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_14 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_14 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node rpi3_15: 4000 / 1023012864.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_15 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node rpi3_15 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node nuc_2: 4000 / 17179869184.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node nuc_2 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node nuc_2 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_8: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_8 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_8 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_9: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_9 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_9 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_10: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_10 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_10 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_11: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_11 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_11 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_12: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_12 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_12 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_13: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_13 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_13 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_14: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_14 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_14 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node tx2_15: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_15 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node tx2_15 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node server_0: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_0 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_0 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node server_1: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_1 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_1 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node server_2: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_2 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_2 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node server_3: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_3 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_3 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node server_4: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_4 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_4 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node server_5: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_5 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_5 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node server_6: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_6 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_6 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node server_7: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_7 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_7 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node server_8: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_8 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_8 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-python-pi-1 requests 1000 / 1048576. Available on node server_9: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_9 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / Node server_9 / CheckNodeLabelPresencePred: Passed
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_0
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_1
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_2
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_3
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on nuc_0
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_0
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_1
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_2
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_3
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_4
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_5
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_6
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_7
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on nuc_1
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_4
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_5
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_6
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_7
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_8
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_9
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_10
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_11
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_12
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_13
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_14
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on rpi3_15
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on nuc_2
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_8
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_9
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_10
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_11
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_12
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_13
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_14
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on tx2_15
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on server_0
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on server_1
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on server_2
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on server_3
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on server_4
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on server_5
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on server_6
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on server_7
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on server_8
+DEBUG:root:ResourcePriority: Calculating score for pod-python-pi-1 on server_9
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / <class 'skippy.core.priorities.BalancedResourcePriority'>: [7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0]
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / <class 'skippy.core.priorities.LatencyAwareImageLocalityPriority'>: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0]
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / <class 'skippy.core.priorities.LocalityTypePriority'>: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / <class 'skippy.core.priorities.DataLocalityPriority'>: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+DEBUG:skippy.core.scheduler:Pod pod-python-pi-1 / <class 'skippy.core.priorities.CapabilityPriority'>: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+DEBUG:root:Node scores: [(rpi3_0, 8.0), (rpi3_1, 8.0), (rpi3_2, 8.0), (rpi3_3, 8.0), (nuc_0, 8.0), (tx2_0, 8.0), (tx2_1, 8.0), (tx2_2, 8.0), (tx2_3, 8.0), (rpi3_4, 8.0), (rpi3_5, 8.0), (rpi3_6, 8.0), (rpi3_7, 8.0), (nuc_1, 8.0), (tx2_4, 8.0), (tx2_5, 8.0), (tx2_6, 8.0), (tx2_7, 8.0), (rpi3_8, 8.0), (rpi3_9, 8.0), (rpi3_10, 8.0), (rpi3_11, 8.0), (rpi3_12, 8.0), (rpi3_13, 8.0), (rpi3_14, 8.0), (rpi3_15, 8.0), (nuc_2, 8.0), (tx2_8, 8.0), (tx2_9, 8.0), (tx2_10, 8.0), (tx2_11, 8.0), (tx2_12, 8.0), (tx2_13, 8.0), (tx2_14, 8.0), (tx2_15, 8.0), (server_0, 19.0), (server_1, 19.0), (server_2, 19.0), (server_3, 19.0), (server_4, 19.0), (server_5, 19.0), (server_6, 19.0), (server_7, 19.0), (server_8, 19.0), (server_9, 19.0)]
+DEBUG:root:Found best node. Remaining allocatable resources after scheduling: Capacity(CPU: 87000 Memory: 187998951424)
+INFO:__main__:waiting for replica
+DEBUG:sim.faas.system:Pod scheduling took 6.34 ms, and yielded SchedulingResult(suggested_host=server_0, feasible_nodes=45, needed_images=['python-pi-cpu:latest'])
+INFO:sim.faas.system:pod pod-python-pi-1 was scheduled to server_0
+DEBUG:sim.faas.system:deploying function python-pi to server_0
+DEBUG:sim.faas.system:scheduling next replica resnet50-inference
+DEBUG:root:Received a new pod to schedule: pod-resnet50-inference-1
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_0: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_0 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_1: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_1 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_2: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_2 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_3: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_3 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node nuc_0: 4000 / 17179869184.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node nuc_0 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node nuc_0 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_0: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_0 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_0 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_1: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_1 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_1 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_2: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_2 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_2 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_3: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_3 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_3 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_4: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_4 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_5: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_5 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_6: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_6 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_7: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_7 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node nuc_1: 4000 / 17179869184.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node nuc_1 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node nuc_1 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_4: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_4 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_4 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_5: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_5 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_5 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_6: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_6 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_6 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_7: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_7 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_7 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_8: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_8 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_9: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_9 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_10: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_10 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_11: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_11 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_12: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_12 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_13: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_13 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_14: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_14 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node rpi3_15: 4000 / 1023012864.Passed: False
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node rpi3_15 / PodFitsResourcesPred: Failed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node nuc_2: 4000 / 17179869184.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node nuc_2 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node nuc_2 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_8: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_8 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_8 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_9: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_9 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_9 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_10: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_10 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_10 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_11: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_11 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_11 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_12: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_12 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_12 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_13: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_13 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_13 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_14: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_14 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_14 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node tx2_15: 4000 / 8240386048.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_15 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node tx2_15 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node server_0: 87000 / 187998951424.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_0 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_0 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node server_1: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_1 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_1 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node server_2: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_2 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_2 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node server_3: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_3 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_3 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node server_4: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_4 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_4 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node server_5: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_5 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_5 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node server_6: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_6 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_6 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node server_7: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_7 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_7 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node server_8: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_8 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_8 / CheckNodeLabelPresencePred: Passed
+DEBUG:skippy.core.predicates:Pod pod-resnet50-inference-1 requests 100 / 1073741824. Available on node server_9: 88000 / 188000000000.Passed: True
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_9 / PodFitsResourcesPred: Passed
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / Node server_9 / CheckNodeLabelPresencePred: Passed
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on nuc_0
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_0
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_1
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_2
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_3
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on nuc_1
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_4
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_5
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_6
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_7
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on nuc_2
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_8
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_9
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_10
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_11
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_12
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_13
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_14
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on tx2_15
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on server_0
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on server_1
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on server_2
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on server_3
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on server_4
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on server_5
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on server_6
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on server_7
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on server_8
+DEBUG:root:ResourcePriority: Calculating score for pod-resnet50-inference-1 on server_9
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / <class 'skippy.core.priorities.BalancedResourcePriority'>: [9.0, 8.0, 8.0, 8.0, 8.0, 9.0, 8.0, 8.0, 8.0, 8.0, 9.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0]
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / <class 'skippy.core.priorities.LatencyAwareImageLocalityPriority'>: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0]
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / <class 'skippy.core.priorities.LocalityTypePriority'>: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / <class 'skippy.core.priorities.DataLocalityPriority'>: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+DEBUG:skippy.core.scheduler:Pod pod-resnet50-inference-1 / <class 'skippy.core.priorities.CapabilityPriority'>: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+DEBUG:root:Node scores: [(nuc_0, 10.0), (tx2_0, 9.0), (tx2_1, 9.0), (tx2_2, 9.0), (tx2_3, 9.0), (nuc_1, 10.0), (tx2_4, 9.0), (tx2_5, 9.0), (tx2_6, 9.0), (tx2_7, 9.0), (nuc_2, 10.0), (tx2_8, 9.0), (tx2_9, 9.0), (tx2_10, 9.0), (tx2_11, 9.0), (tx2_12, 9.0), (tx2_13, 9.0), (tx2_14, 9.0), (tx2_15, 9.0), (server_0, 19.0), (server_1, 19.0), (server_2, 19.0), (server_3, 19.0), (server_4, 19.0), (server_5, 19.0), (server_6, 19.0), (server_7, 19.0), (server_8, 19.0), (server_9, 19.0)]
+DEBUG:root:Found best node. Remaining allocatable resources after scheduling: Capacity(CPU: 86900 Memory: 186925209600)
+DEBUG:sim.faas.system:Pod scheduling took 1.72 ms, and yielded SchedulingResult(suggested_host=server_0, feasible_nodes=29, needed_images=['resnet50-inference-gpu:latest'])
+INFO:sim.faas.system:pod pod-resnet50-inference-1 was scheduled to server_0
+DEBUG:sim.faas.system:deploying function resnet50-inference to server_0
+DEBUG:ether.core:0.01  sending registry -[58000000]-> {server_0} at 121250000 bytes/sec
+DEBUG:ether.core:0.01  sending registry -[56000000]-> {server_0} at 60625000 bytes/sec
+DEBUG:ether.core:0.01  sending registry -[58000000]-> {server_0} interrupted, new bw = 500.00 (sent: 182050, remaining: 57817949)
+DEBUG:ether.core:0.01  sending registry -[58000000]-> {server_0} at 60625000 bytes/sec
+DEBUG:ether.core:0.94  sending registry -[56000000]-> {server_0} completed in 0.93s
+DEBUG:ether.core:0.94  sending registry -[58000000]-> {server_0} interrupted, new bw = 1000.00 (sent: 56182050, remaining: 1817949)
+DEBUG:ether.core:0.94  sending registry -[58000000]-> {server_0} at 121250000 bytes/sec
+DEBUG:sim.faas.system:starting function resnet50-inference on server_0
+DEBUG:sim.faas.system:running function setup resnet50-inference on server_0
+DEBUG:ether.core:0.95  sending registry -[58000000]-> {server_0} completed in 0.94s
+DEBUG:sim.faas.system:starting function python-pi on server_0
+DEBUG:sim.faas.system:running function setup python-pi on server_0
+INFO:__main__:executing 10 python-pi requests
+INFO:__main__:executing 10 resnet50-inference requests
+DEBUG:sim.faas.system:invoking function python-pi
+DEBUG:sim.faas.system:dispatching request python-pi:1 to server_0
+INFO:sim.faassim:invoking python-pi on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function python-pi
+DEBUG:sim.faas.system:dispatching request python-pi:2 to server_0
+INFO:sim.faassim:invoking python-pi on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function python-pi
+DEBUG:sim.faas.system:dispatching request python-pi:3 to server_0
+INFO:sim.faassim:invoking python-pi on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function python-pi
+DEBUG:sim.faas.system:dispatching request python-pi:4 to server_0
+INFO:sim.faassim:invoking python-pi on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function python-pi
+DEBUG:sim.faas.system:dispatching request python-pi:5 to server_0
+INFO:sim.faassim:invoking python-pi on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function python-pi
+DEBUG:sim.faas.system:dispatching request python-pi:6 to server_0
+INFO:sim.faassim:invoking python-pi on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function python-pi
+DEBUG:sim.faas.system:dispatching request python-pi:7 to server_0
+INFO:sim.faassim:invoking python-pi on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function python-pi
+DEBUG:sim.faas.system:dispatching request python-pi:8 to server_0
+INFO:sim.faassim:invoking python-pi on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function python-pi
+DEBUG:sim.faas.system:dispatching request python-pi:9 to server_0
+INFO:sim.faassim:invoking python-pi on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function python-pi
+DEBUG:sim.faas.system:dispatching request python-pi:10 to server_0
+INFO:sim.faassim:invoking python-pi on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function resnet50-inference
+DEBUG:sim.faas.system:dispatching request resnet50-inference:11 to server_0
+INFO:sim.faassim:invoking resnet50-inference on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function resnet50-inference
+DEBUG:sim.faas.system:dispatching request resnet50-inference:12 to server_0
+INFO:sim.faassim:invoking resnet50-inference on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function resnet50-inference
+DEBUG:sim.faas.system:dispatching request resnet50-inference:13 to server_0
+INFO:sim.faassim:invoking resnet50-inference on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function resnet50-inference
+DEBUG:sim.faas.system:dispatching request resnet50-inference:14 to server_0
+INFO:sim.faassim:invoking resnet50-inference on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function resnet50-inference
+DEBUG:sim.faas.system:dispatching request resnet50-inference:15 to server_0
+INFO:sim.faassim:invoking resnet50-inference on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function resnet50-inference
+DEBUG:sim.faas.system:dispatching request resnet50-inference:16 to server_0
+INFO:sim.faassim:invoking resnet50-inference on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function resnet50-inference
+DEBUG:sim.faas.system:dispatching request resnet50-inference:17 to server_0
+INFO:sim.faassim:invoking resnet50-inference on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function resnet50-inference
+DEBUG:sim.faas.system:dispatching request resnet50-inference:18 to server_0
+INFO:sim.faassim:invoking resnet50-inference on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function resnet50-inference
+DEBUG:sim.faas.system:dispatching request resnet50-inference:19 to server_0
+INFO:sim.faassim:invoking resnet50-inference on server_0 (0 in parallel)
+DEBUG:sim.faas.system:invoking function resnet50-inference
+DEBUG:sim.faas.system:dispatching request resnet50-inference:20 to server_0
+INFO:sim.faassim:invoking resnet50-inference on server_0 (0 in parallel)
+INFO:sim.faassim:simulation ran 2.00s sim, 0.01s wall
