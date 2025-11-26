@@ -1,0 +1,22 @@
+- Remouve the 50 replica limit // ✅
+- Fix reseponse times  // ✅
+- Remouve the Xeon GPU and CPU by modifying the ranking/ resources  // ✅
+- Fix vis script // ✅
+
+- Accurate power profiles // ✅
+- Fix Power profiles and Scaling // ✅
+- Sampling Priod // ✅
+
+
+
+
+- Network Latency // to do
+
+redo comparison full infra power // ✅
+
+
+ table with the params
+
+ Diffrent workload (low, medium, high) // ongoing
+
+  --distribute the load diffrently
