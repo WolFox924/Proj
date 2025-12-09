@@ -105,7 +105,7 @@ class AdaptivePerformanceEnergyHybrid(BaseAutoscaler):
         - Autrement, classer par score hybride (performance vs power efficiency)
         - Retourne le premier nœud avec ressources suffisantes
         """
-
+        # codé par ahmed yassine ben abdeljelil
         # 1) Try consolidation on existing nodes
         try:
             existing_nodes = self.get_nodes_with_replicas(deployment_name)
