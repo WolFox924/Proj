@@ -53,6 +53,7 @@ from ext.mhfd.deployments import create_smart_city_deployments, create_custom_sm
 from ext.mhfd.scbenchmark import create_smart_city_constant_benchmark
 from ext.mhfd.power import Raith21PowerOracle, DEVICE_POWER_PROFILES, monitor_power_consumption, power_monitoring_loop
 from ext.mhfd.autoscaler import create_heterogeneous_edge_autoscaler
+from ext.mhfd.scaling.strategies.AdaptivePerformanceEnergyHybrid import AdaptivePerformanceEnergyHybrid
 
 
 class SimulationConfig:
@@ -66,7 +67,10 @@ class SimulationConfig:
         self.duration = 1500
         self.total_rps = 35
         self.scenario = "none"  # Options: "light", "reduced", "edgeai", "custom"
-        self.scaling_strategy = "performance" # Options: "performance", "power", "basic", "kubernetes"
+        ##############################################
+        self.scaling_strategy = 'compromis'  # Utilisation de Adaptive Performance-Energy Hybrid
+        ###################################"
+        #self.scaling_strategy = "performance" # Options: "performance", "power", "basic", "kubernetes"
         # Custom function counts for scenario
         self.custom_counts = {
             "resnet50-inference": 1,
@@ -81,7 +85,11 @@ class SimulationConfig:
         self.percentage_of_nodes_to_score = 100
         
         # Output configuration
-        self.settings_id = "sine_hpst_strategy"
+        ###############################"
+        #self.settings_id = "sine_hpst_strategy"
+        ##########################
+        self.settings_id = "sine_APEH_strategy"
+        ####################################"
         self.data_dir_base = "./data"
         self.vis_dir_base = "./Vis"
         
