@@ -6,7 +6,7 @@ from ext.mhfd.scaling.strategies.standard_first_fit_packer import StandardFirstF
 from ext.mhfd.scaling.strategies.lplt import LowPowerLongTimeBinPacker
 from ext.mhfd.scaling.strategies.khpa import KubernetesStyleFirstFitBinPacker
 from ext.mhfd.scaling.strategies.hpst import HighPerformanceShortTimeBinPacker
-
+from ext.mhfd.scaling.strategies.AdaptivePerformanceEnergyHybrid import AdaptivePerformanceEnergyHybrid
 logger = logging.getLogger(__name__)
 
 class Autoscaler:
@@ -41,7 +41,8 @@ class Autoscaler:
             'kubernetes': KubernetesStyleFirstFitBinPacker,
             'basic': StandardFirstFitBinPacker,
             'power': LowPowerLongTimeBinPacker,
-            'performance': HighPerformanceShortTimeBinPacker
+            'performance': HighPerformanceShortTimeBinPacker,
+            'compromis': AdaptivePerformanceEnergyHybrid
         }
         
         if strategy_name not in strategies:
