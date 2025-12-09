@@ -40,13 +40,13 @@ pip install pyvis==0.1.9
 ### Navigate to ether directory
 
 ```bash
-cd /udd/msayah/Mahfoud/sim/ether
+cd /home/thao/Documents/Pratique/gitlab/Project/serverless-edge/ether/
 ```
 
 ### Fix the Python 3.10 compatibility issue
 
 ```bash
-sed -i 's/from collections import defaultdict, Iterable/from collections import defaultdict\nfrom collections.abc import Iterable/' /udd/msayah/Mahfoud/sim/ether/ether/cell.py
+sed -i 's/from collections import defaultdict, Iterable/from collections import defaultdict\nfrom collections.abc import Iterable/' /home/thao/Documents/Pratique/gitlab/Project/serverless-edge/ether/cell.py
 ```
 
 ### Install ether locally without dependencies
@@ -66,7 +66,8 @@ pip install edgerun-skippy-core>=0.1.1
 ### Install faas-sim
 
 ```bash
-cd /udd/msayah/Mahfoud/sim/faas-sim
+cd /home/thao/Documents/Pratique/gitlab/Project/serverless-edge/
+#cd /udd/msayah/Mahfoud/sim/faas-sim
 pip install -e . --no-deps
 ```
 

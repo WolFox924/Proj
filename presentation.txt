@@ -1,0 +1,43 @@
+Presentation
+
+
+-----------------Main informations-----------------
+No one in the room knows about the project, everyone after the project must understand the topic (not everyone is an expert in english)
+How to send a message
+1 Slide / 1 new Idea
+Every point must be clear to understand
+Not to much text
+No summary
+Examples on the padlet
+Get in touch with previous students
+
+
+-----------------Main plan-----------------
+Introduction (first slide with supervisor + students names)
+
+I - Give a context (an outsider can understand)
+
+II - Objectives/main goals of the project + Requirements
+
+III - State of the art (what has been done by others)
+
+IV - Functional description (what is used in the project / technical part)
+
+V - Prototype
+Show the project (Tests with videos or live testing)
+
+VI - Working Strategy
+(Tools used / Challenges + Problems)
+
+VII - Conclusion
+(What we’ve done -> what is left to do for next semester)
+
+IMPORTANT TOO : Create anticipated questions with anticipated slides (show organised things)
+
+
+-----------------English grading-----------------
+Grammar
+How we are (comfortable)
+the way we master our text
+
+
