@@ -44,7 +44,7 @@ class Autoscaler:
             'performance': HighPerformanceShortTimeBinPacker,
             'compromis': AdaptivePerformanceEnergyHybrid
         }
-        
+        #ahmed a modifie le dict pour ajouter la strat APE-H comme "compromis"
         if strategy_name not in strategies:
             raise ValueError(f"Unknown strategy: {strategy_name}. Available: {list(strategies.keys())}")
         
