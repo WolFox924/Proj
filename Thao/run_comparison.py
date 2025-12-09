@@ -17,6 +17,7 @@ from ext.mhfd.power import Raith21PowerOracle, DEVICE_POWER_PROFILES
 from ext.mhfd.scaling.strategies.standard_first_fit_packer import StandardFirstFitBinPacker
 from ext.mhfd.scaling.strategies.hpst import HighPerformanceShortTimeBinPacker
 from ext.mhfd.scaling.strategies.lplt import LowPowerLongTimeBinPacker
+from ext.mhfd.scaling.strategies.khpa import KubernetesStyleFirstFitBinPacker
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
@@ -48,6 +49,7 @@ patch_lplt_strategy()
 
 
 # ================= FAAS SYSTEM =================
+# ================= 1. LE SYSTÈME INTELLIGENT (CORRIGÉ) =================
 class ConcreteFaasSystem(FaasSystem):
     def __init__(self, env):
         self.env = env
@@ -56,36 +58,53 @@ class ConcreteFaasSystem(FaasSystem):
 
     def get_replicas(self, fn_name):
         return self.replicas.get(fn_name, [])
+    
+    # Méthode utilitaire pour LPLT
+    def get_all_nodes_with_replicas(self):
+        nodes = set()
+        for r_list in self.replicas.values():
+            for r in r_list: nodes.add(r.node)
+        return list(nodes)
 
     def invoke(self, request):
         fn_name = request['image']
         
         # 1. Scaling (Cold Start)
-        if fn_name in self.replicas and self.replicas[fn_name]:
+        # Si la fonction n'existe pas ou n'a pas de réplicas, on doit scaler
+        if fn_name not in self.replicas or not self.replicas[fn_name]:
             self.scale_up(fn_name, 1)
+            # On simule le temps de démarrage du conteneur
             yield self.env.timeout(0.5) 
+        
+        # --- CORRECTION ICI : Vérification de sécurité après le délai ---
+        if fn_name not in self.replicas or not self.replicas[fn_name]:
+            # Si malgré le scale_up, on n'a rien (ex: stratégie a échoué), on abandonne cette requête
+            # Cela évite le Crash KeyError
+            logging.warning(f"⚠️ Échec invocation : Pas de réplica disponible pour {fn_name}")
+            return 
+        # ---------------------------------------------------------------
         
         # 2. Sélection du nœud
         my_replicas = self.replicas[fn_name]
-        if not my_replicas: return 
         
+        # Round Robin pour l'exécution
         replica_node = my_replicas[random.randint(0, len(my_replicas)-1)].node
         
-        # 3. Physique Simulée (Ajustée pour différencier RPi3 et RPi4)
+        # 3. Physique Simulée
         base_duration = 0.5
         speed_factor = 1.0
         power_watts = 5.0
 
         if 'xeon' in replica_node.name: 
-            speed_factor = 0.2; power_watts = 100.0 # Très rapide, très cher
+            speed_factor = 0.2; power_watts = 100.0
         elif 'nx' in replica_node.name: 
-            speed_factor = 0.4; power_watts = 15.0  # Rapide, moyen cher
+            speed_factor = 0.4; power_watts = 15.0
         elif 'nano' in replica_node.name: 
             speed_factor = 0.8; power_watts = 5.0
         elif 'rpi4' in replica_node.name: 
-            speed_factor = 1.4; power_watts = 4.0   # Lent, peu cher
+            speed_factor = 1.4; power_watts = 4.0
         elif 'rpi3' in replica_node.name: 
-            speed_factor = 1.6; power_watts = 2.0   # Très lent, très économe (LPLT Goal)
+            speed_factor = 1.6; power_watts = 2.0
         elif 'rpi' in replica_node.name: 
              speed_factor = 1.5; power_watts = 3.0
 
@@ -117,17 +136,21 @@ class ConcreteFaasSystem(FaasSystem):
                 try:
                     selected_node = self.strategy.select_node_for_scaling(fn_name)
                 except Exception as e:
-                    logging.error(f"Erreur stratégie: {e}")
+                    logging.error(f"Erreur stratégie lors du choix du nœud: {e}")
             
+            # Fallback si la stratégie ne renvoie rien
             if not selected_node and self.env.topology.nodes:
+                # On prend le premier nœud par défaut pour éviter le crash
                 selected_node = self.env.topology.nodes[0]
             
             if selected_node:
                 class MockReplica:
                     def __init__(self, n): self.node = n
                 self.replicas[fn_name].append(MockReplica(selected_node))
-    
-    # Méthodes bouchons
+            else:
+                 logging.error(f"❌ Impossible de scaler {fn_name}: Aucun nœud disponible.")
+
+    # Méthodes abstraites bouchonnées
     def deploy(self, f): pass
     def remove(self, f): pass
     def discover(self, f): return []
@@ -136,7 +159,6 @@ class ConcreteFaasSystem(FaasSystem):
     def poll_available_replica(self, f): return None
     def scale_down(self, f, c=1): pass
     def suspend(self, f): pass
-
 # ================= INFRASTRUCTURE & WORKLOAD =================
 
 def create_topology():
@@ -175,7 +197,7 @@ class BenchmarkWrapper:
 def run_simulation(StrategyClass, name):
     print(f"\n⚡ --- SCÉNARIO : {name} ---")
     
-    # 50 requêtes pour avoir des stats fiables
+    # 50 requêtes pour avoir des stats fiables toutes les 0.2 secondes
     data = {'timestamp': [i*0.2 for i in range(50)], 
             'function_name': ['resnet50-inference']*50}
     trace_df = pd.DataFrame(data)
@@ -235,6 +257,9 @@ def run_simulation(StrategyClass, name):
         traceback.print_exc()
 
 if __name__ == '__main__':
-    run_simulation(StandardFirstFitBinPacker, "Standard_K8s")
+    run_simulation(KubernetesStyleFirstFitBinPacker, "Standard_K8s")
+    run_simulation(StandardFirstFitBinPacker, "Standard_First")
     run_simulation(HighPerformanceShortTimeBinPacker, "HPST_Performance")
     run_simulation(LowPowerLongTimeBinPacker, "LPLT_Energy")
+
+#run_simulation ->
