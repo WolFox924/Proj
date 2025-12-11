@@ -43,7 +43,15 @@ class AdaptivePerformanceEnergyHybrid(BaseAutoscaler):
         }
 
         logger.info("Initialized Adaptive Performance-Energy Hybrid (APE-H)")
-
+    def has_sufficient_resources(self, node: Any, deployment_name: str) -> bool:
+        """Vérification simple des ressources (CPU/Mem < 90%)"""
+        try:
+            util = self._safe_node_util(node)
+            cpu_ok = util.get('cpu', 0.0) < 0.90
+            mem_ok = util.get('memory', 0.0) < 0.90
+            return cpu_ok and mem_ok
+        except:
+            return True # Par défaut on accepte si on ne sait pas
     # -------------------------
     # Public strategy methods
     # -------------------------
