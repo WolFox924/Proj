@@ -6,7 +6,7 @@ from pathlib import Path
 
 # ================= SETUP =================
 script_dir = Path(__file__).resolve().parent
-project_root = script_dir.parent
+project_root = script_dir.parent.parent
 if str(project_root) not in sys.path: 
     sys.path.insert(0, str(project_root))
 
@@ -97,13 +97,18 @@ class ConcreteFaasSystem(FaasSystem):
         speed_factor = 1.0
         power_watts = 5.0
 
-        if 'xeon' in replica_node.name:   speed_factor = 0.15; power_watts = 120.0 # HPST
-        elif 'nuc' in replica_node.name:  speed_factor = 0.35; power_watts = 25.0
-        elif 'nx' in replica_node.name:   speed_factor = 0.4;  power_watts = 15.0
-        elif 'tx2' in replica_node.name:  speed_factor = 0.5;  power_watts = 8.0   # APE-H (Sweet Spot)
-        elif 'nano' in replica_node.name: speed_factor = 0.8;  power_watts = 5.0
-        elif 'rpi4' in replica_node.name: speed_factor = 1.4;  power_watts = 4.0   # Standard
-        elif 'rpi3' in replica_node.name: speed_factor = 2.0;  power_watts = 2.0   # LPLT
+        if 'xeon' in replica_node.name: 
+            speed_factor = 0.2; power_watts = 100.0
+        elif 'nx' in replica_node.name: 
+            speed_factor = 0.4; power_watts = 15.0
+        elif 'nano' in replica_node.name: 
+            speed_factor = 0.8; power_watts = 5.0
+        elif 'rpi4' in replica_node.name: 
+            speed_factor = 1.4; power_watts = 4.0
+        elif 'rpi3' in replica_node.name: 
+            speed_factor = 1.6; power_watts = 2.0
+        elif 'rpi' in replica_node.name: 
+             speed_factor = 1.5; power_watts = 3.0
 
         actual_duration = base_duration * speed_factor
         
@@ -161,38 +166,21 @@ class ConcreteFaasSystem(FaasSystem):
 def create_topology():
     class Node:
         def __init__(self, name, cpu, mem): 
-            self.name = name
-            self.capacity = {'cpu': cpu, 'memory': mem}
-            self.labels = {}
-            self.resource = None # Pour SimPy
+            self.name=name; self.capacity={'cpu':cpu,'memory':mem}; self.labels={}
+            self.resource=None
     
+    # Ordre important pour tester les préférences
     nodes_list = [
-        # --- L'Extrême Économique (Cible de LPLT) ---
-        # Très lents, consomment rien. 
-        # LPLT va adorer, mais la latence va exploser sous forte charge.
-        Node('rpi3', 4, 1024), 
-        Node('rpi4', 4, 4096),
-
-        # --- L'Extrême Performance (Cible de HPST) ---
-        # Monstres de puissance, gouffres énergétiques (100W+).
-        # HPST va se ruer dessus pour gagner 50ms, ruinant le budget énergie.
-        Node('xeon-1', 32, 64000),
-
-        # --- Le "Juste Milieu" (Cible de APE-H) ---
-        # TX2 : ~7-15W pour de très bonnes perfs (GPU).
-        # NUC : ~20W pour un CPU solide.
-        Node('tx2-1', 6, 8192),    # Nvidia Jetson TX2 (Sweet spot efficacité)
-        Node('tx2-2', 6, 8192),
-        Node('nuc-1', 8, 16384),   # Intel NUC (Bonne balance)
-        Node('nx-1', 6, 8192),     # Jetson Xavier NX
-
+        Node('rpi3-1', 4, 1024), 
+        Node('rpi4-1', 4, 4096),
+        Node('nano-1', 4, 4096), 
+        Node('nx-1', 6, 8192),
+        Node('xeon-1', 32, 64000)
     ]
-    
     class Topo: 
         @property
         def nodes(self): return nodes_list
         def get_nodes(self): return nodes_list
-        
     return Topo()
 
 class BenchmarkWrapper:
@@ -276,5 +264,3 @@ if __name__ == '__main__':
     run_simulation(HighPerformanceShortTimeBinPacker, "HPST_Performance")
     run_simulation(LowPowerLongTimeBinPacker, "LPLT_Energy")
     run_simulation(AdaptivePerformanceEnergyHybrid, "APE_H_Hybrid")
-
-#run_simulation ->

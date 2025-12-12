@@ -7,7 +7,7 @@ from pathlib import Path
 
 # ================= SETUP =================
 script_dir = Path(__file__).resolve().parent
-project_root = script_dir.parent
+project_root = script_dir.parent.parent
 if str(project_root) not in sys.path: sys.path.insert(0, str(project_root))
 
 try:
