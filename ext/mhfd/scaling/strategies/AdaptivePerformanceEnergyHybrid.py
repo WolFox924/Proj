@@ -1,302 +1,285 @@
+#V2.1
+
 import logging
-from typing import Dict, Optional
+import math
+from typing import Optional, Any, List, Dict, Tuple
+
+from sim.faas.core import Node  # type: ignore
+from ext.mhfd.scaling.base_autoscaler import BaseAutoscaler
+from ext.mhfd.power import get_current_utilization  # function: (env, node_name) -> Dict[str,float]
 
 logger = logging.getLogger(__name__)
 
-class Raith21PowerOracle:
+
+class AdaptivePerformanceEnergyHybrid(BaseAutoscaler):
     """
-    Linear power model: P_total = P_idle + (CPU_util * P_cpu_max) + (GPU_util * P_gpu_max) + (Network_util * P_network_max)
+    Adaptive Performance-Energy Hybrid (APE-H) autoscaler
+
+    Principes:
+    - Combine indicateurs de latence (response time) et d'efficacité énergétique (W/RPS).
+    - Comportements profilés: latency_sensitive, energy_sensitive, balanced.
+    - Priorise consolidation (ajouter sur nœud qui a déjà des replicas) quand possible.
+    - Défensif: gère absences d'APIs, valeurs manquantes, et renvoie des choix par défaut sûrs.
+    - Compromis entre HPST et LPLT
     """
-    
-    def __init__(self, power_profiles: Dict[str, Dict[str, float]]):
-        self.power_profiles = power_profiles
-        
-    def predict_power(self, node_type: str, cpu_util: float, gpu_util: float = 0.0, 
-                     network_util: float = 0.0, memory_util: float = 0.0) -> float:
+
+    def __init__(self, env, faas_system, power_oracle):
+        # strategy_name lisible (hérité)
+        super().__init__(env, faas_system, power_oracle, strategy_name="APE-H")
+
+        # Paramètres adaptatifs (modifiable facilement)
+        self.scale_up_threshold = getattr(self, "scale_up_threshold", 15.0)    # RPS
+        self.scale_down_threshold = getattr(self, "scale_down_threshold", 5.0) # RPS
+        self.response_time_threshold = getattr(self, "response_time_threshold", 600.0)  # ms
+        self.latency_weight = 0.6    # poids de la latence dans la décision hybride
+        self.energy_weight = 0.4     # poids de l'énergie (W/RPS) dans la décision hybride
+        self.min_delta_to_scale = 0.10  # 10% changement nécessaire pour scaler
+        self.cooldown = 5.0  # secondes (sim time) entre scales par déploiement
+        self._last_scale_time = {}
+        self.cpu_limit = 0.85
+        self.mem_limit = 0.80
+        # classement simple des types de noeuds (plus élevé => plus performant)
+        self.performance_rank = {
+            'xeongpu': 20, 'xeoncpu': 18, 'nuc': 15, 'nx': 14, 'tx2': 13,
+            'rpi4': 8, 'rockpi': 7, 'nano': 6, 'coral': 5, 'rpi3': 4, 'unknown': 1
+        }
+
+        logger.info("Initialized Adaptive Performance-Energy Hybrid (APE-H)")
+
+    # -------------------------
+    # Public strategy methods
+    # -------------------------
+    def make_scaling_decision(self, deployment_name: str, current_replicas: int,
+                              current_load: float, avg_response_time: float) -> str:
         """
-        Calculate power consumption using linear model
-        
-        Args:
-            node_type: Device type ('rpi4', 'nano', 'xeongpu')
-            cpu_util: CPU utilization (0.0-1.0)
-            gpu_util: GPU utilization (0.0-1.0) 
-            network_util: Network utilization (0.0-1.0)
-            memory_util: Memory utilization (0.0-1.0)
-            
-        Returns:
-            Power consumption in Watts
+        Décision de scaling:
+        - Si load > up_threshold => scale_up
+        - Si load < down_threshold => scale_down
+        - Sinon, calcule metric hybride (latence normalisée + énergie normalisée).
+          Si metric > 1 + min_delta_to_scale => scale_up
+          Si metric < 1 - min_delta_to_scale => scale_down
+          else no_action
         """
-        profile = self.power_profiles.get(node_type)
-        if not profile:
-            logger.warning(f"No power profile for {node_type}, using default")
-            profile = self.power_profiles.get("default", {
-                "idle": 5.0, "cpu_max": 10.0, "gpu_max": 15.0, 
-                "network_max": 2.0, "memory_max": 1.0
-            })
-        
-        # Linear power model
-        power = profile["idle"]
-        power += cpu_util * profile.get("cpu_max", 0.0)
-        power += gpu_util * profile.get("gpu_max", 0.0)
-        power += network_util * profile.get("network_max", 0.0)
-        power += memory_util * profile.get("memory_max", 0.0)
-        
-        return power
 
-# Device-specific power profiles based on
-DEVICE_POWER_PROFILES = {
-    # Edge Devices - Raspberry Pi Family
-    "rpi3": {
-        "idle": 1.4,      # Source: Raspberry Pi Foundation benchmarks - 1.4W idle (https://www.pidramble.com/)
-        "cpu_max": 3.7,   # Source: RasPi.TV stress test measurements - 3.7W under full CPU load
-        "gpu_max": 0.8,   # Source: Video playback measurements ~2.5W total - ~0.8W GPU portion
-        "network_max": 0.3, # Source: WiFi enabled adds ~0.3W over ethernet-only configurations
-        "memory_max": 0.2   # Source: Memory access overhead estimated from total system consumption
-    },
-    "rpi4": {
-        "idle": 2.9,      # Source: RasPi.TV measurements - 575mA * 5V = 2.85W (rounded to 2.9W)
-        "cpu_max": 6.0,   # Source: Multiple benchmarks showing ~6W under full load
-        "gpu_max": 1.5,   # Source: Video decode/encode benchmarks
-        "network_max": 0.9, # Source: Gigabit ethernet chip adds significant power vs Pi3
-        "memory_max": 0.7   # Source: Higher memory bandwidth and capacity vs Pi3
-    },
-    
-    # NVIDIA Jetson Devices
-    "nano": {
-        "idle": 1.9,      # Source: NVIDIA Jetson Nano datasheet - minimum consumption in 5W mode
-        "cpu_max": 3.5,   # Source: CPU portion of 5W power budget based on ARM A57 quad-core
-        "gpu_max": 2.5,   # Source: Maxwell GPU portion of 10W mode power budget
-        "network_max": 0.4, # Source: Gigabit ethernet power overhead
-        "memory_max": 0.6   # Source: LPDDR4 memory system power
-    },
-    "tx2": {
-        "idle": 5.0,      # Source: NVIDIA TX2 documentation - idle power in Max-Q mode
-        "cpu_max": 7.5,   # Source: NVIDIA TX2 Max-Q mode total budget (CPU+GPU combined constraint)
-        "gpu_max": 12.0,  # Source: Pascal GPU power in Max-P mode (15W total budget)
-        "network_max": 1.2, # Source: Higher performance networking vs Nano
-        "memory_max": 1.5   # Source: 8GB LPDDR4 with higher bandwidth
-    },
-    "nx": {
-        "idle": 7.3,      # Source: Medium benchmarks - 7.3W idle consumption
-        "cpu_max": 12.0,  # Source: 6-core Carmel ARM CPU portion of 15W mode
-        "gpu_max": 20.0,  # Source: Volta GPU with Tensor cores in 15W mode
-        "network_max": 1.8, # Source: High-speed I/O and networking overhead
-        "memory_max": 2.0   # Source: 8GB LPDDR4x with high bandwidth (59.7GB/s)
-    },
-    
-    # Other Edge Devices
-    "coral": {
-        "idle": 2.4,      # Source: Coral dev board typical idle consumption
-        "cpu_max": 3.5,   # Source: i.MX 8M SoC CPU power
-        "gpu_max": 0.0,   # Source: No dedicated GPU, only integrated graphics in SoC
-        "tpu_max": 2.0,   # Source: Edge TPU 4 TOPS at 0.5W per TOP = 2W
-        "network_max": 0.6, # Source: WiFi and Ethernet combined overhead
-        "memory_max": 0.4   # Source: 1GB LPDDR4 system memory power
-    },
-    "rockpi": {
-        "idle": 3.2,      # Source: Community benchmarks for RockPi 4 idle consumption
-        "cpu_max": 6.0,   # Source: RK3399 hexa-core ARM CPU maximum power
-        "gpu_max": 2.5,   # Source: Mali-T864 GPU power consumption
-        "network_max": 0.8, # Source: Gigabit ethernet overhead
-        "memory_max": 0.7   # Source: LPDDR4 memory system
-    },
-    
-    # Server Grade - Intel NUC Family
-    "nuc": {
-        "idle": 6.0,      # Source: AnandTech NUC reviews - typical idle 6-8W for modern NUCs
-        "cpu_max": 28.0,  # Source: Intel CPU TDP specifications for NUC processors (15-28W typical)
-        "gpu_max": 0.0,   # Source: Integrated graphics included in CPU TDP
-        "network_max": 2.0, # Source: Gigabit ethernet and WiFi combined overhead
-        "memory_max": 3.0   # Source: DDR4 SODIMM power consumption
-    },
-    "xeoncpu": {
-        "idle": 45.0,     # Source: Server-grade Xeon idle power consumption estimates
-        "cpu_max": 180.0, # Source: Xeon processor TDP range (65-185W typical for edge servers)
-        "gpu_max": 0.0,   # Source: CPU-only configuration
-        "network_max": 8.0, # Source: Multiple network interfaces and high-speed I/O
-        "memory_max": 15.0  # Source: ECC DDR4 multi-channel memory power
-    },
-    "xeongpu": {
-        "idle": 65.0,     # Source: Combined CPU+GPU idle consumption
-        "cpu_max": 185.0, # Source: High-end Xeon processor TDP
-        "gpu_max": 250.0, # Source: Professional GPU power consumption (Tesla/Quadro class)
-        "network_max": 10.0, # Source: High-performance networking and I/O
-        "memory_max": 20.0  # Source: High-capacity ECC memory system
-    },
-    
-    # Default fallback - Conservative estimates
-    "default": {
-        "idle": 0.0,      
-        "cpu_max": 0.0,  
-        "gpu_max": 0.0,  
-        "network_max": 0.0, 
-        "memory_max": 0.0   
-    }
-}
+        # Respect cooldown par deployment
+        last = self._last_scale_time.get(deployment_name, -9999)
+        if (self.env.now - last) < self.cooldown:
+            logger.debug(f"Cooldown active for {deployment_name}: {(self.env.now-last):.1f}s < {self.cooldown}s")
+            return "no_action"
 
+        # Edge cases defensifs
+        load = max(0.0, float(current_load or 0.0))
+        rtime = float(avg_response_time or 0.0)
 
-def extract_node_type(node_name: str) -> str:
-    """Extract device type from node name (e.g., 'rpi4_3' -> 'rpi4')"""
-    if '_' in node_name:
-        return node_name.split('_')[0]
-    return node_name
+        # Rule-of-thumb thresholds first
+        if load > self.scale_up_threshold and current_replicas < self.max_replicas:
+            logger.debug(f"{deployment_name}: direct scale_up (load {load:.2f} > {self.scale_up_threshold})")
+            return "scale_up"
+        if load < self.scale_down_threshold and current_replicas > self.min_replicas:
+            logger.debug(f"{deployment_name}: direct scale_down (load {load:.2f} < {self.scale_down_threshold})")
+            return "scale_down"
 
-def get_current_utilization(env, node_name: str) -> Dict[str, float]:
-    """Get current resource utilization for a node"""
-    
-    # Skip registry and infrastructure nodes
-    if (node_name == 'registry' or 'registry' in node_name.lower() or 
-        'switch' in node_name.lower() or 'link' in node_name.lower()):
-        return None
-        
-    if not hasattr(env, 'resource_state') or env.resource_state is None:
-        return get_device_defaults(node_name)
-    
-    try:
-        # This returns: List[Tuple[FunctionReplica, ResourceUtilization]]
-        replicas_on_node = env.resource_state.list_resource_utilization(node_name)
-        
-        if replicas_on_node:
-            total_cpu = 0.0
-            total_memory = 0.0
-            total_gpu = 0.0
-            
-            # Iterate through (replica, resource_utilization) tuples
-            for replica, resource_util in replicas_on_node:
-                if resource_util and hasattr(resource_util, 'list_resources'):
-                    resources = resource_util.list_resources()  # Returns Dict[str, float]
-                    total_cpu += resources.get('cpu', 0.0)
-                    total_memory += resources.get('memory', 0.0)
-                    total_gpu += resources.get('gpu', 0.0)
-            
-            result = {
-                'cpu': min(1.0, total_cpu),
-                'memory': min(1.0, total_memory),
-                'gpu': min(1.0, total_gpu),
-                'network': min(1.0, total_cpu * 0.3)  # Network estimate
-            }
-            
-            # Only print if there are non-zero utilization values (HIT/success)
-            if any(value > 0.0 for value in result.values()):
-                print(f"✅ HIT: Non-zero utilization for {node_name}: {result}")
-            
-            return result
-        else:
-            return get_device_defaults(node_name)
-            
-    except Exception as e:
-        logger.error(f"ResourceState lookup failed for {node_name}: {e}")
-        return get_device_defaults(node_name)
+        # Compute energy-per-RPS for this deployment (lower = better)
+        energy_per_rps = self._estimate_energy_per_rps(deployment_name)
+        # Normalize latence: 1.0 => exactly at threshold
+        latency_score = (rtime / max(1.0, self.response_time_threshold))
+        # Normalize energy: map to ~1.0 baseline (choose 1.0 when energy_per_rps near baseline)
+        # baseline chosen empirically; avoid division by 0
+        baseline_energy = 1.0  # joules per rps baseline — ajuster si nécessaire
+        energy_score = energy_per_rps / max(1e-6, baseline_energy)
 
-def get_device_defaults(node_name: str) -> Dict[str, float]:
-    """Get realistic default utilization based on device type"""
-    node_type = extract_node_type(node_name)
-    
-    if 'xeon' in node_type:
-        return {'cpu': 0.15, 'gpu': 0.05, 'network': 0.08, 'memory': 0.12}
-    elif node_type in ['nx', 'tx2']:
-        return {'cpu': 0.25, 'gpu': 0.15, 'network': 0.10, 'memory': 0.18}
-    elif node_type in ['nano', 'rpi4']:
-        return {'cpu': 0.20, 'gpu': 0.08, 'network': 0.06, 'memory': 0.15}
-    else:
-        return {'cpu': 0.12, 'gpu': 0.02, 'network': 0.05, 'memory': 0.10}
+        # Combined metric: >1 => worse than baseline (need upscale)
+        combined_metric = self.latency_weight * latency_score + self.energy_weight * energy_score
 
-def monitor_power_consumption(env):
-    """Monitor power consumption across all nodes"""
-    try:
-        if not env.power_oracle or not env.power_metrics:
-            return
-            
-        current_time = env.now
-        
-        # Monitor all nodes in the topology
-        for node in env.topology.get_nodes():
-            if hasattr(node, 'capacity'):  # Only monitor compute nodes
-                if node.name == 'registry' or 'registry' in node.name.lower():
-                    continue
-                node_name = node.name
-                node_type = extract_node_type(node_name)
-                
-                # Get current utilization
-                utilization = get_current_utilization(env, node_name)
-                
-                # Calculate power consumption
-                power_watts = env.power_oracle.predict_power(
-                    node_type,
-                    utilization['cpu'],
-                    utilization['gpu'], 
-                    utilization['network'],
-                    utilization['memory']
-                )
-                
-                # Record the measurement
-                sample = env.power_metrics.record_power_sample(
-                    current_time, node_name, node_type,
-                    utilization['cpu'], utilization['gpu'],
-                    utilization['network'], utilization['memory'],
-                    power_watts
-                )
-                
-                # Log to main metrics system for DataFrame extraction
-                env.metrics.log('power', {
-                    'timestamp': current_time,
-                    'node': node_name,
-                    'node_type': node_type,
-                    'power_watts': power_watts,
-                    'cpu_util': utilization['cpu'],
-                    'gpu_util': utilization['gpu'],
-                    'network_util': utilization['network'],
-                    'memory_util': utilization['memory']
-                })
-                
-                env.metrics.log('energy', {
-                    'timestamp': current_time,
-                    'node': node_name,
-                    'energy_joules': sample['cumulative_energy_joules'],
-                    'energy_wh': sample['cumulative_energy_wh']
-                })
-                
-    except Exception as e:
-        logger.error(f"Error monitoring power consumption: {e}")
+        logger.debug(f"APE-H DECISION [{deployment_name}] load={load:.2f} rtime={rtime:.1f}ms "
+                     f"energy_per_rps={energy_per_rps:.3f} => combined={combined_metric:.3f}")
 
+        if combined_metric > 1.0 + self.min_delta_to_scale and current_replicas < self.max_replicas:
+            return "scale_up"
+        if combined_metric < 1.0 - self.min_delta_to_scale and current_replicas > self.min_replicas:
+            return "scale_down"
+        return "no_action"
 
-def power_monitoring_loop(env):
-    """SimPy process that continuously monitors power consumption"""
-    logger.info("Power monitoring loop started")
-    
-    while True:
+    def select_node_for_scaling(self, deployment_name: str) -> Optional[Node]:
+        """
+        Sélection du nœud:
+        - Tenter consolidation: nœuds qui hébergent déjà des replicas de ce déploiement (si safe)
+        - Autrement, classer par score hybride (performance vs power efficiency)
+        - Retourne le premier nœud avec ressources suffisantes
+        """
+        # codé par ahmed yassine ben abdeljelil
+        # 1) Try consolidation on existing nodes
         try:
-            # Wait for the monitoring interval
-            yield env.timeout(env.power_monitoring_interval)
-            
-            # Perform power monitoring
-            monitor_power_consumption(env)
-            
+            existing_nodes = self.get_nodes_with_replicas(deployment_name)
+        except Exception:
+            existing_nodes = []
+
+        for node in existing_nodes:
+            util = self._safe_node_util(node)
+            if util and util.get('cpu', 0.0) < 0.85 and util.get('memory', 0.0) < 0.85:
+                logger.info(f"APE-H: consolidating on existing node {node.name}")
+                return node
+
+        # 2) Candidate nodes
+        candidates = self.get_available_nodes()
+        if not candidates:
+            logger.warning("APE-H: no available nodes found")
+            return None
+
+        # Build hybrid score for each node
+        scored: List[Tuple[Node, float]] = []
+        for node in candidates:
+            util = self._safe_node_util(node)
+            if util is None:
+                # If we can't read utilization, assume light usage
+                util = {'cpu': 0.0, 'memory': 0.0, 'gpu': 0.0, 'network': 0.0}
+
+            perf = float(self.performance_rank.get(self.extract_node_type(node.name), 1))
+            # prefer nodes with lower current cpu utilization and higher perf
+            cpu_headroom = max(0.0, 1.0 - util.get('cpu', 1.0))
+            mem_headroom = max(0.0, 1.0 - util.get('memory', 1.0))
+            headroom_score = 0.7 * cpu_headroom + 0.3 * mem_headroom
+
+            # Combined score: favor high-perf & headroom
+            score = 0.6 * perf + 0.4 * (headroom_score * 100.0)
+            scored.append((node, score))
+
+        if not scored:
+            logger.warning("APE-H: no scored nodes")
+            return None
+
+        scored.sort(key=lambda x: -x[1])  # descending
+        # Pick first that has sufficient resources for this deployment
+        for node, score in scored:
+            if self.has_sufficient_resources(node, deployment_name):
+                logger.info(f"APE-H Selected node {node.name} (score={score:.2f}) for {deployment_name}")
+                return node
+
+        logger.warning("APE-H: no node with sufficient resources found after scoring")
+        return None
+
+    # -------------------------
+    # Internal helpers
+    # -------------------------
+    def get_available_nodes(self) -> List[Node]:
+        """Return list of nodes usable for scheduling; fallback to topology if faas lacks method."""
+        # Prefer faas.get_nodes() if present
+        if hasattr(self.faas, 'get_nodes'):
+            try:
+                nodes = list(self.faas.get_nodes())
+                return nodes
+            except Exception as e:
+                logger.debug(f"faas.get_nodes() failed: {e}")
+
+        # Fallback: use environment topology if available
+        if hasattr(self.env, 'topology') and hasattr(self.env.topology, 'get_nodes'):
+            try:
+                return list(self.env.topology.get_nodes())
+            except Exception as e:
+                logger.debug(f"env.topology.get_nodes() failed: {e}")
+
+        logger.warning("No node list available from faas or env.topology")
+        return []
+
+    def _estimate_energy_per_rps(self, deployment_name: str) -> float:
+        """
+        Estime l'énergie (watts) par RPS pour le déploiement en sommant consommation
+        des replicas et divisant par charge actuelle (RPS).
+        """
+        try:
+            replicas = self.faas.get_replicas(deployment_name)
+        except Exception:
+            replicas = []
+
+        if not replicas:
+            return 0.0
+
+        current_load = max(0.1, float(self.get_current_load(deployment_name)))
+        total_power = 0.0
+        for replica in replicas:
+            node = getattr(replica, 'node', None)
+            if node is None:
+                continue
+            util = self._safe_node_util(node)
+            # power_oracle may have predict_power(node_type, cpu, gpu, network, memory)
+            node_type = self.extract_node_type(node.name)
+            try:
+                if hasattr(self.power_oracle, 'predict_power'):
+                    p = float(self.power_oracle.predict_power(node_type,
+                                                             util.get('cpu', 0.0),
+                                                             util.get('gpu', 0.0),
+                                                             util.get('network', 0.0),
+                                                             util.get('memory', 0.0)))
+                else:
+                    # fallback: simple heuristic: perf_rank * cpu_util * cte
+                    p = float(self.performance_rank.get(node_type, 1)) * util.get('cpu', 0.0) * 2.0
+            except Exception:
+                p = 0.0
+            total_power += p
+
+        energy_per_rps = total_power / current_load
+        return energy_per_rps
+
+    def _safe_node_util(self, node: Any) -> Optional[Dict[str, float]]:
+        """Wrapper around get_current_utilization with env and node name handling."""
+        try:
+            # the power.get_current_utilization signature is (env, node_name)
+            util = get_current_utilization(self.env, node.name)
+            if util is None:
+                return {'cpu': 0.0, 'memory': 0.0, 'gpu': 0.0, 'network': 0.0}
+            # ensure keys exist
+            return {
+                'cpu': float(util.get('cpu', 0.0)),
+                'memory': float(util.get('memory', 0.0)),
+                'gpu': float(util.get('gpu', 0.0)),
+                'network': float(util.get('network', 0.0))
+            }
         except Exception as e:
-            logger.error(f"Error in power monitoring loop: {e}")
-            # Continue monitoring even if there's an error
-            yield env.timeout(1.0)  # Wait 1 second before retrying
+            logger.debug(f"Could not read utilization for {getattr(node, 'name', node)}: {e}")
+            return {'cpu': 0.0, 'memory': 0.0, 'gpu': 0.0, 'network': 0.0}
 
-def test_power_calculations():
-    """Test power calculation functionality"""
-    oracle = Raith21PowerOracle(DEVICE_POWER_PROFILES)
-    
-    # Test different scenarios
-    test_cases = [
-        ("rpi4", 0.0, 0.0, 0.0, 0.0),    # Idle
-        ("rpi4", 0.5, 0.0, 0.1, 0.2),    # Light load
-        ("rpi4", 1.0, 0.0, 0.3, 0.8),    # High load
-        ("nx", 0.7, 0.9, 0.2, 0.6),      # GPU intensive
-        ("xeongpu", 0.8, 0.6, 0.4, 0.9), # Server load
-    ]
-    
-    print("🔋 Power Model Test Results:")
-    print("Device\tCPU\tGPU\tNet\tMem\tPower(W)")
-    print("-" * 45)
-    
-    for device, cpu, gpu, net, mem in test_cases:
-        power = oracle.predict_power(device, cpu, gpu, net, mem)
-        print(f"{device}\t{cpu:.1f}\t{gpu:.1f}\t{net:.1f}\t{mem:.1f}\t{power:.1f}W")
+    # -------------------------
+    # Override record_scaling_decision to update cooldown
+    # -------------------------
+    def record_scaling_decision(self, deployment_name: str, action: str,
+                                new_replica_count: int, selected_node: Any,
+                                current_load: float = 0.0, avg_response_time: float = 0.0,
+                                reason: str = ""):
+        super().record_scaling_decision(deployment_name, action, new_replica_count,
+                                        selected_node, current_load, avg_response_time, reason)
+        if action in ("scale_up", "scale_down"):
+            self._last_scale_time[deployment_name] = self.env.now
 
-if __name__ == "__main__":
-    test_power_calculations()
+    # -------------------------
+    # Utility: wrappers to reuse base methods if necessary
+    # -------------------------
+    def get_nodes_with_replicas(self, deployment_name: str) -> List[Any]:
+        """Return nodes that already host a replica of deployment_name (unique list)."""
+        nodes = []
+        try:
+            for r in self.faas.get_replicas(deployment_name):
+                if getattr(r, 'node', None) and r.node not in nodes:
+                    nodes.append(r.node)
+        except Exception:
+            return []
+        return nodes
+
+    # ------------------------------------------------------------
+    # Modification manquante pour la version V1_1
+    # RESOURCE CHECK
+    # ------------------------------------------------------------
+    def has_sufficient_resources(self, node, deployment_name: str) -> bool:
+        """
+        Vérifie que CPU et mémoire restent sous les seuils définis.
+        Version hybride :
+            - HPST → devrait être strict
+            - LPLT → tolérant
+        APE-H → entre les deux (CPU 85%, MEM 80%).
+        """
+        util = self.get_node_utilization(node)
+
+        cpu_ok = util.get("cpu", 1.0) < self.cpu_limit
+        mem_ok = util.get("memory", 1.0) < self.mem_limit
+
+        return cpu_ok and mem_ok
+

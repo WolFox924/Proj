@@ -70,7 +70,7 @@ class SimulationConfig:
         ##############################################
         self.scaling_strategy = 'compromis'  # Utilisation de Adaptive Performance-Energy Hybrid
         ################################### j'ai changé la strategie utilise
-        #self.scaling_strategy = "performance" # Options: "performance", "power", "basic", "kubernetes"
+        #self.scaling_strategy = "compromis" # Options: "performance", "power", "basic", "kubernetes,"compromis""
         # Custom function counts for scenario
         self.custom_counts = {
             "resnet50-inference": 1,
@@ -86,7 +86,7 @@ class SimulationConfig:
         
         # Output configuration
         ###############################"
-        #self.settings_id = "sine_hpst_strategy"
+        #self.settings_id = "sine_APEH_strategy"
         ########################## j'ai changé l'emplacement des fichiers resultats
         self.settings_id = "sine_APEH_strategy"
         ####################################"

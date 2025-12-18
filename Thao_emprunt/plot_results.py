@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
 
-output_dir = Path(__file__).resolve().parent / 'output'
-
+##output_dir = Path(__file__).resolve().parent / 'output'
+output_dir = Path(__file__).resolve().parent.parent /"yassine_out"/ 'output'
 def plot():
     data = []
     for f in output_dir.glob("results_*.csv"):
