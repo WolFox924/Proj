@@ -556,7 +556,6 @@ def example_usage():
     
     # Option 2: Graphiques individuels
     df = viz.load_data(days=7)
-    
     if not df.empty:
         # Graphique de comparaison
         viz.plot_performance_comparison(df, save_path="performance.png")

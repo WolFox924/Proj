@@ -1,3 +1,4 @@
+#V2.1
 
 import logging
 import math
@@ -35,7 +36,8 @@ class AdaptivePerformanceEnergyHybrid(BaseAutoscaler):
         self.min_delta_to_scale = 0.10  # 10% changement nécessaire pour scaler
         self.cooldown = 5.0  # secondes (sim time) entre scales par déploiement
         self._last_scale_time = {}
-
+        self.cpu_limit = 0.85
+        self.mem_limit = 0.80
         # classement simple des types de noeuds (plus élevé => plus performant)
         self.performance_rank = {
             'xeongpu': 20, 'xeoncpu': 18, 'nuc': 15, 'nx': 14, 'tx2': 13,
@@ -261,4 +263,23 @@ class AdaptivePerformanceEnergyHybrid(BaseAutoscaler):
         except Exception:
             return []
         return nodes
+
+    # ------------------------------------------------------------
+    # Modification manquante pour la version V1_1
+    # RESOURCE CHECK
+    # ------------------------------------------------------------
+    def has_sufficient_resources(self, node, deployment_name: str) -> bool:
+        """
+        Vérifie que CPU et mémoire restent sous les seuils définis.
+        Version hybride :
+            - HPST → devrait être strict
+            - LPLT → tolérant
+        APE-H → entre les deux (CPU 85%, MEM 80%).
+        """
+        util = self.get_node_utilization(node)
+
+        cpu_ok = util.get("cpu", 1.0) < self.cpu_limit
+        mem_ok = util.get("memory", 1.0) < self.mem_limit
+
+        return cpu_ok and mem_ok
 
