@@ -1,0 +1,311 @@
+Planification de 5 simulations...
+
+============================================================
+DÉMARRAGE SIMULATION : Standard_First
+============================================================
+ ⚙️ Injection Stratégie : Standard_First (ID: basic)
+ Déploiement des fonctions...
+Available functions: ['resnet50-inference', 'resnet50-training', 'mobilenet-inference', 'fio', 'python-pi', 'tf-gpu', 'speech-inference', 'resnet50-preprocessing', 'video-analytics', 'iot-data-processor', 'alert-service', 'data-aggregator']
+Selected functions: ['resnet50-inference', 'speech-inference', 'resnet50-preprocessing', 'resnet50-training', 'python-pi', 'fio']
+
+=== SMART CITY DEPLOYMENT: DEFAULT SCENARIO ===
+Created 17 function instances:
+  resnet50-inference: 1 instances
+  resnet50-inference-downtown: 1 instances
+  resnet50-inference-suburb: 1 instances
+  resnet50-inference-industrial: 1 instances
+  speech-inference: 1 instances
+  speech-inference-downtown: 1 instances
+  speech-inference-suburb: 1 instances
+  resnet50-preprocessing: 1 instances
+  resnet50-training: 1 instances
+  resnet50-training-downtown: 1 instances
+  python-pi: 1 instances
+  python-pi-downtown: 1 instances
+  python-pi-suburb: 1 instances
+  python-pi-industrial: 1 instances
+  python-pi-residential: 1 instances
+  fio: 1 instances
+  fio-downtown: 1 instances
+Available functions: ['resnet50-inference', 'resnet50-training', 'mobilenet-inference', 'fio', 'python-pi', 'tf-gpu', 'speech-inference', 'resnet50-preprocessing', 'video-analytics', 'iot-data-processor', 'alert-service', 'data-aggregator']
+Selected functions: ['resnet50-inference', 'speech-inference', 'resnet50-preprocessing', 'resnet50-training', 'python-pi', 'fio']
+
+=== SMART CITY DEPLOYMENT: NONE SCENARIO ===
+Created 6 function instances:
+  resnet50-inference: 1 instances
+  speech-inference: 1 instances
+  resnet50-preprocessing: 1 instances
+  resnet50-training: 1 instances
+  python-pi: 1 instances
+  fio: 1 instances
+ ⏱Exécution...
+Configured 6 smart city deployments for 120 devices
+==================== Default function:  <sim.faas.core.FunctionDeployment object at 0x7fb3448c6260>
+Arrival profiles: ============================================================
+resnet50-inference: <generator object static_arrival_profile at 0x7fb344afce40>
+speech-inference: <generator object static_arrival_profile at 0x7fb344afcf20>
+resnet50-preprocessing: <generator object static_arrival_profile at 0x7fb344afd000>
+resnet50-training: <generator object static_arrival_profile at 0x7fb344afd0e0>
+python-pi: <generator object static_arrival_profile at 0x7fb344afd1c0>
+fio: <generator object static_arrival_profile at 0x7fb344afd2a0>
+
+=== SMART CITY MIXED PROFILES ===
+Scenario: none
+Total deployments: 6
+Total RPS assigned: 62 (target: 35)
+  resnet50-inference: 1 instances, 14 total RPS, 14.0 avg RPS
+  speech-inference: 1 instances, 3 total RPS, 3.0 avg RPS
+  resnet50-preprocessing: 1 instances, 3 total RPS, 3.0 avg RPS
+  resnet50-training: 1 instances, 8 total RPS, 8.0 avg RPS
+  python-pi: 1 instances, 17 total RPS, 17.0 avg RPS
+  fio: 1 instances, 17 total RPS, 17.0 avg RPS
+ Sauvegarde des résultats bruts...
+ ✅ Données sauvegardées dans : /home/thao/Documents/Pratique/gitlab/Project/serverless-edge/Thao/output/scripts_data/batch_Standard_First
+
+============================================================
+DÉMARRAGE SIMULATION : Standard_K8s
+============================================================
+ ⚙️ Injection Stratégie : Standard_K8s (ID: kubernetes)
+ Déploiement des fonctions...
+Available functions: ['resnet50-inference', 'resnet50-training', 'mobilenet-inference', 'fio', 'python-pi', 'tf-gpu', 'speech-inference', 'resnet50-preprocessing', 'video-analytics', 'iot-data-processor', 'alert-service', 'data-aggregator']
+Selected functions: ['resnet50-inference', 'speech-inference', 'resnet50-preprocessing', 'resnet50-training', 'python-pi', 'fio']
+
+=== SMART CITY DEPLOYMENT: DEFAULT SCENARIO ===
+Created 17 function instances:
+  resnet50-inference: 1 instances
+  resnet50-inference-downtown: 1 instances
+  resnet50-inference-suburb: 1 instances
+  resnet50-inference-industrial: 1 instances
+  speech-inference: 1 instances
+  speech-inference-downtown: 1 instances
+  speech-inference-suburb: 1 instances
+  resnet50-preprocessing: 1 instances
+  resnet50-training: 1 instances
+  resnet50-training-downtown: 1 instances
+  python-pi: 1 instances
+  python-pi-downtown: 1 instances
+  python-pi-suburb: 1 instances
+  python-pi-industrial: 1 instances
+  python-pi-residential: 1 instances
+  fio: 1 instances
+  fio-downtown: 1 instances
+Available functions: ['resnet50-inference', 'resnet50-training', 'mobilenet-inference', 'fio', 'python-pi', 'tf-gpu', 'speech-inference', 'resnet50-preprocessing', 'video-analytics', 'iot-data-processor', 'alert-service', 'data-aggregator']
+Selected functions: ['resnet50-inference', 'speech-inference', 'resnet50-preprocessing', 'resnet50-training', 'python-pi', 'fio']
+
+=== SMART CITY DEPLOYMENT: NONE SCENARIO ===
+Created 6 function instances:
+  resnet50-inference: 1 instances
+  speech-inference: 1 instances
+  resnet50-preprocessing: 1 instances
+  resnet50-training: 1 instances
+  python-pi: 1 instances
+  fio: 1 instances
+ ⏱Exécution...
+Configured 6 smart city deployments for 120 devices
+==================== Default function:  <sim.faas.core.FunctionDeployment object at 0x7fb340feaaa0>
+Arrival profiles: ============================================================
+resnet50-inference: <generator object static_arrival_profile at 0x7fb341417e60>
+speech-inference: <generator object static_arrival_profile at 0x7fb341417450>
+resnet50-preprocessing: <generator object static_arrival_profile at 0x7fb341416030>
+resnet50-training: <generator object static_arrival_profile at 0x7fb341416340>
+python-pi: <generator object static_arrival_profile at 0x7fb341415fc0>
+fio: <generator object static_arrival_profile at 0x7fb341417990>
+
+=== SMART CITY MIXED PROFILES ===
+Scenario: none
+Total deployments: 6
+Total RPS assigned: 62 (target: 35)
+  resnet50-inference: 1 instances, 14 total RPS, 14.0 avg RPS
+  speech-inference: 1 instances, 3 total RPS, 3.0 avg RPS
+  resnet50-preprocessing: 1 instances, 3 total RPS, 3.0 avg RPS
+  resnet50-training: 1 instances, 8 total RPS, 8.0 avg RPS
+  python-pi: 1 instances, 17 total RPS, 17.0 avg RPS
+  fio: 1 instances, 17 total RPS, 17.0 avg RPS
+ Sauvegarde des résultats bruts...
+ ✅ Données sauvegardées dans : /home/thao/Documents/Pratique/gitlab/Project/serverless-edge/Thao/output/scripts_data/batch_Standard_K8s
+
+============================================================
+DÉMARRAGE SIMULATION : LPLT_Energy
+============================================================
+ ⚙️ Injection Stratégie : LPLT_Energy (ID: power)
+ Déploiement des fonctions...
+Available functions: ['resnet50-inference', 'resnet50-training', 'mobilenet-inference', 'fio', 'python-pi', 'tf-gpu', 'speech-inference', 'resnet50-preprocessing', 'video-analytics', 'iot-data-processor', 'alert-service', 'data-aggregator']
+Selected functions: ['resnet50-inference', 'speech-inference', 'resnet50-preprocessing', 'resnet50-training', 'python-pi', 'fio']
+
+=== SMART CITY DEPLOYMENT: DEFAULT SCENARIO ===
+Created 17 function instances:
+  resnet50-inference: 1 instances
+  resnet50-inference-downtown: 1 instances
+  resnet50-inference-suburb: 1 instances
+  resnet50-inference-industrial: 1 instances
+  speech-inference: 1 instances
+  speech-inference-downtown: 1 instances
+  speech-inference-suburb: 1 instances
+  resnet50-preprocessing: 1 instances
+  resnet50-training: 1 instances
+  resnet50-training-downtown: 1 instances
+  python-pi: 1 instances
+  python-pi-downtown: 1 instances
+  python-pi-suburb: 1 instances
+  python-pi-industrial: 1 instances
+  python-pi-residential: 1 instances
+  fio: 1 instances
+  fio-downtown: 1 instances
+Available functions: ['resnet50-inference', 'resnet50-training', 'mobilenet-inference', 'fio', 'python-pi', 'tf-gpu', 'speech-inference', 'resnet50-preprocessing', 'video-analytics', 'iot-data-processor', 'alert-service', 'data-aggregator']
+Selected functions: ['resnet50-inference', 'speech-inference', 'resnet50-preprocessing', 'resnet50-training', 'python-pi', 'fio']
+
+=== SMART CITY DEPLOYMENT: NONE SCENARIO ===
+Created 6 function instances:
+  resnet50-inference: 1 instances
+  speech-inference: 1 instances
+  resnet50-preprocessing: 1 instances
+  resnet50-training: 1 instances
+  python-pi: 1 instances
+  fio: 1 instances
+ ⏱Exécution...
+Configured 6 smart city deployments for 120 devices
+==================== Default function:  <sim.faas.core.FunctionDeployment object at 0x7fb343acbfd0>
+Arrival profiles: ============================================================
+resnet50-inference: <generator object static_arrival_profile at 0x7fb344afd310>
+speech-inference: <generator object static_arrival_profile at 0x7fb344afd3f0>
+resnet50-preprocessing: <generator object static_arrival_profile at 0x7fb344afd4d0>
+resnet50-training: <generator object static_arrival_profile at 0x7fb344086ab0>
+python-pi: <generator object static_arrival_profile at 0x7fb344086500>
+fio: <generator object static_arrival_profile at 0x7fb3440863b0>
+
+=== SMART CITY MIXED PROFILES ===
+Scenario: none
+Total deployments: 6
+Total RPS assigned: 62 (target: 35)
+  resnet50-inference: 1 instances, 14 total RPS, 14.0 avg RPS
+  speech-inference: 1 instances, 3 total RPS, 3.0 avg RPS
+  resnet50-preprocessing: 1 instances, 3 total RPS, 3.0 avg RPS
+  resnet50-training: 1 instances, 8 total RPS, 8.0 avg RPS
+  python-pi: 1 instances, 17 total RPS, 17.0 avg RPS
+  fio: 1 instances, 17 total RPS, 17.0 avg RPS
+ Sauvegarde des résultats bruts...
+ ✅ Données sauvegardées dans : /home/thao/Documents/Pratique/gitlab/Project/serverless-edge/Thao/output/scripts_data/batch_LPLT_Energy
+
+============================================================
+DÉMARRAGE SIMULATION : APE_H_Hybrid
+============================================================
+ ⚙️ Injection Stratégie : APE_H_Hybrid (ID: compromis)
+ Déploiement des fonctions...
+Available functions: ['resnet50-inference', 'resnet50-training', 'mobilenet-inference', 'fio', 'python-pi', 'tf-gpu', 'speech-inference', 'resnet50-preprocessing', 'video-analytics', 'iot-data-processor', 'alert-service', 'data-aggregator']
+Selected functions: ['resnet50-inference', 'speech-inference', 'resnet50-preprocessing', 'resnet50-training', 'python-pi', 'fio']
+
+=== SMART CITY DEPLOYMENT: DEFAULT SCENARIO ===
+Created 17 function instances:
+  resnet50-inference: 1 instances
+  resnet50-inference-downtown: 1 instances
+  resnet50-inference-suburb: 1 instances
+  resnet50-inference-industrial: 1 instances
+  speech-inference: 1 instances
+  speech-inference-downtown: 1 instances
+  speech-inference-suburb: 1 instances
+  resnet50-preprocessing: 1 instances
+  resnet50-training: 1 instances
+  resnet50-training-downtown: 1 instances
+  python-pi: 1 instances
+  python-pi-downtown: 1 instances
+  python-pi-suburb: 1 instances
+  python-pi-industrial: 1 instances
+  python-pi-residential: 1 instances
+  fio: 1 instances
+  fio-downtown: 1 instances
+Available functions: ['resnet50-inference', 'resnet50-training', 'mobilenet-inference', 'fio', 'python-pi', 'tf-gpu', 'speech-inference', 'resnet50-preprocessing', 'video-analytics', 'iot-data-processor', 'alert-service', 'data-aggregator']
+Selected functions: ['resnet50-inference', 'speech-inference', 'resnet50-preprocessing', 'resnet50-training', 'python-pi', 'fio']
+
+=== SMART CITY DEPLOYMENT: NONE SCENARIO ===
+Created 6 function instances:
+  resnet50-inference: 1 instances
+  speech-inference: 1 instances
+  resnet50-preprocessing: 1 instances
+  resnet50-training: 1 instances
+  python-pi: 1 instances
+  fio: 1 instances
+ ⏱Exécution...
+Configured 6 smart city deployments for 120 devices
+==================== Default function:  <sim.faas.core.FunctionDeployment object at 0x7fb341b9f760>
+Arrival profiles: ============================================================
+resnet50-inference: <generator object static_arrival_profile at 0x7fb342249850>
+speech-inference: <generator object static_arrival_profile at 0x7fb342249620>
+resnet50-preprocessing: <generator object static_arrival_profile at 0x7fb342249070>
+resnet50-training: <generator object static_arrival_profile at 0x7fb34224bf40>
+python-pi: <generator object static_arrival_profile at 0x7fb342249a10>
+fio: <generator object static_arrival_profile at 0x7fb34224ad50>
+
+=== SMART CITY MIXED PROFILES ===
+Scenario: none
+Total deployments: 6
+Total RPS assigned: 62 (target: 35)
+  resnet50-inference: 1 instances, 14 total RPS, 14.0 avg RPS
+  speech-inference: 1 instances, 3 total RPS, 3.0 avg RPS
+  resnet50-preprocessing: 1 instances, 3 total RPS, 3.0 avg RPS
+  resnet50-training: 1 instances, 8 total RPS, 8.0 avg RPS
+  python-pi: 1 instances, 17 total RPS, 17.0 avg RPS
+  fio: 1 instances, 17 total RPS, 17.0 avg RPS
+ Sauvegarde des résultats bruts...
+ ✅ Données sauvegardées dans : /home/thao/Documents/Pratique/gitlab/Project/serverless-edge/Thao/output/scripts_data/batch_APE_H_Hybrid
+
+============================================================
+DÉMARRAGE SIMULATION : HPST_Performance
+============================================================
+ ⚙️ Injection Stratégie : HPST_Performance (ID: performance)
+ Déploiement des fonctions...
+Available functions: ['resnet50-inference', 'resnet50-training', 'mobilenet-inference', 'fio', 'python-pi', 'tf-gpu', 'speech-inference', 'resnet50-preprocessing', 'video-analytics', 'iot-data-processor', 'alert-service', 'data-aggregator']
+Selected functions: ['resnet50-inference', 'speech-inference', 'resnet50-preprocessing', 'resnet50-training', 'python-pi', 'fio']
+
+=== SMART CITY DEPLOYMENT: DEFAULT SCENARIO ===
+Created 17 function instances:
+  resnet50-inference: 1 instances
+  resnet50-inference-downtown: 1 instances
+  resnet50-inference-suburb: 1 instances
+  resnet50-inference-industrial: 1 instances
+  speech-inference: 1 instances
+  speech-inference-downtown: 1 instances
+  speech-inference-suburb: 1 instances
+  resnet50-preprocessing: 1 instances
+  resnet50-training: 1 instances
+  resnet50-training-downtown: 1 instances
+  python-pi: 1 instances
+  python-pi-downtown: 1 instances
+  python-pi-suburb: 1 instances
+  python-pi-industrial: 1 instances
+  python-pi-residential: 1 instances
+  fio: 1 instances
+  fio-downtown: 1 instances
+Available functions: ['resnet50-inference', 'resnet50-training', 'mobilenet-inference', 'fio', 'python-pi', 'tf-gpu', 'speech-inference', 'resnet50-preprocessing', 'video-analytics', 'iot-data-processor', 'alert-service', 'data-aggregator']
+Selected functions: ['resnet50-inference', 'speech-inference', 'resnet50-preprocessing', 'resnet50-training', 'python-pi', 'fio']
+
+=== SMART CITY DEPLOYMENT: NONE SCENARIO ===
+Created 6 function instances:
+  resnet50-inference: 1 instances
+  speech-inference: 1 instances
+  resnet50-preprocessing: 1 instances
+  resnet50-training: 1 instances
+  python-pi: 1 instances
+  fio: 1 instances
+ ⏱Exécution...
+Configured 6 smart city deployments for 120 devices
+==================== Default function:  <sim.faas.core.FunctionDeployment object at 0x7fb34399e410>
+Arrival profiles: ============================================================
+resnet50-inference: <generator object static_arrival_profile at 0x7fb341ef36f0>
+speech-inference: <generator object static_arrival_profile at 0x7fb341ef2650>
+resnet50-preprocessing: <generator object static_arrival_profile at 0x7fb341ef2b20>
+resnet50-training: <generator object static_arrival_profile at 0x7fb341ef2810>
+python-pi: <generator object static_arrival_profile at 0x7fb341ef0cf0>
+fio: <generator object static_arrival_profile at 0x7fb341ef0c10>
+
+=== SMART CITY MIXED PROFILES ===
+Scenario: none
+Total deployments: 6
+Total RPS assigned: 62 (target: 35)
+  resnet50-inference: 1 instances, 14 total RPS, 14.0 avg RPS
+  speech-inference: 1 instances, 3 total RPS, 3.0 avg RPS
+  resnet50-preprocessing: 1 instances, 3 total RPS, 3.0 avg RPS
+  resnet50-training: 1 instances, 8 total RPS, 8.0 avg RPS
+  python-pi: 1 instances, 17 total RPS, 17.0 avg RPS
+  fio: 1 instances, 17 total RPS, 17.0 avg RPS
+ Sauvegarde des résultats bruts...
+ ✅ Données sauvegardées dans : /home/thao/Documents/Pratique/gitlab/Project/serverless-edge/Thao/output/scripts_data/batch_HPST_Performance
