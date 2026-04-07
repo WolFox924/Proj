@@ -20,7 +20,7 @@ def save_config(config):
 
 # --- INTERFACE WEB ---
 st.set_page_config(page_title="Smart City RL Control", layout="wide")
-st.title("🚀 Smart City RL - Centre de Contrôle")
+st.title("Smart City RL - Centre de Contrôle")
 
 try:
     config = load_config()
@@ -29,7 +29,7 @@ except Exception as e:
     st.stop()
 
 # --- 1. ÉDITEUR DE CONFIGURATION ---
-st.header("⚙️ Configuration de l'environnement")
+st.header("Configuration de l'environnement")
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -50,25 +50,25 @@ with col3:
     config["agent_rl"]["learning_rate"] = st.number_input("Learning Rate", value=config["agent_rl"]["learning_rate"], format="%.5f")
     config["agent_rl"]["batch_size"] = st.number_input("Batch Size", value=config["agent_rl"]["batch_size"], step=16)
 
-if st.button("💾 Sauvegarder la configuration"):
+if st.button("Sauvegarder la configuration"):
     save_config(config)
     st.success("Configuration sauvegardée avec succès dans config.json !")
 
 st.markdown("---")
 
 # --- 2. CONTRÔLE DE L'ENTRAÎNEMENT ---
-st.header("▶️ Contrôle du Serveur")
+st.header("Contrôle du Serveur")
 col_run, col_stop, col_tb = st.columns(3)
 
 with col_run:
-    if st.button("🚀 Lancer l'entraînement"):
+    if st.button("Lancer l'entraînement"):
         # On utilise sys.executable pour être sûr d'utiliser le bon environnement virtuel (.venv)
         import sys
         subprocess.Popen([sys.executable, str(TRAIN_SCRIPT)])
         st.success("Entraînement démarré en arrière-plan !")
 
 with col_stop:
-    if st.button("🛑 Arrêter l'entraînement"):
+    if st.button("Arrêter l'entraînement"):
         os.system("pkill -f train.py")
         st.warning("Processus d'entraînement arrêté de force.")
 
@@ -78,9 +78,9 @@ with col_tb:
 st.markdown("---")
 
 # --- 3. MONITORING EN DIRECT (LOGS) ---
-st.header("📄 Logs de la simulation (Rafraîchir pour mettre à jour)")
+st.header("Logs de la simulation (Rafraîchir pour mettre à jour)")
 
-if st.button("🔄 Rafraîchir les logs"):
+if st.button("Rafraîchir les logs"):
     pass 
 
 if LOG_FILE.exists():
