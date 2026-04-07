@@ -4,10 +4,9 @@ import subprocess
 import os
 from pathlib import Path
 
-# --- CHEMINS (Corrigés pour ton arborescence) ---
 current_dir = Path(__file__).resolve().parent
 CONFIG_FILE = current_dir / "config.json"
-TRAIN_SCRIPT = current_dir / "train.py" # Ils sont dans le même dossier !
+TRAIN_SCRIPT = current_dir / "train.py"
 LOG_FILE = current_dir / "logs.txt"
 
 def load_config():
@@ -73,7 +72,7 @@ with col_stop:
         st.warning("Processus d'entraînement arrêté de force.")
 
 with col_tb:
-    st.info("💡 Pour voir TensorBoard, lance-le sur ton serveur et ouvre le port 6006.")
+    st.info("Pour voir TensorBoard, ouvre le port 6006.")
 
 st.markdown("---")
 
