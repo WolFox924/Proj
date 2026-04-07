@@ -1,0 +1,68 @@
+
+======================================
+=== SIMULATION (ÉPISODE)   1 / 500 ===
+======================================
+- t=  5s | reqs= 30/  30 | q_reqs=   0 | pods= 6/ 6 | sla= 1.00 | pwr_norm=0.65 | r=  0.18
+- t= 10s | reqs= 94/ 169 | q_reqs=   0 | pods=25/26 | sla= 0.74 | pwr_norm=0.63 | r=  0.06
+- t= 15s | reqs=144/ 422 | q_reqs=   0 | pods=32/32 | sla= 0.91 | pwr_norm=0.62 | r=  0.15
+- t= 20s | reqs=165/ 690 | q_reqs=   0 | pods=37/37 | sla= 0.94 | pwr_norm=0.61 | r=  0.17
+- t= 25s | reqs=171/ 956 | q_reqs=   0 | pods=46/46 | sla= 0.98 | pwr_norm=0.59 | r=  0.19
+- t= 30s | reqs=183/1250 | q_reqs=   0 | pods=47/47 | sla= 0.92 | pwr_norm=0.58 | r=  0.17
+- t= 35s | reqs=193/1550 | q_reqs=   0 | pods=61/61 | sla= 0.92 | pwr_norm=0.57 | r=  0.17
+- t= 40s | reqs=212/1881 | q_reqs=   0 | pods=64/64 | sla= 0.95 | pwr_norm=0.57 | r=  0.19
+- t= 45s | reqs=202/2208 | q_reqs=   0 | pods=60/62 | sla= 0.83 | pwr_norm=0.57 | r=  0.13
+- t= 50s | reqs=195/2559 | q_reqs=   0 | pods=66/74 | sla= 0.90 | pwr_norm=0.56 | r=  0.17
+- t= 55s | reqs=185/2891 | q_reqs=   0 | pods=64/78 | sla= 1.00 | pwr_norm=0.56 | r=  0.22
+- t= 60s | reqs=183/3226 | q_reqs=   0 | pods=72/86 | sla= 1.00 | pwr_norm=0.55 | r=  0.22
+- t= 65s | reqs=176/3561 | q_reqs=   0 | pods=72/91 | sla= 1.00 | pwr_norm=0.55 | r=  0.23
+- t= 70s | reqs=168/3879 | q_reqs=   0 | pods=68/93 | sla= 1.00 | pwr_norm=0.55 | r=  0.23
+- t= 75s | reqs=157/4186 | q_reqs=   0 | pods=64/83 | sla= 0.99 | pwr_norm=0.55 | r=  0.22
+- t= 80s | reqs=154/4503 | q_reqs=   0 | pods=77/87 | sla= 0.95 | pwr_norm=0.55 | r=  0.20
+- t= 85s | reqs=173/4847 | q_reqs=   0 | pods=96/101 | sla= 0.96 | pwr_norm=0.51 | r=  0.22
+- t= 90s | reqs=166/5177 | q_reqs=   0 | pods=97/103 | sla= 0.95 | pwr_norm=0.51 | r=  0.22
+- t= 95s | reqs=160/5469 | q_reqs=   0 | pods=95/101 | sla= 0.94 | pwr_norm=0.50 | r=  0.22
+- t=100s | reqs=138/5691 | q_reqs=   0 | pods=90/93 | sla= 0.94 | pwr_norm=0.50 | r=  0.22
+- t=105s | reqs=120/5894 | q_reqs=   0 | pods=87/87 | sla= 0.96 | pwr_norm=0.50 | r=  0.23
+- t=110s | reqs= 99/6075 | q_reqs=   0 | pods=91/91 | sla= 0.95 | pwr_norm=0.50 | r=  0.22
+- t=115s | reqs= 82/6228 | q_reqs=   0 | pods=89/89 | sla= 0.95 | pwr_norm=0.50 | r=  0.22
+- t=120s | reqs= 62/6345 | q_reqs=   0 | pods=95/95 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=125s | reqs= 50/6442 | q_reqs=   0 | pods=86/86 | sla= 0.92 | pwr_norm=0.50 | r=  0.21
+- t=130s | reqs= 32/6512 | q_reqs=   0 | pods=85/85 | sla= 0.95 | pwr_norm=0.50 | r=  0.22
+- t=135s | reqs= 20/6567 | q_reqs=   0 | pods=84/84 | sla= 0.94 | pwr_norm=0.50 | r=  0.22
+- t=140s | reqs= 11/6609 | q_reqs=   0 | pods=83/83 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=145s | reqs=  5/6649 | q_reqs=   0 | pods=77/77 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=150s | reqs=  1/6673 | q_reqs=   0 | pods=84/84 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=155s | reqs=  2/6694 | q_reqs=   0 | pods=99/99 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=160s | reqs=  0/6723 | q_reqs=   0 | pods=101/101 | sla= 0.00 | pwr_norm=0.50 | r= -0.25
+- t=165s | reqs=  2/6746 | q_reqs=   0 | pods=98/98 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=170s | reqs=  9/6780 | q_reqs=   0 | pods=90/90 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=175s | reqs= 14/6818 | q_reqs=   0 | pods=85/85 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=180s | reqs= 23/6862 | q_reqs=   0 | pods=85/85 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=185s | reqs= 31/6923 | q_reqs=   0 | pods=87/87 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=190s | reqs= 41/6998 | q_reqs=   0 | pods=79/79 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=195s | reqs= 51/7088 | q_reqs=   0 | pods=83/83 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=200s | reqs= 60/7191 | q_reqs=   0 | pods=77/77 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+- t=205s | reqs= 68/7302 | q_reqs=   0 | pods=84/89 | sla= 1.00 | pwr_norm=0.50 | r=  0.25
+
+======================================
+=== SIMULATION (ÉPISODE)   2 / 500 ===
+======================================
+- t=  5s | reqs= 30/  30 | q_reqs=   0 | pods= 6/ 6 | sla= 1.00 | pwr_norm=0.65 | r=  0.18
+- t= 10s | reqs= 36/ 110 | q_reqs=   0 | pods=15/18 | sla= 0.43 | pwr_norm=0.63 | r= -0.10
+- t= 15s | reqs=  1/ 194 | q_reqs=   0 | pods=21/32 | sla=-1.00 | pwr_norm=0.63 | r= -0.81
+- t= 20s | reqs=  0/ 274 | q_reqs=   0 | pods=21/45 | sla= 0.00 | pwr_norm=0.63 | r= -0.31
+- t= 25s | reqs= 52/ 408 | q_reqs=   0 | pods=28/52 | sla= 0.87 | pwr_norm=0.62 | r=  0.13
+- t= 30s | reqs=142/ 693 | q_reqs=   0 | pods=47/70 | sla= 0.83 | pwr_norm=0.59 | r=  0.12
+- t= 35s | reqs=182/1048 | q_reqs=   0 | pods=55/78 | sla= 0.82 | pwr_norm=0.58 | r=  0.12
+- t= 40s | reqs=200/1436 | q_reqs=   0 | pods=78/93 | sla= 0.87 | pwr_norm=0.56 | r=  0.16
+- t= 45s | reqs=230/1850 | q_reqs=   0 | pods=79/87 | sla= 0.92 | pwr_norm=0.55 | r=  0.18
+- t= 50s | reqs=246/2294 | q_reqs=   0 | pods=98/98 | sla= 0.93 | pwr_norm=0.52 | r=  0.20
+- t= 55s | reqs=246/2735 | q_reqs=   0 | pods=105/105 | sla= 0.97 | pwr_norm=0.50 | r=  0.23
+- t= 60s | reqs=251/3156 | q_reqs=   0 | pods=98/98 | sla= 0.96 | pwr_norm=0.50 | r=  0.23
+- t= 65s | reqs=248/3548 | q_reqs=   0 | pods=97/97 | sla= 0.97 | pwr_norm=0.50 | r=  0.24
+- t= 70s | reqs=240/3923 | q_reqs=   0 | pods=106/106 | sla= 0.96 | pwr_norm=0.50 | r=  0.23
+- t= 75s | reqs=228/4293 | q_reqs=   0 | pods=103/103 | sla= 0.96 | pwr_norm=0.50 | r=  0.23
+- t= 80s | reqs=211/4660 | q_reqs=   0 | pods=96/102 | sla= 0.97 | pwr_norm=0.50 | r=  0.23
+- t= 85s | reqs=196/4989 | q_reqs=   0 | pods=98/98 | sla= 0.98 | pwr_norm=0.50 | r=  0.24
+- t= 90s | reqs=181/5284 | q_reqs=   0 | pods=94/102 | sla= 0.96 | pwr_norm=0.50 | r=  0.23
+- t= 95s | reqs=160/5558 | q_reqs=   0 | pods=96/96 | sla= 0.95 | pwr_norm=0.50 | r=  0.22

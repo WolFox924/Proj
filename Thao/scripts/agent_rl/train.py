@@ -4,7 +4,7 @@ from pathlib import Path
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.monitor import Monitor
-from custom_env import SmartCityGymEnv
+from custom_env_upconf import SmartCityGymEnv
 
 current_file = Path(__file__).resolve().parent
 project_root = current_file.parent.parent.parent
