@@ -187,7 +187,7 @@ class SmartCityGymEnv(gym.Env):
                     self.sim_env.process(self.sim_env.faas.scale_up(fname, 8))
             except Exception:
                 pass
-                
+
         self.sim_time += self.step_duration
         self.sim_env.run(until=self.sim_time)
 

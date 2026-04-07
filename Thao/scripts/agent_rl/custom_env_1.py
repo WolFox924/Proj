@@ -215,8 +215,8 @@ class SmartCityGymEnv(gym.Env):
         normalized_power = min(current_power / MAX_POWER_ESTIMATE, 1.0)
 
         # Reward final (50% SLA / 50% Énergie)
-        ALPHA = 0.5
-        BETA = 0.5
+        ALPHA = 0.3
+        BETA = 0.7
         reward = (ALPHA * avg_sla_score) - (BETA * normalized_power)
         # =======================================================
 
