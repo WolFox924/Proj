@@ -1,0 +1,37 @@
+{
+    "environment": {
+        "num_devices": 120,
+        "n_nuc": 3,
+        "duration": 205,
+        "step_duration": 5,
+        "total_rps": 35
+    },
+    "reward": {
+        "alpha_sla": 0.5,
+        "beta_power": 0.5,
+        "max_power_estimate": 800.0,
+        "expected_max": {
+            "resnet50-inference": 2.5,
+            "speech-inference": 2.0,
+            "resnet50-preprocessing": 1.5,
+            "resnet50-training": 15.0,
+            "python-pi": 2.2,
+            "fio": 1.8
+        },
+        "hardware_max_power": {
+            "nuc": 25.0,
+            "nx": 15.0,
+            "rockpi": 6.0,
+            "nano": 5.0,
+            "coral": 5.0,
+            "rpi3": 3.0
+        }
+    },
+    "agent_rl": {
+        "run_name": "Baseline_50_50",
+        "epochs": 500,
+        "learning_rate": 0.0003,
+        "batch_size": 64,
+        "n_steps": 2048
+    }
+}
