@@ -236,3 +236,12 @@ pip-selfcheck.json
 
 # Sphinx build
 _build
+
+# Fichiers d'entraînement RL
+logs.txt
+streamlit.log
+tensorboard.log
+logs_tensorboard/
+models/
+output/
+config.json
