@@ -45,6 +45,7 @@ with col2:
 
 with col3:
     st.subheader("Agent PPO (IA)")
+    config["agent_rl"]["run_name"] = st.text_input("Nom de l'expérience (TensorBoard)", value=config["agent_rl"].get("run_name", "PPO_Run"))
     config["agent_rl"]["epochs"] = st.number_input("Nombre d'Épisodes (Epochs)", value=config["agent_rl"]["epochs"], step=10)
     config["agent_rl"]["learning_rate"] = st.number_input("Learning Rate", value=config["agent_rl"]["learning_rate"], format="%.5f")
     config["agent_rl"]["batch_size"] = st.number_input("Batch Size", value=config["agent_rl"]["batch_size"], step=16)

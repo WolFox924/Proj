@@ -28,6 +28,7 @@
         }
     },
     "agent_rl": {
+        "run_name": "Baseline_50_50",
         "epochs": 500,
         "learning_rate": 0.0003,
         "batch_size": 64,

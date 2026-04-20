@@ -23,7 +23,8 @@ print(f"Configuration chargée : {rl_cfg['epochs']} epochs x {steps_per_epoch} s
 tensorboard_log_dir = str(current_file / "logs_tensorboard")
 os.makedirs(tensorboard_log_dir, exist_ok=True)
 env = make_vec_env(lambda: SmartCityGymEnv(config_path=str(config_path)), n_envs=1)
-print("Création du modèle PPO...")
+RUN_NAME = rl_cfg.get("run_name", "PPO_SmartCity")
+print(f"Création du modèle PPO (LR={rl_cfg['learning_rate']})")
 model = PPO(
     "MlpPolicy", 
     env, 
@@ -33,9 +34,9 @@ model = PPO(
     n_steps=rl_cfg["n_steps"],
     tensorboard_log=tensorboard_log_dir
 )
-print("Début de l'entraînement...")
-model.learn(total_timesteps=TOTAL_TIMESTEPS, tb_log_name="PPO_SmartCity")
+print("Début de l'entraînement: Expérience '{RUN_NAME}'")
+model.learn(total_timesteps=TOTAL_TIMESTEPS, tb_log_name=RUN_NAME)
 model_dir = current_file / "models" / "PPO"
 os.makedirs(model_dir, exist_ok=True)
-model.save(str(model_dir / "smart_city_ppo"))
-print(f"Entraînement terminé ! Modèle sauvegardé dans {model_dir}")
+model.save(str(model_dir / f"smart_city_{RUN_NAME}"))
+print(f"Entraînement terminé ! Modèle sauvegardé dans {model_dir} sous le nom smart_city_{RUN_NAME}.zip")
