@@ -1,0 +1,7 @@
+value,name,function_id
+deploy,resnet50-inference,135069674300576
+deploy,speech-inference,135069674301632
+deploy,resnet50-preprocessing,135069674302832
+deploy,resnet50-training,135069674303648
+deploy,python-pi,135069674304848
+deploy,fio,135069674305664

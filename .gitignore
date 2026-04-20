@@ -9,7 +9,6 @@
 # VIS_*/
 # DATA_*/
 # vis-*/
-data/
 Vis/*
 # User-specific stuff
 .idea/**/workspace.xml
@@ -228,7 +227,6 @@ dmypy.json
 [Ll]ib
 [Ll]ib64
 [Ll]ocal
-[Ss]cripts
 pyvenv.cfg
 pip-selfcheck.json
 
@@ -244,4 +242,3 @@ tensorboard.log
 logs_tensorboard/
 models/
 output/
-config.json
