@@ -6776,7 +6776,7 @@ timestamp,node,node_type,power_watts,cpu_util,gpu_util,network_util,memory_util
 57.0,rockpi_69,rockpi,4.08,0.12,0.02,0.05,0.1
 57.0,rockpi_70,rockpi,4.08,0.12,0.02,0.05,0.1
 57.0,rockpi_71,rockpi,4.08,0.12,0.02,0.05,0.1
-57.0,nano_58,nano,1.9,0.0,0.0,0.0,0.0
+57.0,nano_58,nano,2.914,0.2,0.08,0.06,0.15
 57.0,nano_59,nano,1.9,0.0,0.0,0.0,0.0
 57.0,nano_60,nano,2.914,0.2,0.08,0.06,0.15
 57.0,nano_63,nano,2.914,0.2,0.08,0.06,0.15

@@ -83,17 +83,17 @@ timestamp,strategy,deployment,action,old_replica_count,new_replica_count,selecte
 70,APE-H,resnet50-training,scale_up,14,15,nano_90,nano,0.0,0.0,,1
 70,APE-H,python-pi,scale_up,14,15,rockpi_110,rockpi,0.0,0.0,,1
 70,APE-H,fio,scale_up,14,15,rpi3_111,rpi3,0.0,0.0,,1
-75,APE-H,resnet50-inference,scale_up,15,16,nx_52,nx,0.0,619.6462615254266,,1
-75,APE-H,speech-inference,scale_up,11,12,rockpi_132,rockpi,0.0,13123.132392442856,,1
-75,APE-H,resnet50-preprocessing,scale_up,11,12,rockpi_132,rockpi,0.0,19648.195390957302,,1
+75,APE-H,resnet50-inference,scale_up,15,16,nx_52,nx,0.0,620.0411835499652,,1
+75,APE-H,speech-inference,scale_up,11,12,rockpi_132,rockpi,0.0,13118.552094992994,,1
+75,APE-H,resnet50-preprocessing,scale_up,11,12,rockpi_132,rockpi,0.0,19664.450372155075,,1
 75,APE-H,resnet50-training,scale_up,15,16,nano_90,nano,0.0,0.0,,1
-75,APE-H,python-pi,scale_up,15,16,rockpi_110,rockpi,0.0,11606.386414910834,,1
+75,APE-H,python-pi,scale_up,15,16,rockpi_110,rockpi,0.0,11606.489107010593,,1
 75,APE-H,fio,scale_up,15,16,rpi3_111,rpi3,0.0,0.0,,1
-80,APE-H,resnet50-inference,scale_up,16,17,nx_52,nx,0.0,618.0423510509756,,1
-80,APE-H,speech-inference,scale_up,12,13,rockpi_132,rockpi,0.0,11976.525852125233,,1
+80,APE-H,resnet50-inference,scale_up,16,17,nx_52,nx,0.0,618.3414647549957,,1
+80,APE-H,speech-inference,scale_up,12,13,rockpi_132,rockpi,0.0,11965.238271801933,,1
 80,APE-H,resnet50-preprocessing,scale_up,12,13,rockpi_132,rockpi,0.0,0.0,,1
 80,APE-H,resnet50-training,scale_up,16,17,nano_90,nano,0.0,0.0,,1
-80,APE-H,python-pi,scale_up,16,17,rockpi_110,rockpi,0.0,11942.790650115467,,1
+80,APE-H,python-pi,scale_up,16,17,rockpi_110,rockpi,0.0,11942.610947578713,,1
 80,APE-H,fio,scale_up,16,17,rpi3_111,rpi3,0.0,0.0,,1
 85,APE-H,resnet50-inference,scale_up,17,18,nx_52,nx,0.0,0.0,,1
 85,APE-H,speech-inference,scale_down,13,12,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
@@ -125,17 +125,17 @@ timestamp,strategy,deployment,action,old_replica_count,new_replica_count,selecte
 105,APE-H,resnet50-training,scale_up,21,22,nano_90,nano,0.0,0.0,,1
 105,APE-H,python-pi,scale_up,21,22,rockpi_110,rockpi,0.0,0.0,,1
 105,APE-H,fio,scale_up,21,22,rpi3_111,rpi3,0.0,0.0,,1
-110,APE-H,resnet50-inference,scale_up,22,23,nx_52,nx,0.0,623.0883037690924,,1
-110,APE-H,speech-inference,scale_down,8,7,,,0.0,17050.6589832066,"Low load: 0.0 RPS, Response: 17050.7ms",-1
-110,APE-H,resnet50-preprocessing,scale_down,8,7,,,0.0,24674.384504739348,"Low load: 0.0 RPS, Response: 24674.4ms",-1
+110,APE-H,resnet50-inference,scale_up,22,23,nx_52,nx,0.0,621.996382688555,,1
+110,APE-H,speech-inference,scale_down,8,7,,,0.0,17802.483009726864,"Low load: 0.0 RPS, Response: 17802.5ms",-1
+110,APE-H,resnet50-preprocessing,scale_down,8,7,,,0.0,29892.665242644147,"Low load: 0.0 RPS, Response: 29892.7ms",-1
 110,APE-H,resnet50-training,scale_up,22,23,nano_90,nano,0.0,0.0,,1
-110,APE-H,python-pi,scale_up,22,23,rockpi_110,rockpi,0.0,18852.647215364905,,1
+110,APE-H,python-pi,scale_up,22,23,rockpi_110,rockpi,0.0,18949.76446177465,,1
 110,APE-H,fio,scale_up,22,23,rpi3_111,rpi3,0.0,0.0,,1
-115,APE-H,resnet50-inference,scale_up,23,24,nx_52,nx,0.0,628.5303880961072,,1
-115,APE-H,speech-inference,scale_down,7,6,,,0.0,17384.80346886816,"Low load: 0.0 RPS, Response: 17384.8ms",-1
+115,APE-H,resnet50-inference,scale_up,23,24,nx_52,nx,0.0,623.8796168858016,,1
+115,APE-H,speech-inference,scale_down,7,6,,,0.0,19197.116550335217,"Low load: 0.0 RPS, Response: 19197.1ms",-1
 115,APE-H,resnet50-preprocessing,scale_down,7,6,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 115,APE-H,resnet50-training,scale_up,23,24,nano_90,nano,0.0,0.0,,1
-115,APE-H,python-pi,scale_up,23,24,rockpi_110,rockpi,0.0,18544.881859606896,,1
+115,APE-H,python-pi,scale_up,23,24,rockpi_110,rockpi,0.0,18793.702239402694,,1
 115,APE-H,fio,scale_up,23,24,rpi3_111,rpi3,0.0,0.0,,1
 120,APE-H,resnet50-inference,scale_up,24,25,nx_52,nx,0.0,0.0,,1
 120,APE-H,speech-inference,scale_down,6,5,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
@@ -167,17 +167,17 @@ timestamp,strategy,deployment,action,old_replica_count,new_replica_count,selecte
 140,APE-H,resnet50-training,scale_down,20,19,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 140,APE-H,python-pi,scale_down,24,23,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 140,APE-H,fio,scale_down,24,23,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
-145,APE-H,resnet50-inference,scale_down,23,22,,,0.0,585.0457117494371,"Low load: 0.0 RPS, Response: 585.0ms",-1
-145,APE-H,speech-inference,scale_down,2,1,,,0.0,3737.4462898950187,"Low load: 0.0 RPS, Response: 3737.4ms",-1
+145,APE-H,resnet50-inference,scale_down,23,22,,,0.0,631.2780964916236,"Low load: 0.0 RPS, Response: 631.3ms",-1
+145,APE-H,speech-inference,scale_down,2,1,,,0.0,3745.6119442622935,"Low load: 0.0 RPS, Response: 3745.6ms",-1
 145,APE-H,resnet50-preprocessing,scale_down,2,1,,,0.0,89715.68411776816,"Low load: 0.0 RPS, Response: 89715.7ms",-1
 145,APE-H,resnet50-training,scale_down,19,18,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
-145,APE-H,python-pi,scale_down,23,22,,,0.0,40775.61771728394,"Low load: 0.0 RPS, Response: 40775.6ms",-1
+145,APE-H,python-pi,scale_down,23,22,,,0.0,40710.011663412144,"Low load: 0.0 RPS, Response: 40710.0ms",-1
 145,APE-H,fio,scale_down,23,22,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
-150,APE-H,resnet50-inference,scale_down,22,21,,,0.0,379.62710317009396,"Low load: 0.0 RPS, Response: 379.6ms",-1
+150,APE-H,resnet50-inference,scale_down,22,21,,,0.0,564.5343792405839,"Low load: 0.0 RPS, Response: 564.5ms",-1
 150,APE-H,speech-inference,scale_down,2,1,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 150,APE-H,resnet50-preprocessing,scale_down,2,1,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 150,APE-H,resnet50-training,scale_down,18,17,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
-150,APE-H,python-pi,scale_down,22,21,,,0.0,46168.752394845746,"Low load: 0.0 RPS, Response: 46168.8ms",-1
+150,APE-H,python-pi,scale_down,22,21,,,0.0,43150.913049783674,"Low load: 0.0 RPS, Response: 43150.9ms",-1
 150,APE-H,fio,scale_down,22,21,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 155,APE-H,resnet50-inference,scale_down,21,20,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 155,APE-H,speech-inference,scale_down,2,1,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
@@ -211,15 +211,15 @@ timestamp,strategy,deployment,action,old_replica_count,new_replica_count,selecte
 175,APE-H,fio,scale_down,17,16,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 180,APE-H,resnet50-inference,scale_down,16,15,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 180,APE-H,speech-inference,scale_down,2,1,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
-180,APE-H,resnet50-preprocessing,scale_down,2,1,,,0.0,109631.39932887464,"Low load: 0.0 RPS, Response: 109631.4ms",-1
+180,APE-H,resnet50-preprocessing,scale_down,2,1,,,0.0,109446.11011068322,"Low load: 0.0 RPS, Response: 109446.1ms",-1
 180,APE-H,resnet50-training,scale_down,12,11,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
-180,APE-H,python-pi,scale_up,16,17,rockpi_110,rockpi,0.0,1167.823753008779,,1
+180,APE-H,python-pi,scale_up,16,17,rockpi_110,rockpi,0.0,1206.1660576194513,,1
 180,APE-H,fio,scale_up,16,17,rpi3_111,rpi3,0.0,0.0,,1
 185,APE-H,resnet50-inference,scale_down,15,14,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 185,APE-H,speech-inference,scale_down,2,1,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 185,APE-H,resnet50-preprocessing,scale_down,2,1,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 185,APE-H,resnet50-training,scale_down,11,10,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
-185,APE-H,python-pi,scale_up,17,18,rockpi_110,rockpi,0.0,1191.3685587195732,,1
+185,APE-H,python-pi,scale_up,17,18,rockpi_110,rockpi,0.0,1191.368558719573,,1
 185,APE-H,fio,scale_up,17,18,rpi3_111,rpi3,0.0,0.0,,1
 190,APE-H,resnet50-inference,scale_down,14,13,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 190,APE-H,speech-inference,scale_down,2,1,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1

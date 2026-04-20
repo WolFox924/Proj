@@ -17,6 +17,14 @@
             "resnet50-training": 15.0,
             "python-pi": 2.2,
             "fio": 1.8
+        },
+        "hardware_max_power": {
+            "nuc": 25.0,
+            "nx": 15.0,
+            "rockpi": 6.0,
+            "nano": 5.0,
+            "coral": 5.0,
+            "rpi3": 3.0
         }
     },
     "agent_rl": {

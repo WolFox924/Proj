@@ -200,48 +200,71 @@ class SmartCityGymEnv(gym.Env):
         sla_scores = []
         
         # calcul du Score "Service Level Agreement" (SLA (Performance))
+        total_actual_latency = 0.0
+        total_expected_latency = 0.0
+        
         if metrics is not None and not metrics.empty:
             total_reqs = len(metrics)
             t_col = 't_start' if 't_start' in metrics.columns else ('t' if 't' in metrics.columns else None)
             exec_col = 'execution_time' if 'execution_time' in metrics.columns else ('t_exec' if 't_exec' in metrics.columns else None)
+            
             if t_col:
                 recent = metrics[metrics[t_col] >= (self.sim_env.now - self.step_duration)]
                 requests_processed = len(recent)
+                
                 if requests_processed > 0 and exec_col:
                     for _, row in recent.iterrows():
                         func_name = row.get('function', row.get('deployment', 'python-pi'))
                         base_func = next((f for f in self.functions if f in func_name), 'python-pi')
-                        ratio = float(row[exec_col]) / EXPECTED_MAX.get(base_func, 2.0)
                         
-                        if ratio <= 1.0 :
-                            score = 1.0 
-                        else :
-                            score = (1.0 - ratio)
-                        score = max(score, -1.0) 
-                        sla_scores.append(score)
+                        # On somme les temps réels et les temps maximums tolérés
+                        total_actual_latency += float(row[exec_col])
+                        total_expected_latency += EXPECTED_MAX.get(base_func, 2.0)
 
         #Le nombre de requêtes dans la queue mais sert à rien parce que c'est pas vraiment une queue
         q_reqs = len(self.sim_env.faas.request_queue.items) if hasattr(self.sim_env.faas, 'request_queue') else 0
 
-        if requests_processed > 0 and len(sla_scores) > 0:
-            avg_sla_score = sum(sla_scores) / len(sla_scores)
-        elif requests_processed==0 :
-            avg_sla_score = 0
+        if requests_processed > 0 and total_expected_latency > 0:
+            # Exemples
+            # 10s pour un budget de 12s -> ratio = 0.83 (Parfait)
+            # 15s pour un budget de 12s -> ratio = 1.25 (Pénalité)
+            global_ratio = total_actual_latency / total_expected_latency
+            
+            if global_ratio <= 1.0:
+                avg_sla_score = 1.0
+            else:
+                # La pénalité devient proportionnelle au dépassement global
+                avg_sla_score = 1.0 - (global_ratio - 1.0) 
+            
+            avg_sla_score = max(avg_sla_score, -1.0) # On limite la casse à -1.0
+            
+        elif requests_processed == 0:
+            avg_sla_score = 0.0
         else:
-            avg_sla_score = -1.0 
+            avg_sla_score = -1.0
 
-        # 2. Calcul du Score Énergie
+        # calcul du Score Énergie
         current_power = 0.0
+        exact_max_cluster_power = 0.0
+        
         pwr_df = self.sim_env.metrics.extract_dataframe('power')
         if pwr_df is not None and not pwr_df.empty:
             if 'power_watts' in pwr_df.columns and 'timestamp' in pwr_df.columns:
                 last_time = pwr_df['timestamp'].max()
-                current_power = float(pwr_df[pwr_df['timestamp'] == last_time]['power_watts'].sum())
+                derniere_seconde_df = pwr_df[pwr_df['timestamp'] == last_time]
+                current_power = float(derniere_seconde_df['power_watts'].sum())
+                # On calcule le Max théorique exact en regardant les noeuds présents
+                if 'node_type' in derniere_seconde_df.columns and "hardware_max_power" in self.config:
+                    hw_limits = self.config["hardware_max_power"]
+                    for node_type in derniere_seconde_df['node_type']:
+                        exact_max_cluster_power += hw_limits.get(node_type, 5.0) # 5.0W par défaut si inconnu dans le dico            
             elif 'power_watts' in pwr_df.columns:
                 current_power = float(pwr_df['power_watts'].iloc[-self.num_devices:].sum())
+        # Si le calcul dynamique échoue, on retombe sur l'estimation de la config
+        if exact_max_cluster_power == 0.0:
+            exact_max_cluster_power = rew_cfg.get("max_power_estimate", 800.0)
 
-        MAX_POWER_ESTIMATE = rew_cfg["max_power_estimate"]
-        normalized_power = min(current_power / MAX_POWER_ESTIMATE, 1.0)
+        normalized_power = min(current_power / exact_max_cluster_power, 1.0)
 
         # Reward final 
         ALPHA = rew_cfg["alpha_sla"]

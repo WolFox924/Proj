@@ -41,13 +41,13 @@ timestamp,strategy,deployment,action,old_replica_count,new_replica_count,selecte
 35,LowPowerLongTimeBinPacker,resnet50-training,scale_up,6,7,nano_61,nano,0.0,0.0,,1
 35,LowPowerLongTimeBinPacker,python-pi,scale_up,7,8,rockpi_76,rockpi,0.0,0.0,,1
 35,LowPowerLongTimeBinPacker,fio,scale_up,7,8,rpi3_75,rpi3,0.0,0.0,,1
-40,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,7,8,nx_38,nx,0.0,1507.7525874748308,,1
+40,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,7,8,nx_38,nx,0.0,1456.802093695796,,1
 40,LowPowerLongTimeBinPacker,speech-inference,scale_up,1,2,rockpi_98,rockpi,0.0,24712.124419862652,,1
 40,LowPowerLongTimeBinPacker,resnet50-preprocessing,no_action,1,1,,,5.6,0.0,Within thresholds,0
 40,LowPowerLongTimeBinPacker,resnet50-training,scale_up,7,8,nano_61,nano,0.0,0.0,,1
 40,LowPowerLongTimeBinPacker,python-pi,scale_up,8,9,rockpi_76,rockpi,0.0,9877.78787967611,,1
 40,LowPowerLongTimeBinPacker,fio,scale_up,8,9,rpi3_75,rpi3,0.0,0.0,,1
-45,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,8,9,nx_38,nx,0.0,779.2747999506636,,1
+45,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,8,9,nx_38,nx,0.0,791.1434252884117,,1
 45,LowPowerLongTimeBinPacker,speech-inference,no_action,2,2,,,6.0,0.0,Within thresholds,0
 45,LowPowerLongTimeBinPacker,resnet50-preprocessing,no_action,1,1,,,6.0,0.0,Within thresholds,0
 45,LowPowerLongTimeBinPacker,resnet50-training,scale_up,8,9,nano_61,nano,0.0,0.0,,1
@@ -83,13 +83,13 @@ timestamp,strategy,deployment,action,old_replica_count,new_replica_count,selecte
 70,LowPowerLongTimeBinPacker,resnet50-training,scale_up,13,14,nano_61,nano,0.0,0.0,,1
 70,LowPowerLongTimeBinPacker,python-pi,scale_up,14,15,rockpi_76,rockpi,0.0,0.0,,1
 70,LowPowerLongTimeBinPacker,fio,scale_up,14,15,rpi3_75,rpi3,0.0,0.0,,1
-75,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,14,15,nx_38,nx,0.0,621.6508742057323,,1
+75,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,14,15,nx_38,nx,0.0,623.3893239517054,,1
 75,LowPowerLongTimeBinPacker,speech-inference,scale_up,2,3,rockpi_98,rockpi,0.0,32949.46492964094,,1
 75,LowPowerLongTimeBinPacker,resnet50-preprocessing,scale_up,1,2,rockpi_98,rockpi,0.0,60961.53531269395,,1
 75,LowPowerLongTimeBinPacker,resnet50-training,scale_up,14,15,nano_61,nano,0.0,0.0,,1
 75,LowPowerLongTimeBinPacker,python-pi,scale_up,15,16,rockpi_76,rockpi,0.0,10330.051762913004,,1
 75,LowPowerLongTimeBinPacker,fio,scale_up,15,16,rpi3_75,rpi3,0.0,0.0,,1
-80,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,15,16,nx_38,nx,0.0,621.7662987104337,,1
+80,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,15,16,nx_38,nx,0.0,620.4403642159709,,1
 80,LowPowerLongTimeBinPacker,speech-inference,no_action,3,3,,,5.0,0.0,Within thresholds,0
 80,LowPowerLongTimeBinPacker,resnet50-preprocessing,no_action,2,2,,,5.0,0.0,Within thresholds,0
 80,LowPowerLongTimeBinPacker,resnet50-training,scale_up,15,16,nano_61,nano,0.0,0.0,,1
@@ -125,13 +125,13 @@ timestamp,strategy,deployment,action,old_replica_count,new_replica_count,selecte
 105,LowPowerLongTimeBinPacker,resnet50-training,no_action,20,20,,,7.4,0.0,Within thresholds,0
 105,LowPowerLongTimeBinPacker,python-pi,scale_up,21,22,rockpi_76,rockpi,0.0,0.0,,1
 105,LowPowerLongTimeBinPacker,fio,scale_up,21,22,rpi3_75,rpi3,0.0,0.0,,1
-110,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,21,22,nx_38,nx,0.0,620.1334640664728,,1
+110,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,21,22,nx_38,nx,0.0,623.4532890913487,,1
 110,LowPowerLongTimeBinPacker,speech-inference,scale_up,2,3,rockpi_98,rockpi,0.0,44053.47301627457,,1
 110,LowPowerLongTimeBinPacker,resnet50-preprocessing,scale_up,2,3,rockpi_98,rockpi,0.0,39089.95992431415,,1
 110,LowPowerLongTimeBinPacker,resnet50-training,no_action,20,20,,,6.2,0.0,Within thresholds,0
 110,LowPowerLongTimeBinPacker,python-pi,scale_up,22,23,rockpi_76,rockpi,0.0,9284.012742963381,,1
 110,LowPowerLongTimeBinPacker,fio,scale_up,22,23,rpi3_75,rpi3,0.0,0.0,,1
-115,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,22,23,nx_38,nx,0.0,616.1982757655097,,1
+115,LowPowerLongTimeBinPacker,resnet50-inference,scale_up,22,23,nx_38,nx,0.0,644.7912279327967,,1
 115,LowPowerLongTimeBinPacker,speech-inference,scale_up,3,4,rockpi_98,rockpi,0.0,82124.46841328972,,1
 115,LowPowerLongTimeBinPacker,resnet50-preprocessing,scale_down,3,2,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 115,LowPowerLongTimeBinPacker,resnet50-training,no_action,20,20,,,5.0,0.0,Within thresholds,0
@@ -167,13 +167,13 @@ timestamp,strategy,deployment,action,old_replica_count,new_replica_count,selecte
 140,LowPowerLongTimeBinPacker,resnet50-training,scale_down,17,16,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 140,LowPowerLongTimeBinPacker,python-pi,scale_down,24,23,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 140,LowPowerLongTimeBinPacker,fio,scale_down,24,23,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
-145,LowPowerLongTimeBinPacker,resnet50-inference,no_action,21,21,,,0.6,678.4069009161158,Within thresholds,0
+145,LowPowerLongTimeBinPacker,resnet50-inference,no_action,21,21,,,0.6,624.386916875462,Within thresholds,0
 145,LowPowerLongTimeBinPacker,speech-inference,scale_up,2,3,rockpi_98,rockpi,0.0,89311.92202560164,,1
 145,LowPowerLongTimeBinPacker,resnet50-preprocessing,scale_down,2,1,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 145,LowPowerLongTimeBinPacker,resnet50-training,scale_down,16,15,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 145,LowPowerLongTimeBinPacker,python-pi,scale_up,23,24,rockpi_76,rockpi,0.0,952.8706065514485,,1
 145,LowPowerLongTimeBinPacker,fio,scale_down,23,22,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
-150,LowPowerLongTimeBinPacker,resnet50-inference,no_action,21,21,,,0.0,572.0416144251175,Within thresholds,0
+150,LowPowerLongTimeBinPacker,resnet50-inference,no_action,21,21,,,0.0,525.8157779949926,Within thresholds,0
 150,LowPowerLongTimeBinPacker,speech-inference,scale_up,3,4,rockpi_98,rockpi,0.0,94842.82798580897,,1
 150,LowPowerLongTimeBinPacker,resnet50-preprocessing,scale_down,2,1,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
 150,LowPowerLongTimeBinPacker,resnet50-training,scale_down,15,14,,,0.0,0.0,"Low load: 0.0 RPS, Response: 0.0ms",-1
