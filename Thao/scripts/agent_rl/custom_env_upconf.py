@@ -299,6 +299,7 @@ class SmartCityGymEnv(gym.Env):
                 f"pods={ready_pods:2}/{all_pods:2} | "
                 f"sla={avg_sla_score:5.2f} | "
                 f"pwr_norm={normalized_power:4.2f} | "
+                f"efficiency={efficiency_score:4.2f} | "
                 f"r={reward:6.2f}", 
                 file=fichier
             )
