@@ -239,9 +239,12 @@ class SmartCityGymEnv(gym.Env):
             avg_sla_score = max(avg_sla_score, -1.0) # On limite la casse à -1.0
             
         elif requests_processed == 0:
-            avg_sla_score = 0.0
-        else:
-            avg_sla_score = -1.0
+            if q_reqs == 0:
+                # S'il n'y a pas de requêtes traitées ET pas de requêtes en attente, le SLA est parfait.
+                avg_sla_score = 1.0 
+            else:
+                # S'il y a des requêtes en attente mais qu'on n'en traite aucune, c'est grave.
+                avg_sla_score = -1.0
 
         # calcul du Score Énergie
         current_power = 0.0
@@ -269,8 +272,16 @@ class SmartCityGymEnv(gym.Env):
         # Reward final 
         ALPHA = rew_cfg["alpha_sla"]
         BETA = rew_cfg["beta_power"]
-        reward = (ALPHA * avg_sla_score) - (BETA * normalized_power)
-        # =======================================================
+        # Calcul de l'efficacité (Optionnel mais très puissant)
+        current_total_pods = sum(len(self.sim_env.faas.get_replicas(f)) for f in self.functions if f in self.sim_env.faas.functions_deployments)
+        active_pods = max(1, current_total_pods) # Éviter la division par zéro
+        efficiency = requests_processed / active_pods
+        # On normalise (ex: on estime qu'un pod idéal traite 5 requêtes par step)
+        efficiency_score = min(efficiency / 5.0, 1.0) 
+        GAMMA = 0.2 # Poids de l'efficacité dans le reward total
+
+        # Nouveau Reward (On ajoute un Poids Gamma pour l'efficacité)
+        reward = (ALPHA * avg_sla_score) - (BETA * normalized_power) + (GAMMA * efficiency_score)        # =======================================================
 
         # Monitoring logs qu'on peut mettre dans un grafana après en vrai
         all_pods = 0

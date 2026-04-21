@@ -39,8 +39,9 @@ with col1:
 
 with col2:
     st.subheader("Récompense (SLA vs Énergie)")
-    config["reward"]["alpha_sla"] = st.number_input("Poids SLA (Alpha)", value=config["reward"]["alpha_sla"], step=0.1, format="%.2f")
-    config["reward"]["beta_power"] = st.number_input("Poids Énergie (Beta)", value=config["reward"]["beta_power"], step=0.1, format="%.2f")
+    config["reward"]["alpha_sla"] = st.number_input("Poids SLA (Alpha)", value=config["reward"]["alpha_sla"], step=0.01, format="%.2f")
+    config["reward"]["beta_power"] = st.number_input("Poids Énergie (Beta)", value=config["reward"]["beta_power"], step=0.01, format="%.2f")
+    config["reward"]["gamma_efficiency"] = st.number_input("Poids Efficacité (Gamma)", value=config["reward"]["gamma_efficiency"], step=0.01, format="%.2f")
     config["reward"]["max_power_estimate"] = st.number_input("Estimation Puissance Max (W)", value=config["reward"]["max_power_estimate"], step=10.0)
 
 with col3:
