@@ -9,6 +9,7 @@
     "reward": {
         "alpha_sla": 0.5,
         "beta_power": 0.5,
+        "gamma_efficiency": 0.2,
         "max_power_estimate": 800.0,
         "expected_max": {
             "resnet50-inference": 2.5,
