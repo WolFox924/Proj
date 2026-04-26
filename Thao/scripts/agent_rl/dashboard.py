@@ -4,6 +4,32 @@ import subprocess
 import os
 from pathlib import Path
 
+def check_password():
+    def password_entered():
+        # Change "SmartCity2024!" par le mot de passe de ton choix
+        if st.session_state["password"] == "SmartCity2026!":
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # On efface la trace du mot de passe
+        else:
+            st.session_state["password_correct"] = False
+
+    if "password_correct" not in st.session_state:
+        # Premier affichage : on demande le mot de passe
+        st.text_input("🔐 Accès restreint : Entrez le mot de passe", type="password", on_change=password_entered, key="password")
+        return False
+    elif not st.session_state["password_correct"]:
+        # Mot de passe faux : on redemande avec un message d'erreur
+        st.text_input("🔐 Accès restreint : Entrez le mot de passe", type="password", on_change=password_entered, key="password")
+        st.error("😕 Mot de passe incorrect")
+        return False
+    
+    # Si on arrive ici, c'est que le mot de passe est bon
+    return True
+
+# Si le mot de passe n'est pas bon, on stoppe net la lecture du script
+if not check_password():
+    st.stop()
+
 current_dir = Path(__file__).resolve().parent
 CONFIG_FILE = current_dir / "config.json"
 TRAIN_SCRIPT = current_dir / "train.py"

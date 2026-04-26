@@ -5,6 +5,13 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.monitor import Monitor
 from custom_env_upconf import SmartCityGymEnv
+from typing import Callable
+
+# Diminution linéaire du learning rate au fil du temps
+def linear_schedule(initial_value: float) -> Callable[[float], float]:
+    def func(progress_remaining: float) -> float:
+        return progress_remaining * initial_value
+    return func
 
 current_file = Path(__file__).resolve().parent
 project_root = current_file.parent.parent.parent
@@ -29,7 +36,7 @@ model = PPO(
     "MlpPolicy", 
     env, 
     verbose=1, 
-    learning_rate=rl_cfg["learning_rate"],
+    learning_rate=linear_schedule(rl_cfg["learning_rate"]),
     batch_size=rl_cfg["batch_size"],
     n_steps=rl_cfg["n_steps"],
     tensorboard_log=tensorboard_log_dir
