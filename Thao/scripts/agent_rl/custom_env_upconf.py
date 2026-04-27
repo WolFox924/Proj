@@ -197,54 +197,35 @@ class SmartCityGymEnv(gym.Env):
         metrics = self.sim_env.metrics.extract_dataframe('invocations')
         requests_processed = 0
         total_reqs = 0
-        sla_scores = []
         
-        # calcul du Score "Service Level Agreement" (SLA (Performance))
         total_actual_latency = 0.0
         total_expected_latency = 0.0
-        
         if metrics is not None and not metrics.empty:
             total_reqs = len(metrics)
             t_col = 't_start' if 't_start' in metrics.columns else ('t' if 't' in metrics.columns else None)
             exec_col = 'execution_time' if 'execution_time' in metrics.columns else ('t_exec' if 't_exec' in metrics.columns else None)
-            
             if t_col:
                 recent = metrics[metrics[t_col] >= (self.sim_env.now - self.step_duration)]
                 requests_processed = len(recent)
-                
                 if requests_processed > 0 and exec_col:
                     for _, row in recent.iterrows():
                         func_name = row.get('function', row.get('deployment', 'python-pi'))
                         base_func = next((f for f in self.functions if f in func_name), 'python-pi')
-                        
-                        # On somme les temps réels et les temps maximums tolérés
                         total_actual_latency += float(row[exec_col])
                         total_expected_latency += EXPECTED_MAX.get(base_func, 2.0)
 
-        #Le nombre de requêtes dans la queue mais sert à rien parce que c'est pas vraiment une queue
         q_reqs = len(self.sim_env.faas.request_queue.items) if hasattr(self.sim_env.faas, 'request_queue') else 0
-
         if requests_processed > 0 and total_expected_latency > 0:
-            # Exemples
-            # 10s pour un budget de 12s -> ratio = 0.83 (Parfait)
-            # 15s pour un budget de 12s -> ratio = 1.25 (Pénalité)
-            global_ratio = total_actual_latency / total_expected_latency
-            
-            if global_ratio <= 1.0:
-                avg_sla_score = 1.0
+            if total_actual_latency <= total_expected_latency:
+                avg_sla_score = 1.0 # plus rapide que le budget autorisé
             else:
-                # La pénalité devient proportionnelle au dépassement global
-                avg_sla_score = 1.0 - (global_ratio - 1.0) 
-            
-            avg_sla_score = max(avg_sla_score, -1.0) # On limite la casse à -1.0
-            
+                # Si on dépasse, la note baisse doucement (ex: budget 10s, réel 15s -> score 10/15 = 0.66)
+                avg_sla_score = total_expected_latency / total_actual_latency
         elif requests_processed == 0:
             if q_reqs == 0:
-                # S'il n'y a pas de requêtes traitées ET pas de requêtes en attente, le SLA est parfait.
-                avg_sla_score = 1.0 
+                avg_sla_score = 1.0 # Pas de requêtes, pas de pénalité
             else:
-                # S'il y a des requêtes en attente mais qu'on n'en traite aucune, c'est grave.
-                avg_sla_score = -1.0
+                avg_sla_score = 0.0 # Requêtes bloquées, note de zéro
 
         # calcul du Score Énergie
         current_power = 0.0
@@ -255,33 +236,30 @@ class SmartCityGymEnv(gym.Env):
             if 'power_watts' in pwr_df.columns and 'timestamp' in pwr_df.columns:
                 last_time = pwr_df['timestamp'].max()
                 derniere_seconde_df = pwr_df[pwr_df['timestamp'] == last_time]
-                current_power = float(derniere_seconde_df['power_watts'].sum())
-                # On calcule le Max théorique exact en regardant les noeuds présents
+                current_power = float(derniere_seconde_df['power_watts'].sum()) 
                 if 'node_type' in derniere_seconde_df.columns and "hardware_max_power" in self.config:
                     hw_limits = self.config["hardware_max_power"]
                     for node_type in derniere_seconde_df['node_type']:
-                        exact_max_cluster_power += hw_limits.get(node_type, 5.0) # 5.0W par défaut si inconnu dans le dico            
+                        exact_max_cluster_power += hw_limits.get(node_type, 5.0)            
             elif 'power_watts' in pwr_df.columns:
                 current_power = float(pwr_df['power_watts'].iloc[-self.num_devices:].sum())
-        # Si le calcul dynamique échoue, on retombe sur l'estimation de la config
         if exact_max_cluster_power == 0.0:
             exact_max_cluster_power = rew_cfg.get("max_power_estimate", 800.0)
-
-        normalized_power = min(current_power / exact_max_cluster_power, 1.0)
-
-        # Reward final 
-        ALPHA = rew_cfg["alpha_sla"]
-        BETA = rew_cfg["beta_power"]
-        # Calcul de l'efficacité (Optionnel mais très puissant)
-        current_total_pods = sum(len(self.sim_env.faas.get_replicas(f)) for f in self.functions if f in self.sim_env.faas.functions_deployments)
-        active_pods = max(1, current_total_pods) # Éviter la division par zéro
+        # Normalisation Symétrique de l'Énergie (0 = Conso Max, 1 = Conso Zéro)
+        power_ratio = min(current_power / exact_max_cluster_power, 1.0)
+        power_score = 1.0 - power_ratio
+        current_total_pods = sum(len(self.sim_env.faas.get_replicas(f)) for f in self.functions if f in getattr(self.sim_env.faas, 'functions_deployments', {}))
+        active_pods = max(1, current_total_pods)
         efficiency = requests_processed / active_pods
-        # On normalise (ex: on estime qu'un pod idéal traite 5 requêtes par step)
         efficiency_score = min(efficiency / 5.0, 1.0) 
-        GAMMA = 0.2 # Poids de l'efficacité dans le reward total
 
-        # Nouveau Reward (On ajoute un Poids Gamma pour l'efficacité)
-        reward = (ALPHA * avg_sla_score) - (BETA * normalized_power) + (GAMMA * efficiency_score)        # =======================================================
+        ALPHA = rew_cfg.get("alpha_sla", 0.4)
+        BETA = rew_cfg.get("beta_power", 0.4)
+        GAMMA = rew_cfg.get("gamma_efficiency", 0.2) 
+
+        reward = (ALPHA * avg_sla_score) + (BETA * power_score) + (GAMMA * efficiency_score)
+        
+        # =======================================================
 
         # Monitoring logs qu'on peut mettre dans un grafana après en vrai
         all_pods = 0
@@ -298,7 +276,7 @@ class SmartCityGymEnv(gym.Env):
                 f"q_reqs={q_reqs:4} | "
                 f"pods={ready_pods:2}/{all_pods:2} | "
                 f"sla={avg_sla_score:5.2f} | "
-                f"pwr_norm={normalized_power:4.2f} | "
+                f"pwr_norm={power_score:4.2f} | "
                 f"efficiency={efficiency_score:4.2f} | "
                 f"r={reward:6.2f}", 
                 file=fichier
