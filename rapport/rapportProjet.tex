@@ -18,19 +18,22 @@
 \begin{document}
 
 \maketitle % Placement du titre
+	Attention, le max est de 8 pages tout compris !
 
-\tableofcontents % Génère le sommaire automatique
 
 % Resume
-\newpage
 \begin{abstract}
-\input{chapters/intro}
+\input{chapters/resume}
 \end{abstract}
 % ======================== CHAPITRES ========================
 \input{chapters/corps}
 
+\newpage
+\tableofcontents % Génère le sommaire automatique
 \section*{Introduction}
-	Attention, le max est de 8 pages tout compris !
+\input{chapters/intro}
+\newpage
+\input{chapters/ppo}
 
 \newpage
 \section{Section}
@@ -41,8 +44,6 @@ ici par exemple une citation : \cite{lemoulec:hal-01549042}
 
 \subsubsection{Sous Sous Section}
 
-\newpage
-\input{chapters/ppo}
 
 \newpage
 \section{Section }	
