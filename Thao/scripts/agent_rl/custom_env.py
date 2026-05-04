@@ -115,7 +115,7 @@ class SmartCityGymEnv(gym.Env):
 
     def step(self, actions):
         for i, act in enumerate(actions):
-            fname = self.functions[i]
+            fname = self.functions[i%6]
             if fname not in self.sim_env.faas.functions_deployments:
                 continue
             current_replicas = len(self.sim_env.faas.get_replicas(fname))

@@ -17,7 +17,7 @@ STRATEGY_COLORS = {
     'APE_H_Hybrid': '#1f77b4',     # Bleu
     'Standard_K8s': '#9467bd',     # Violet
     'Standard_First': '#8c564b',    # Marron
-    'RL_PPO' : '#db00db'
+    'RL_PPO_30_50_20_DLnew' : '#db00db'
 }
 
 
@@ -26,44 +26,44 @@ def load_all_data():
     
     for folder in data_dir.glob("batch_*"):
         strat = folder.name.replace("batch_", "")
-        
-        # 1. Invocations
-        try:
-            inv = pd.read_csv(folder / "invocations_df.csv")
-            inv['Strategy'] = strat
-            # Nettoyage latence
-            if 't_exec' in inv.columns: inv['duration'] = inv['t_exec']
-            elif 'execution_time' in inv.columns: inv['duration'] = inv['execution_time']
-            # On garde les succès uniquement pour la latence
-            inv = inv[inv['duration'] > 0].dropna(subset=['node'])
-            data['invocations'].append(inv)
-        except: pass
+        if strat in STRATEGY_COLORS.keys():
+            # 1. Invocations
+            try:
+                inv = pd.read_csv(folder / "invocations_df.csv")
+                inv['Strategy'] = strat
+                # Nettoyage latence
+                if 't_exec' in inv.columns: inv['duration'] = inv['t_exec']
+                elif 'execution_time' in inv.columns: inv['duration'] = inv['execution_time']
+                # On garde les succès uniquement pour la latence
+                inv = inv[inv['duration'] > 0].dropna(subset=['node'])
+                data['invocations'].append(inv)
+            except: pass
 
-        # 2. Power (Watts over time)
-        try:
-            pwr = pd.read_csv(folder / "power_df.csv")
-            pwr['Strategy'] = strat
-            # Aggrégation par seconde pour alléger le graph
-            pwr_grouped = pwr.groupby('timestamp')['power_watts'].sum().reset_index()
-            pwr_grouped['Strategy'] = strat
-            data['power'].append(pwr_grouped)
-            
-            # Calcul Energie Totale pour le Pareto
-            total_joules = pwr['power_watts'].sum() # Approx si 1 row = 1 sec
-            data['energy_stats'].append({'Strategy': strat, 'Total_Joules': total_joules})
-        except: pass
+            # 2. Power (Watts over time)
+            try:
+                pwr = pd.read_csv(folder / "power_df.csv")
+                pwr['Strategy'] = strat
+                # Aggrégation par seconde pour alléger le graph
+                pwr_grouped = pwr.groupby('timestamp')['power_watts'].sum().reset_index()
+                pwr_grouped['Strategy'] = strat
+                data['power'].append(pwr_grouped)
+                
+                # Calcul Energie Totale pour le Pareto
+                total_joules = pwr['power_watts'].sum() # Approx si 1 row = 1 sec
+                data['energy_stats'].append({'Strategy': strat, 'Total_Joules': total_joules})
+            except: pass
 
-        # 3. Scaling Decisions
-        try:
-            sc = pd.read_csv(folder / "scaling_decisions_df.csv")
-            sc['Strategy'] = strat
-            # On veut savoir combien de répliques TOTALES il y a à chaque instant
-            # C'est un peu complexe à reconstruire parfaitement, mais on peut plotter les "Actions"
-            # ou mieux : si ton CSV contient 'replicas_count' global. 
-            # Sinon, on compte les actions de scale up/down cumulées.
-            # Ici on va supposer qu'on peut tracer les actions brutes ou le count si dispo.
-            data['scaling'].append(sc)
-        except: pass
+            # 3. Scaling Decisions
+            try:
+                sc = pd.read_csv(folder / "scaling_decisions_df.csv")
+                sc['Strategy'] = strat
+                # On veut savoir combien de répliques TOTALES il y a à chaque instant
+                # C'est un peu complexe à reconstruire parfaitement, mais on peut plotter les "Actions"
+                # ou mieux : si ton CSV contient 'replicas_count' global. 
+                # Sinon, on compte les actions de scale up/down cumulées.
+                # Ici on va supposer qu'on peut tracer les actions brutes ou le count si dispo.
+                data['scaling'].append(sc)
+            except: pass
 
     # Concaténation
     dfs = {}

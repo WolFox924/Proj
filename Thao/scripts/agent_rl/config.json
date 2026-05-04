@@ -7,8 +7,8 @@
         "total_rps": 35
     },
     "reward": {
-        "alpha_sla": 0.5,
-        "beta_power": 0.5,
+        "alpha_sla": 0.1,
+        "beta_power": 0.7,
         "gamma_efficiency": 0.2,
         "max_power_estimate": 800.0,
         "expected_max": {
@@ -30,7 +30,7 @@
     },
     "agent_rl": {
         "run_name": "Baseline_50_50",
-        "epochs": 500,
+        "epochs": 50,
         "learning_rate": 0.0003,
         "batch_size": 64,
         "n_steps": 2048

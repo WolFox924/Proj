@@ -9,14 +9,14 @@ import shutil
 #configuration des chemins
 current_file = Path(__file__).resolve().parent
 project_root = current_file.parent.parent.parent
-output_dir = project_root / "Thao" / "output" / "scripts_data" / "batch_RL_PPO"
+output_dir = project_root / "Thao" / "output" / "scripts_data" / "batch_test_new_10_70_20"
 #nettoyage pour être sûr
 if output_dir.exists():
     shutil.rmtree(output_dir)
 os.makedirs(output_dir, exist_ok=True)
 
 print("Chargement du modèle")
-model_path = project_root / "Thao" / "scripts" / "models" / "PPO" / "smart_city_ppo.zip" # Adapte si besoin
+model_path = project_root / "Thao" / "scripts" / "agent_rl" / "models" / "PPO" / "smart_city_Baseline_50_50.zip"
 
 #si le modèle n'existe pas
 if not os.path.exists(model_path):
@@ -38,20 +38,43 @@ while not done:
     
     # on enregistre l'action avant de l'envoyer à l'environnement
     for i, act in enumerate(action):
-        fname = env.functions[i]
-        if act == 0:
-            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_down', 'replicas_change': -1})
-        elif act == 1:
+        print(i)
+        fname = env.functions[i%6]
+        if act == -8:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_down_ultra_8', 'replicas_change': -8})
+        elif act == -7:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_down_ultra_7', 'replicas_change': -7})
+        elif act == -6:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_down_ultra_6', 'replicas_change': -6})
+        elif act == -5:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_down_ultra_5', 'replicas_change': -5})
+        elif act == -4:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_down_ultra_4', 'replicas_change': -4})
+        elif act == -3:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_down_high', 'replicas_change': -3})
+        elif act == -2:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_down_medium', 'replicas_change': -2})
+        elif act == -1:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_down_low', 'replicas_change': -1})
+        elif act == 0:
             rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'does_nothing', 'replicas_change': 0})
-        elif act == 2:
+        elif act == 1:
             rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_up_low', 'replicas_change': 1})
-        elif act == 3:
+        elif act == 2:
             rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_up_medium', 'replicas_change': 2})
-        elif act == 4:
+        elif act == 3:
             rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_up_high', 'replicas_change': 3})
+        elif act == 4:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_up_ultra_4', 'replicas_change': 4})
         elif act == 5:
-            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_up_ultra', 'replicas_change': 4})
-
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_up_ultra_5', 'replicas_change': 5})
+        elif act == 6:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_up_ultra_6', 'replicas_change': 6})
+        elif act == 7:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_up_ultra_7', 'replicas_change': 7})
+        elif act == 8:
+            rl_scaling_decisions.append({'t': env.sim_env.now, 'function': fname, 'decision': 'scale_up_ultra_8', 'replicas_change': 8})
+        
     obs, reward, done, truncated, info = env.step(action)
     steps += 1
     #DEBUG : on vérifie que le temps avance et montre les décisions de l'IA

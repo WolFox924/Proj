@@ -9,9 +9,9 @@ data_dir = current_dir / 'output' / 'scripts_data'
 if not data_dir.exists():
     data_dir = Path(__file__).resolve().parent / 'output' / 'scripts_data'
 # COULEURS & ORDRE
-STRATEGY_COLORS = {'HPST_Performance': '#d62728', 'LPLT_Energy': '#2ca02c', 'APE_H_Hybrid': '#1f77b4', 'Standard_K8s': '#9467bd', 'Standard_First': '#8c564b', 'RL_PPO' : '#db00db'}
+STRATEGY_COLORS = {'HPST_Performance': '#d62728', 'LPLT_Energy': '#2ca02c', 'APE_H_Hybrid': '#1f77b4', 'Standard_K8s': '#9467bd', 'Standard_First': '#8c564b', 'RL_PPO_30_50_20_DLnew' : '#db00db'}
 
-STRATEGY_ORDER = ['Standard_First', 'Standard_K8s', 'LPLT_Energy', 'APE_H_Hybrid', 'HPST_Performance','RL_PPO']
+STRATEGY_ORDER = ['Standard_First', 'Standard_K8s', 'LPLT_Energy', 'APE_H_Hybrid', 'HPST_Performance','RL_PPO_30_50_20_DLnew']
 
 NODE_TYPE_ORDER = ['rpi3', 'rpi4', 'nano', 'coral', 'rockpi', 'tx2', 'nx', 'nuc', 'xeon']
 
@@ -31,46 +31,47 @@ def load_data_from_folders():
     batch_folders = list(data_dir.glob("batch_*"))
     for folder in batch_folders:
         strat_name = folder.name.replace("batch_", "")
-        print(f"🔹Stratégie : {strat_name}")
-        
-        # --- 1. Lecture Invocations (Latence & Timeline) ---
-        inv_file = folder / "invocations_df.csv"
-        if inv_file.exists():
-            try:
-                df = pd.read_csv(inv_file)
-                # On ne garde que les succès (t_exec > 0 et node défini)
-                df = df.dropna(subset=['node', 't_exec'])
-                df = df[df['t_exec'] > 0].copy()
-                
-                # Nettoyage du nom du noeud (regroupement par type)
-                df['node_type'] = df['node'].apply(clean_node_name)
-                
-                # Colonnes standardisées pour la suite
-                df['Strategy'] = strat_name
-                df['duration'] = df['t_exec']
-                df['start_time'] = df['t_start']
-                # Timestamp de fin pour compatibilité
-                df['timestamp'] = df['t_start'] + df['t_exec'] 
-                
-                all_invocations.append(df)
-            except Exception as e:
-                print(f"Erreur lecture invocations: {e}")
+        if strat_name in STRATEGY_ORDER:
+            print(f"🔹Stratégie : {strat_name}")
+            
+            # --- 1. Lecture Invocations (Latence & Timeline) ---
+            inv_file = folder / "invocations_df.csv"
+            if inv_file.exists():
+                try:
+                    df = pd.read_csv(inv_file)
+                    # On ne garde que les succès (t_exec > 0 et node défini)
+                    df = df.dropna(subset=['node', 't_exec'])
+                    df = df[df['t_exec'] > 0].copy()
+                    
+                    # Nettoyage du nom du noeud (regroupement par type)
+                    df['node_type'] = df['node'].apply(clean_node_name)
+                    
+                    # Colonnes standardisées pour la suite
+                    df['Strategy'] = strat_name
+                    df['duration'] = df['t_exec']
+                    df['start_time'] = df['t_start']
+                    # Timestamp de fin pour compatibilité
+                    df['timestamp'] = df['t_start'] + df['t_exec'] 
+                    
+                    all_invocations.append(df)
+                except Exception as e:
+                    print(f"Erreur lecture invocations: {e}")
 
-        # --- 2. Lecture Power (Energie) ---
-        pwr_file = folder / "power_df.csv"
-        if pwr_file.exists():
-            try:
-                pdf = pd.read_csv(pwr_file)
-                # On suppose que chaque ligne est une mesure à 1 seconde d'intervalle
-                # Donc Energie (Joules) = Somme(Puissance Watts * 1s)
-                if 'power_watts' in pdf.columns:
-                    total_joules = pdf['power_watts'].sum()
-                    all_power.append({
-                        'Strategy': strat_name,
-                        'joules': total_joules
-                    })
-            except Exception as e:
-                print(f"Erreur lecture power: {e}")
+            # --- 2. Lecture Power (Energie) ---
+            pwr_file = folder / "power_df.csv"
+            if pwr_file.exists():
+                try:
+                    pdf = pd.read_csv(pwr_file)
+                    # On suppose que chaque ligne est une mesure à 1 seconde d'intervalle
+                    # Donc Energie (Joules) = Somme(Puissance Watts * 1s)
+                    if 'power_watts' in pdf.columns:
+                        total_joules = pdf['power_watts'].sum()
+                        all_power.append({
+                            'Strategy': strat_name,
+                            'joules': total_joules
+                        })
+                except Exception as e:
+                    print(f"Erreur lecture power: {e}")
     # Concaténation finale
     inv_final = pd.concat(all_invocations, ignore_index=True) if all_invocations else pd.DataFrame()
     pwr_final = pd.DataFrame(all_power) if all_power else pd.DataFrame()
