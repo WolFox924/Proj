@@ -1,6 +1,3 @@
-\subsubsection{Première conception de stratégie de simulation et évolution de l'agent d'apprentissage par renforcement}
-
-\subsubsection{Phase 1 : Modélisation du problème et Environnement Gym}
 Avant que l'IA ne puisse apprendre, il a fallu traduire un simulateur complexe de \textit{Smart City} (FaaS/Skippy) en un environnement standardisé via l'interface \texttt{gymnasium}.
 Le simulateur d'origine tourne en continu. Nous l'avons discrétisé en créant une boucle où l'IA met l'environnement en pause toutes les $X$ secondes (\texttt{step\_duration}), observe l'état, prend une décision (\texttt{action}), puis laisse le simulateur avancer.
 On utilise également un certain espace d'observation, l'IA observe un espace continu (\texttt{spaces.Box}) contenant la latence moyenne des dernières requêtes et le nombre exact de pods (\texttt{replicas}) actuellement allumés pour chaque fonction.
@@ -20,7 +17,6 @@ Comme espace d'action, l'algorithme PPO manipulant plus aisément des valeurs di
         self.sim_env.process(self.sim_env.faas.scale_up(fname, 8))
 \end{lstlisting}
 
-\subsubsection{Phase 2 : Choix de l'Algorithme et Stabilisation}
 Ici nous avons sélectionné un apprentissage par renforcement par \textbf{Optimisation de Politique Proximale (PPO)} cet algorithme a été sélectionné car il représente l'état de l'art pour les environnements comportant des actions discrètes multiples (système de scaling indépendant pour 6 fonctions).
 Pour observer l'apprentissage de notre IA, nous avons mis en place un monitoring strict \textbf{(TensorBoard)} pour observer les métriques internes du réseau de neurones (\textit{Value Loss}, Entropie) et les métriques de simulation (SLA, consommation électrique, requêtes traitées).
 \begin{figure}[htbp]
@@ -32,7 +28,6 @@ Pour observer l'apprentissage de notre IA, nous avons mis en place un monitoring
 
 Pour éviter que l'IA ne détruise ses propres stratégies optimisées en fin d'entraînement, une fonction réduit progressivement la taille de ses pas d'apprentissage de façon linéaire (\texttt{learning\_rate}) de sa valeur initiale jusqu'à 0.
 
-\subsubsection{Phase 3 : La Révolution de la Récompense (\textit{Reward Shaping})}
 L'IA est passée d'un agent chaotique à un agent rationnel grâce à une refonte de la fonction de récompense, éliminant le mélange d'unités incompatibles (secondes pour le SLA, Watts pour l'énergie).
 Chaque métrique brute a été transformée en un score normalisé. Par exemple, si la latence réelle dépasse le budget accordé, la note diminue proportionnellement vers 0. Nous avons opté pour une formulation strictement positive :
 $$ Reward = (\alpha \times SLA) + (\beta \times \mathrm{Energy}) + (\gamma \times \mathrm{Efficiency}) $$
@@ -45,12 +40,10 @@ La consommation de base des serveurs (\textit{static power}) masquait l'impact �
     Reward = (ALPHA * avg_sla) + (BETA * power) + (GAMMA * efficiency)
 \end{lstlisting}
 
-\subsubsection{Phase 4 : Détection et Résolution du \textit{Reward Hacking}}
 Lors des entraînements, l'IA a identifié une faille mathématique. Le code initial calculait la consommation maximale théorique du cluster en ne considérant que les nœuds réveillés. L'IA a donc appris à allumer massivement des pods inutiles pour gonfler artificiellement ce maximum, minimisant ainsi son ratio de consommation réelle et boostant sa note d'énergie.
 Ainsi le calcul a été verrouillé en interrogeant l'inventaire physique total (\texttt{self.sim\_env.cluster.nodes}) et les limites matérielles du \texttt{config.json}. Toute nouvelle machine allumée constitue désormais une véritable pénalité incontournable.
 
 
-\subsubsection{Phase 5 : Extension de l'Espace d'Action (\textit{Autoscaler} vs Orchestrateur)}
 Bien que l'IA gérait parfaitement les quantités (\textit{Autoscaling}), elle restait pénalisée face à d'autres heuristiques (comme \texttt{APE\_H}) à cause d'un \textit{Scheduling} sous-optimal (placement aveugle des pods sur des nœuds trop gourmands par le moteur externe).
 Un 7\textsuperscript{ème} levier décisionnel a été ajouté à l'espace d'action : le choix d'une stratégie matérielle globale (0 = Éco, 1 = Normal, 2 = Performance).
 Intégration non-intrusive dans le moteur de simulation via la classe \texttt{HardwarePolicyPriority}. Avant chaque action de \textit{scaling}, l'IA injecte désormais dynamiquement ses propres règles de placement dans le pipeline de priorité du Scheduler externe (ex: accorder un bonus artificiel de 1000 points aux nœuds basse consommation si le mode Éco est activé).
