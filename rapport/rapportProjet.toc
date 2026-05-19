@@ -1,0 +1,34 @@
+\babel@toc {french}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{2}{}%
+\contentsline {section}{Introduction}{2}{}%
+\contentsline {section}{\numberline {2}Objectifs et Cahier des Charges}{2}{}%
+\contentsline {subsection}{\numberline {2.1}Objectifs principaux}{2}{}%
+\contentsline {subsection}{\numberline {2.2}Cahier des charges technique}{3}{}%
+\contentsline {section}{\numberline {3}État de l'Art}{3}{}%
+\contentsline {section}{\numberline {4}Travail Réalisé}{3}{}%
+\contentsline {subsection}{\numberline {4.1}Comparaison de différentes stratégies de simulation (1er semestre)}{3}{}%
+\contentsline {subsection}{\numberline {4.2}APE-H (1er semestre)}{4}{}%
+\contentsline {subsubsection}{\numberline {4.2.1}Stratégie Hybride Proposée : APE-H (Adaptive Performance-Energy Hybrid)}{4}{}%
+\contentsline {subsection}{\numberline {4.3}Proximal Policy Optimization (PPO) (2nd semestre)}{5}{}%
+\contentsline {subsection}{\numberline {4.4}Modélisation Deep Q-Network (DQN) (2nd semestre)}{6}{}%
+\contentsline {subsubsection}{\numberline {4.4.1}Espaces d'Observation et d'Action (Linéarisation)}{6}{}%
+\contentsline {subsubsection}{\numberline {4.4.2}Fonction de Récompense et Apprentissage}{6}{}%
+\contentsline {subsection}{\numberline {4.5}Approche Multi-Agent par Mixture of Experts (2nd semestre)}{7}{}%
+\contentsline {subsection}{\numberline {4.6}Motivation et Architecture Générale}{7}{}%
+\contentsline {subsection}{\numberline {4.7}Les Experts Spécialisés}{7}{}%
+\contentsline {subsubsection}{\numberline {4.7.1}ScalingExpert}{7}{}%
+\contentsline {subsubsection}{\numberline {4.7.2}PowerExpert}{7}{}%
+\contentsline {subsubsection}{\numberline {4.7.3}SchedulingExpert}{8}{}%
+\contentsline {subsubsection}{\numberline {4.7.4}Résumé de l'espace d'action}{8}{}%
+\contentsline {subsection}{\numberline {4.8}Le Meta-Agent (Gating Network)}{8}{}%
+\contentsline {subsubsection}{\numberline {4.8.1}Rôle et Fonctionnement}{8}{}%
+\contentsline {subsubsection}{\numberline {4.8.2}Entraînement séquentiel en deux phases}{8}{}%
+\contentsline {subsection}{\numberline {4.9}Discussion et Limites}{9}{}%
+\contentsline {subsubsection}{\numberline {4.9.1}Surpondération de l'énergie}{9}{}%
+\contentsline {subsubsection}{\numberline {4.9.2}Entraînement séquentiel et non-optimalité}{9}{}%
+\contentsline {subsubsection}{\numberline {4.9.3}Absence de coordination inter-experts}{9}{}%
+\contentsline {subsubsection}{\numberline {4.9.4}Généralisation}{9}{}%
+\contentsline {section}{\numberline {5}Résultats}{9}{}%
+\contentsline {subsection}{\numberline {5.1}Chiffres et Graphiques}{9}{}%
+\contentsline {subsection}{\numberline {5.2}Interprétation des résultats}{11}{}%
+\contentsline {section}{\numberline {6}Conclusion}{11}{}%

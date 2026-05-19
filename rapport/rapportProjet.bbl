@@ -1,0 +1,23 @@
+\begin{thebibliography}{1}
+\expandafter\ifx\csname fonteauteurs\endcsname\relax
+\def\fonteauteurs{\scshape}\fi
+
+\bibitem{philipp_raith}
+Philipp \bgroup\fonteauteurs\bgroup Raith\egroup\egroup{}:
+\newblock {\underline {https://scholar.google.com/citations?user=foXpSlIAAAAJ\&hl=en}},
+\newblock {\em {faas‐sim: A trace‐driven simulation framework for serverless edge computing platforms}},
+  Software: Practice and Experience 53 (12), 2327-2361, decembre 2023.
+\newblock Accepted for publication in ?.
+
+\bibitem{philipp_raith_faas}
+Philipp \bgroup\fonteauteurs\bgroup Raith\egroup\egroup{}:
+\newblock {\underline {https://github.com/edgerun/faas-sim}}.
+\newblock {\em {faas-sim}},
+
+\bibitem{mahfoud}
+Sayah \bgroup\fonteauteurs\bgroup Mahfoud\egroup\egroup{}:
+\newblock {\underline {https://github.com/M4hf0d/faas-sim}}.
+\newblock {\em {faas-sim simulations}},
+ aout 2018.
+
+\end{thebibliography}
