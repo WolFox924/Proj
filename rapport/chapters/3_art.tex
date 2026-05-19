@@ -1,1 +1,7 @@
-TODO : Etat de l'art à faire
+Le marché du \textit{Serverless} FaaS se divise entre solutions propriétaires et solutions auto-hébergées~:
+
+\begin{itemize}
+    \item \textbf{Solutions propriétaires :} Les leaders du Cloud proposent des offres packagées comme \textit{AWS Lambda} (et sa déclinaison \textit{Lambda@Edge} dédiée à la proximité), \textit{Google Cloud Functions} ou \textit{Azure Functions}. Ces services masquent totalement l'infrastructure mais imposent une tarification et des règles de gestion rigides.
+    \item \textbf{Solutions Open-source :} Pour maîtriser l'exécution et éviter le \textit{«~vendor lock-in~»}, des systèmes peuvent être déployés sur des clusters \textit{Kubernetes}. Cela permet une personnalisation totale du placement des fonctions, condition nécessaire pour optimiser la consommation énergétique en milieu \textit{Edge}.
+    \item \textbf{Sur notre projet :} Nous utilions le logiciel/moteur \textit{FaaS-Sim} développé par Schahram Dustdar, Thomas Rausch, Alireza Furutanpey et Philipp Raith \cite{philipp_raith_faas} qui nous permettra de faire des simulations dans le langage python afin que nous puissions au mieux développer un maximum de stratégies. Sur ce logiciel, a travaillé Mahfoud Sayah \cite{mahfoud} au sein de son doctorat et nous allons comparer ses stratégies de thèse aux nôtres.
+\end{itemize}

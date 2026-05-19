@@ -1,0 +1,145 @@
+\chapter{Approche Multi-Agent par Mixture of Experts}
+
+\section{Motivation et Architecture Générale}
+
+Nous adoptons une architecture
+\textbf{Mixture of Experts (MoE)} inspirée des modèles d'apprentissage
+automatique modernes. L'idée centrale est de diviser le problème en
+sous-problèmes plus simples, chacun traité par un agent spécialisé
+(\textit{expert}), et de confier à un \textbf{meta-agent} le soin de
+sélectionner dynamiquement l'expert le plus adapté à la situation courante.
+
+\section{Les Experts Spécialisés}
+
+Trois agents experts sont entraînés indépendamment via l'algorithme
+\textbf{PPO} (\textit{Proximal Policy Optimization}) de la bibliothèque
+Ray RLlib. Chacun agit sur un sous-espace de l'action globale, représentée
+par un vecteur à 6 dimensions $\mathbf{a} = [a_0, a_1, a_2, a_3, a_4, a_5]$
+où chaque $a_i \in [0, 16]$.
+
+\subsection{ScalingExpert}
+
+Le \textit{ScalingExpert} contrôle le \textbf{scaling horizontal} des
+fonctions, c'est-à-dire le nombre de réplicas déployés. Il agit sur les
+dimensions $a_0$ et $a_1$ (les deux premières fonctions), en fixant les
+autres à 8 (valeur neutre).
+
+Sa fonction de récompense pénalise uniquement la latence :
+\[
+r_{\text{scaling}} = -15{,}0 \times \text{latence\_norm}
+\]
+
+\subsection{PowerExpert}
+
+Le \textit{PowerExpert} gère l'\textbf{alimentation des nœuds} en décidant
+d'allumer ou d'éteindre des nœuds du cluster. Il agit sur les dimensions
+$a_2$ et $a_3$, avec une contrainte de sécurité garantissant qu'au moins
+10\% des nœuds restent actifs.
+
+Sa fonction de récompense équilibre économie d'énergie et latence :
+\[
+r_{\text{power}} = 10{,}0 \times \frac{n_{\text{off}}}{n_{\text{total}}}
+                 - 15{,}0 \times \text{latence\_norm}
+\]
+
+\subsection{SchedulingExpert}
+
+Le \textit{SchedulingExpert} choisit la \textbf{stratégie de placement}
+des conteneurs : consolidation (remplir les nœuds) ou spreading (répartir
+la charge). Il agit sur les dimensions $a_4$ et $a_5$.
+
+Sa fonction de récompense favorise une utilisation CPU dans la plage optimale :
+\[
+r_{\text{sched}} = -5{,}0 \times \text{latence\_norm}
++ \begin{cases} +5{,}0 & \text{si } 0{,}4 < \text{CPU} < 0{,}8 \\ -2{,}0 & \text{sinon} \end{cases}
+\]
+
+\subsection{Résumé de l'espace d'action}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+\textbf{Expert} & $a_0$ & $a_1$ & $a_2$ & $a_3$ & $a_4$ & $a_5$ \\
+\hline
+ScalingExpert   & VAR & VAR & 8 & 8 & 8 & 8 \\
+PowerExpert     & 8 & 8 & VAR & VAR & 8 & 8 \\
+SchedulingExpert & 8 & 8 & 8 & 8 & VAR & VAR \\
+\hline
+\end{tabular}
+\caption{Répartition de l'espace d'action entre les trois experts
+(8 = valeur neutre, VAR = dimension contrôlée par l'expert).}
+\label{tab:action_space}
+\end{table}
+
+\section{Le Meta-Agent (Gating Network)}
+
+\subsection{Rôle et Fonctionnement}
+
+Le meta-agent joue le rôle de \textbf{gating network} : à chaque pas de
+temps, il observe l'état global du cluster et décide quel expert doit agir.
+L'observation est un vecteur de 8 dimensions :
+\[
+\mathbf{o} = [\text{latence\_norm},\ \text{CPU\_util},\ r_1,\ r_2,\ r_3,\ r_4,\ r_5,\ r_6]
+\]
+où $r_i$ est le nombre de réplicas de la fonction $i$.
+
+\subsection{Entraînement séquentiel en deux phases}
+
+L'entraînement global suit un protocole \textbf{séquentiel en deux phases}, conçu pour garantir la stabilité du modèle final et éviter le problème de \textit{cible mouvante} (\textit{moving target problem}).
+
+\textbf{Phase 1 --- Entraînement des experts.}
+Les trois experts (ScalingExpert, PowerExpert, SchedulingExpert) sont entraînés \textbf{indépendamment} via l'algorithme PPO jusqu'à convergence. Chaque expert est entraîné pendant environ 120 itérations ($\approx 30$ minutes). Une fois cette phase terminée, les poids de chaque expert sont \textbf{gelés} (\textit{frozen}) : ils ne seront plus mis à jour lors de la phase suivante.
+
+\textbf{Phase 2 --- Entraînement du meta-agent.}
+Le meta-agent est entraîné sur les experts figés de la Phase~1. Cette contrainte est essentielle : si les experts continuaient à évoluer pendant l'entraînement du meta-agent, ce dernier apprendrait à composer avec des politiques instables, rendant la convergence impossible. En fixant les experts au préalable, on garantit que le meta-agent apprend à sélectionner parmi des politiques stables et prévisibles.
+
+Le meta-agent est entraîné sur 1\,000 itérations PPO avec un taux d'apprentissage $\eta = 10^{-4}$ et un coefficient d'entropie de $0{,}05$. Sa fonction de récompense unifiée est :
+\[
+r = -10{,}0 \times \text{latence\_norm} + 25{,}0 \times \frac{n_{\text{off}}}{n_{\text{total}}}
+\]
+
+Ce protocole en deux phases séquentielles, en entraînant d'abord les experts puis le meta-agent sur ces experts figés, assure la stabilité du système et évite les interactions circulaires qui empêcheraient la convergence.
+
+\section{Discussion et Limites}
+
+\subsection{Surpondération de l'énergie}
+
+La fonction de récompense unifiée accorde un poids de $+25$ à l'énergie
+contre $-10$ à la latence. Ce déséquilibre pousse le meta-agent à maximiser
+l'extinction de nœuds même au détriment des SLAs. Une pondération
+adaptative ou des contraintes dures sur la latence ($\text{latence} < 1500$ms)
+permettraient d'obtenir un meilleur compromis.
+
+\subsection{Entraînement séquentiel et non-optimalité}
+
+Les experts étant figés avant l'entraînement du meta-agent, l'optimalité
+jointe n'est pas garantie. Un entraînement conjoint (\textit{joint
+training}) ou un mécanisme de \textit{fine-tuning} des experts en Phase 2
+pourrait améliorer les performances globales.
+
+\subsection{Absence de coordination inter-experts}
+
+Les trois experts partagent la même observation mais n'ont aucun mécanisme
+de communication entre eux. En pratique, ScalingExpert et PowerExpert ont
+des objectifs contradictoires : l'un ajoute des réplicas (consomme plus),
+l'autre éteint des nœuds (réduit les ressources disponibles). Une
+architecture avec mémoire partagée ou communication explicite pourrait
+réduire ces conflits.
+
+La distribution des temps de latence illustrée sur la
+Figure latency box confirme que certaines stratégies de référence
+maintiennent de meilleures garanties de temps de réponse grâce à une gestion
+plus fine et coordonnée des ressources, ce que l'architecture MoE actuelle
+ne peut pas encore égaler en l'absence de coordination inter-experts.
+Un mécanisme de \textit{multi-objective RL} ou une mémoire partagée entre
+experts permettrait de dépasser cette limitation.
+
+
+\subsection{Généralisation}
+
+La charge de travail est tirée aléatoirement dans $[10, 45]$ RPS à chaque
+épisode. Le meta-agent apprend donc une politique moyennée sur cet
+ensemble de charges, ce qui peut le rendre sous-optimal pour des régimes
+de charge spécifiques. Un curriculum d'entraînement progressif améliorerait
+la robustesse.

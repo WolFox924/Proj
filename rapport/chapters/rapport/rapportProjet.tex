@@ -1,0 +1,103 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[french]{babel}% Package Babel pour le texte en francais
+\usepackage{exptech}% Presentation similaire a celle de l'expose technique
+\usepackage{graphicx} % Pour les images
+
+% ======================== INFOS GENERALES ========================
+% Titre
+\title{\textbf{Simulations de stratégies pour le Serverless Edge Computing}}
+% Auteurs
+\author{Auteurs :
+	Mahdi Ben Ammar - Ahmed Yassine Ben Abdeljelil \\
+	Louis Gauthier - Fantin Legros \\
+	Mathys Le Provost - Thao Nguyen Quang \\ \\
+	Encadrant : Nikolaos Parlavantzas}
+\date{2025-2026}                    % Ne pas modifier
+
+% ======================== CONFIG PYTHON ========================
+\usepackage{xcolor} % Pour les couleurs
+\usepackage{listings} % Pour le code source
+% Configuration des couleurs pour le code
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+% Configuration de l'environnement "listings" pour Python
+\lstset{
+    language=Python,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+\renewcommand{\lstlistingname}{Code}
+
+\begin{document}
+
+\maketitle % Placement du titre
+
+\tableofcontents % Génère le sommaire automatique
+\section*{Remerciements}
+Nous souhaitons tout d'abord remercier les membres de l'équipe de développement de FaaS/Skippy (notamment Philipp Raith \cite{philipp_raith}) pour leur travail, ainsi que pour la documentation détaillée qui nous a permis de comprendre rapidement les mécanismes internes du simulateur.
+Nous remercions également Mahfoud Sayah pour le travail qu'il a fourni tout au long de son stage au sein de son doctorat
+Enfin nous terminons par remercier notre tuteur Nikolaos Parlavantzas de nous avoir suivi tout au long de cette anéee ainsi que pour ces précieux conseils.
+
+% ======================== RESUME ========================
+\newpage
+\begin{abstract}
+\input{chapters/0_resume}
+\end{abstract}
+% ======================== CHAPITRES ========================
+%\newpage
+% ============= 1 INTRODUCTION =============
+\section{Introduction}
+\input{chapters/1_intro}
+% =============== 2 OBJECTIFS ===============
+\section{Objectifs et Cahier des Charges}
+\input{chapters/2_objectifs}
+% ============= 3 ETAT DE L'ART =============
+\section{État de l'Art}
+\input{chapters/3_art}
+% ============ 4 TRAVAIL REALISE ============
+\section{Travail Réalisé}
+\subsection{Comparaison de différentes stratégies de simulation (1er semestre)}
+\input{chapters/4_1_graphs}
+\subsection{APE-H (1er semestre)}
+\input{chapters/4_2_ape_h}
+\subsection{PPO (2nd semestre)}
+\input{chapters/4_3_ppo}
+\subsection{DQN (2nd semestre)}
+\input{chapters/4_4_dqn}
+\subsection{Multi-Agent (2nd semestre)}
+\input{chapters/4_5_multi_agent}
+% =============== 5 RESULTATS ===============
+\section{Résultats}
+\subsection{Chiffres et Graphiques}
+\input{chapters/5_resultats}
+\subsection{Interprétation des résultats}
+TODO : Parler du coût en temps d'entrainement
+% ============== 6 CONCLUSION ==============
+\section{Conclusion}
+\input{chapters/6_conclusion}
+
+
+% ======================== BIBLIOGRAPHIE ========================
+\bibliographystyle{plain}
+\bibliography{BiblioEP}
+
+
+\end{document}
+
+

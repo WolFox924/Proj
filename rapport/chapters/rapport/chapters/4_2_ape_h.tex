@@ -1,0 +1,23 @@
+\subsubsection{Stratégie Hybride Proposée : APE-H (Adaptive Performance-Energy Hybrid)}
+
+Pour pallier les compromis inhérents aux stratégies de référence, nous proposons \textbf{APE-H} (\textit{Adaptive Performance-Energy Hybrid}). Cette approche vise à équilibrer les comportements orientés vers la performance (\texttt{HPST}) et ceux ciblant la basse consommation (\texttt{LPLT}). L'objectif est de fournir une orchestration soucieuse de l'énergie et respectueuse du SLA, capable de s'adapter dynamiquement aux variations d'intensité de la charge de travail.
+
+\paragraph{Mécanisme de Passage à l'Échelle (\textit{Autoscaling})}
+
+APE-H adapte l'allocation des ressources en fonction des phases de charge : elle augmente rapidement la capacité (\textit{scale-up}) lors de pics de requêtes brefs et intenses, et réduit le nombre de réplicas (\textit{scale-down}) lors des périodes de faible charge. L'algorithme repose sur une métrique hybride combinant deux indicateurs majeurs :
+\begin{itemize}
+    \item La \textbf{latence} (pondérée à 60\,\%), évaluée via le temps de réponse normalisé par rapport à un seuil critique (fixé à 600\,ms).
+    \item L'\textbf{efficacité énergétique} (pondérée à 40\,\%), estimée en mesurant l'énergie consommée par requête par seconde (W/RPS).
+\end{itemize}
+
+Des seuils de charge absolus permettent également d'outrepasser ce calcul pour réagir en urgence, forçant le \textit{scale-up} au-delà de 15\,RPS et le \textit{scale-down} en deçà de 5\,RPS. Un délai de grâce (\textit{cooldown}) de 5 secondes de temps simulé est appliqué entre chaque action pour limiter les oscillations.
+
+\paragraph{Logique de Placement (\textit{Scheduling} et Consolidation)}
+
+D'un point de vue matériel (\textit{device-awareness}), l'algorithme sélectionne dynamiquement les ressources les plus pertinentes (processeurs standards, GPU ou nœuds basse consommation). APE-H privilégie d'abord une approche de \textbf{consolidation} : elle tente de placer les nouvelles instances sur des nœuds hébergeant déjà des réplicas du même déploiement, à condition que l'utilisation du nœud reste sous une limite de sécurité (85\,\% pour le CPU, 80\,\% pour la RAM). 
+
+Si la consolidation n'est pas réalisable, l'ordonnanceur évalue les nœuds candidats disponibles via un score hybride. Ce score croise la puissance brute du nœud (selon une classification allant des composants modestes comme le \texttt{rpi3} aux plus puissants comme le \texttt{xeongpu}) et la marge de ressources restantes, favorisant ainsi un placement intelligent.
+
+\paragraph{Compromis et Limites}
+
+Du point de vue du développeur, APE-H offre une mise à l'échelle fluide et minimise le gaspillage énergétique en n'utilisant la puissance maximale qu'en cas de stricte nécessité. En contrepartie, cette recherche d'équilibre engendre une complexité algorithmique supérieure aux ordonnanceurs classiques. Si les pondérations et les seuils ne sont pas calibrés avec précision, cette complexité peut potentiellement introduire des temps de réponse retardés ou générer des phénomènes d'oscillation (\textit{thrashing}) lors des décisions de \textit{scaling}.

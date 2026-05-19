@@ -17,6 +17,9 @@
 % ======================== CONFIG PYTHON ========================
 \usepackage{xcolor} % Pour les couleurs
 \usepackage{listings} % Pour le code source
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc}
 % Configuration des couleurs pour le code
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -55,7 +58,7 @@ Nous remercions également Mahfoud Sayah pour le travail qu'il a fourni tout au 
 Enfin nous terminons par remercier notre tuteur Nikolaos Parlavantzas de nous avoir suivi tout au long de cette anéee ainsi que pour ces précieux conseils.
 
 % ======================== RESUME ========================
-\newpage
+%\newpage
 \begin{abstract}
 \input{chapters/0_resume}
 \end{abstract}
@@ -76,18 +79,21 @@ Enfin nous terminons par remercier notre tuteur Nikolaos Parlavantzas de nous av
 \input{chapters/4_1_graphs}
 \subsection{APE-H (1er semestre)}
 \input{chapters/4_2_ape_h}
-\subsection{PPO (2nd semestre)}
+\subsection{Proximal Policy Optimization (PPO) (2nd semestre)}
 \input{chapters/4_3_ppo}
-\subsection{DQN (2nd semestre)}
+\subsection{Modélisation Deep Q-Network (DQN) (2nd semestre)}
 \input{chapters/4_4_dqn}
-\subsection{Multi-Agent (2nd semestre)}
+\subsection{Approche Multi-Agent par Mixture of Experts (2nd semestre)}
 \input{chapters/4_5_multi_agent}
 % =============== 5 RESULTATS ===============
 \section{Résultats}
 \subsection{Chiffres et Graphiques}
 \input{chapters/5_resultats}
 \subsection{Interprétation des résultats}
-TODO : Parler du coût en temps d'entrainement
+
+L'entraînement de ces différentes stratégies a demandé des temps de calcul très variables : il faut compter environ 50 minutes pour produire une stratégie grace à l'intelligence artificielle par renforcement \texttt{PPO} ou le \texttt{DQN} (550 epochs de 41 steps (1 step / 5s pour 205 secondes)), contre plus de 3 heures pour le système \texttt{Meta\_Agent}, car les différents agents mettent du temps à se synchroniser. Si l'on regarde ensuite leurs performances en simulation, les méthodes classiques et le \texttt{DQN} montrent vite leurs limites, car ils peinent à s'adapter quand le trafic change brutalement. De son côté, le \texttt{Meta\_Agent} est le grand champion de l'écologie : il éteint sans hésiter tous les serveurs inutiles. Son seul défaut est qu'il subit des ralentissements lorsqu'il doit les rallumer en urgence. Finalement, c'est l'algorithme \texttt{PPO} qui offre le meilleur compromis global. Il accepte de consommer un tout petit peu plus d'énergie en gardant intelligemment quelques serveurs en veille au cas où. Grâce à cette anticipation, il ne se laisse jamais surprendre par une nouvelle requête et garantit un temps de réponse presque instantané, ce qui est indispensable pour faire fonctionner une ville connectée.
+
+
 % ============== 6 CONCLUSION ==============
 \section{Conclusion}
 \input{chapters/6_conclusion}
