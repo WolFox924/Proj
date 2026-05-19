@@ -1,0 +1,107 @@
+\section{Modélisation Deep Q-Network (DQN)}
+\label{sec:dqn}
+
+Pour faire suite aux développements initiaux basés sur l'algorithme \textit{Proximal Policy Optimization} (PPO) détaillés précédemment, l'approche a été étendue à l'algorithme \textbf{Deep Q-Network (DQN)} afin d'étudier l'impact d'une méthode de type valeur (\textit{value-based}) vis-à-vis d'une méthode de gradient de politique (\textit{policy-gradient}) sur le compromis énergie/latence au sein de notre infrastructure \textit{Smart City}.
+
+Contrairement à PPO, qui modélise nativement des distributions de probabilités sur des espaces d'actions multidimensionnels indépendants via \texttt{MultiDiscrete}, DQN évalue la qualité de chaque action possible au travers d'un réseau de neurones estimateur de la fonction de valeur de sous-action optimale $Q(s, a)$. Cette spécificité algorithmique a imposé une refonte complète de la représentation de l'espace d'action et du cycle de traitement des décisions.
+
+\subsection{Standardisation et Discrétisation de l'Environnement}
+L'interface standardisée \texttt{gymnasium} sert de passerelle avec le simulateur à événements discrets \textit{FaaSim/Skippy}. La discrétisation temporelle conserve une logique de pause périodique toutes les $X$ secondes (\texttt{step\_duration}).
+
+L'espace d'observation reste inchangé afin de garantir une comparaison équitable entre les modèles. L'agent observe un espace continu matérialisé par une \texttt{spaces.Box} qui encapsule :
+\begin{itemize}
+    \item La latence moyenne d'exécution des dernières requêtes par fonction.
+    \item Le nombre exact d'instances (\texttt{replicas}) actives pour chacune des 6 fonctions déployées.
+\end{itemize}
+
+\subsection{Linéarisation et Décodage de l'Espace d'Action}
+La contrainte majeure de DQN réside dans son incapacité native à gérer des espaces d'actions combinatoires ou multidimensionnels de type \texttt{MultiDiscrete}. Pour y remédier, un protocole de linéarisation (\textit{flattening}) a été développé au sein de la classe \texttt{SmartCityGymEnvDQN}.
+
+Le système comporte 6 fonctions applicatives indépendantes, possédant chacune 17 ordres de grandeur de \textit{scaling} possibles (de $-8$ pour une réduction maximale à $+8$ pour une augmentation maximale, l'action $0$ désignant le maintien de l'état). L'espace d'action DQN est donc configuré comme un espace discret unique :
+\begin{equation}
+    a_{\text{DQN}} \in \mathcal{A} = \text{\texttt{spaces.Discrete}}(6 \times 17) = \text{\texttt{spaces.Discrete}}(102)
+\end{equation}
+
+Lors de chaque interaction (\texttt{step}), l'action scalaire émise par le réseau de neurones DQN est projetée mathématiquement pour identifier la fonction cible et la valeur brute de scaling associée :
+\begin{equation}
+    \text{func\_idx} = \lfloor a_{\text{DQN}} / 17 \rfloor
+\end{equation}
+\begin{equation}
+    \text{act\_raw} = a_{\text{DQN}} \pmod{17}
+\end{equation}
+\begin{equation}
+    \text{act\_val} = \text{act\_raw} - 8
+\end{equation}
+
+\begin{figure}[htbp]
+\begin{center}
+\begin{tikzpicture}[node distance=2cm, auto, >=latex']
+    \node [draw, rectangle, fill=blue!10, rounded corners, minimum width=3cm, minimum height=1cm] (input) {Action DQN unique ($a \in [0, 101]$)};
+    \node [draw, rectangle, fill=gray!10, minimum width=2.5cm, minimum height=1cm, below left of=input, node distance=3.5cm] (div) {Division entière : $\lfloor a / 17 \rfloor$};
+    \node [draw, rectangle, fill=gray!10, minimum width=2.5cm, minimum height=1cm, below right of=input, node distance=3.5cm] (mod) {Modulo : $a \pmod{17}$};
+    \node [draw, circle, fill=green!10, below of=div, node distance=2.5cm] (func) {Fonction Cible (0 à 5)};
+    \node [draw, rectangle, fill=green!10, below of=mod, node distance=2.5cm] (val) {Ordre Réel : $\text{act\_raw} - 8$};
+    
+    \draw[->, thick] (input) -- (div.north);
+    \draw[->, thick] (input) -- (mod.north);
+    \draw[->, thick] (div) -- (func);
+    \draw[->, thick] (mod) -- (val);
+    
+    \node[draw, dashed, rectangle, fit=(func) (val), inner sep=0.3cm, label=below:Actionneur du Simulateur FaaSim] (actuator) {};
+\end{tikzpicture}
+\end{center}
+\caption{Schéma de décodage de l'espace d'action linéarisé pour l'algorithme DQN.}
+\label{fig:action_decoding}
+\end{figure}
+
+Le listing \ref{lst:dqn_step} illustre l'implémentation de ce décodage et l'injection des requêtes de modification d'état asynchrones dans le moteur de simulation \textit{SimPy}.
+
+\begin{lstlisting}[caption=Décodage de l'action et logique d'actuation au sein du step DQN, label=lst:dqn_step]
+# Decodage de l'action scalaire globale emise par le DQN
+func_idx = int(action) // 17
+act_raw = int(action) % 17
+act_val = act_raw - 8
+fname = self.functions[func_idx]
+current_replicas = self.get_current_replicas(fname)
+
+if act_val < 0:
+    pods_to_remove = abs(act_val)          
+    if current_replicas >= pods_to_remove: 
+        self.sim_env.process(self.sim_env.faas.scale_down(fname, pods_to_remove))
+    elif current_replicas > 0:
+        self.sim_env.process(self.sim_env.faas.scale_down(fname, current_replicas))
+elif act_val > 0: 
+    if current_replicas + act_val <= 15: 
+        self.sim_env.process(self.sim_env.faas.scale_up(fname, act_val))
+    elif current_replicas < 15: 
+        pods_to_add = 15 - current_replicas
+        self.sim_env.process(self.sim_env.faas.scale_up(fname, pods_to_add))
+# Si act_val == 0, l'environnement reste stable (statu quo)
+\end{lstlisting}
+
+\subsection{Hyperparamètres, Exploration et Suivi de l'Apprentissage}
+L'architecture DQN repose sur un réseau de neurones profond couplé à un mécanisme de \textit{Replay Buffer} (mémoire d'expérience) pour briser les corrélations temporelles. L'apprentissage est piloté via la bibliothèque \texttt{stable-baselines3}.
+
+Contrairement à PPO qui explore par perturbation stochastique de sa politique, DQN utilise une stratégie $\epsilon$-greedy. L'exploration décroît de manière linéaire via la configuration du paramètre \texttt{exploration\_fraction}. Le suivi de la convergence et des performances d'infrastructure est assuré par une stack \textbf{TensorBoard} dédiée stockée sous \texttt{./logs\_tensorboard\_dqn/}, permettant l'analyse des courbes de perte de la fonction de coût Bellman (\textit{loss}) et de l'évolution de la récompense par épisode.
+
+\subsection{Modélisation Rigoureuse de la Récompense Multi-Objectif}
+La fonction de récompense est calquée sur une approche normalisée strictement positive pour préserver la cohérence comparative avec le modèle PPO. Elle formule explicitement le compromis performance-efficience :
+\begin{equation}
+    \mathcal{R} = (\alpha \times \text{SLA}) + (\beta \times \text{Energy}) + (\gamma \times \text{Efficiency})
+\end{equation}
+Sous la contrainte stricte $\alpha + \beta + \gamma = 1$, fixant la borne supérieure théorique de la récompense à $1.0$.
+
+\begin{itemize}
+    \item \textbf{Score SLA} : Évalue le respect des budgets de latence. Si la latence moyenne mesurée pour une fonction franchit le seuil fixé dans le fichier de configuration global \texttt{config.json}, la note décroît linéairement vers 0.
+    \item \textbf{Score Energy} : Afin d'empêcher l'agent d'exploiter les biais de calcul en simulant des maximums artificiels via l'activation de nœuds vides, la puissance de référence intègre l'inventaire matériel total physique :
+    \begin{equation}
+        P_{\text{max}} = f(\text{\texttt{self.sim\_env.cluster.nodes}})
+    \end{equation}
+    Toute activation d'infrastructure engendre ainsi une consommation réelle immédiate agissant comme une pénalité énergétique incontournable.
+    \item \textbf{Score Efficiency} : Mesure le ratio $\frac{\text{Invocations}}{\text{Pods Actifs}}$ pour éliminer le sur-provisionnement logiciel (\textit{over-provisioning}) induit par la consommation statique (\textit{static power}) des serveurs Edge.
+\end{itemize}
+
+\subsection{Co-Pilotage du Placement Matériel (Hardware Policy)}
+Afin de pallier les limitations induites par le placement aveugle des pods par le planificateur par défaut, l'agent DQN s'interface de manière non-intrusive avec le pipeline de priorité du \textit{Scheduler} externe via la classe \texttt{HardwarePolicyPriority}.
+
+Bien que l'action DQN extraite du réseau de neurones pilote en premier lieu le volume de pods (Listing \ref{lst:dqn_step}), le choix de la politique matérielle sous-jacente (Modes : \textit{Éco}, \textit{Normal}, \textit{Performance}) est échantillonné de façon conjointe ou via des règles d'état heuristiques. Si le mode \textit{Éco} est sélectionné, un bonus de 1000 points est injecté dynamiquement sur les nœuds basse consommation de la topologie (ex: \textit{Raspberry RockPi}, \textit{Nvidia Jetson Nano}) pour forcer le planificateur à privilégier la sobriété énergétique lors du déploiement physique des conteneurs.
