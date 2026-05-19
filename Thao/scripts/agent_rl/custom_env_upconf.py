@@ -134,57 +134,26 @@ class SmartCityGymEnv(gym.Env):
                 continue
             current_replicas = len(self.sim_env.faas.get_replicas(fname))
             try:
-                #scale down ultra_5
-                if act == -8 and current_replicas > 8: 
-                    self.sim_env.process(self.sim_env.faas.scale_down(fname, 8))
-                #scale down ultra_4
-                if act == -7 and current_replicas > 7: 
-                    self.sim_env.process(self.sim_env.faas.scale_down(fname, 7))
-                #scale down ultra_3
-                if act == -6 and current_replicas > 6: 
-                    self.sim_env.process(self.sim_env.faas.scale_down(fname, 6))
-                #scale down ultra_2
-                if act == -5 and current_replicas > 5: 
-                    self.sim_env.process(self.sim_env.faas.scale_down(fname, 5))
-                #scale down ultra_1
-                if act == -4 and current_replicas > 4: 
-                    self.sim_env.process(self.sim_env.faas.scale_down(fname, 4))
-                #scale down high
-                if act == -3 and current_replicas > 3: 
-                    self.sim_env.process(self.sim_env.faas.scale_down(fname, 3))
-                #scale down medium
-                if act == -2 and current_replicas > 2: 
-                    self.sim_env.process(self.sim_env.faas.scale_down(fname, 2))
-                #scale down low
-                if act == -1 and current_replicas > 1: 
-                    self.sim_env.process(self.sim_env.faas.scale_down(fname, 1))
-                #does nothing
-                elif act == 0 : 
-                    pass
-                #scale up low
-                elif act == 1 and current_replicas < 15: 
-                    self.sim_env.process(self.sim_env.faas.scale_up(fname, 1))
-                #scale up medium
-                elif act == 2 and current_replicas < 15: 
-                    self.sim_env.process(self.sim_env.faas.scale_up(fname, 2))
-                #scale up high
-                elif act == 3 and current_replicas < 15: 
-                    self.sim_env.process(self.sim_env.faas.scale_up(fname, 3))
-                #scale up ultra
-                elif act == 4 and current_replicas < 15: 
-                    self.sim_env.process(self.sim_env.faas.scale_up(fname, 4))
-                #scale up ultra_2
-                elif act == 5 and current_replicas < 15: 
-                    self.sim_env.process(self.sim_env.faas.scale_up(fname, 5))
-                #scale up ultra_3
-                elif act == 6 and current_replicas < 15: 
-                    self.sim_env.process(self.sim_env.faas.scale_up(fname, 6))
-                #scale up ultra_4
-                elif act == 7 and current_replicas < 15: 
-                    self.sim_env.process(self.sim_env.faas.scale_up(fname, 7))
-                #scale up ultra_5
-                elif act == 8 and current_replicas < 15: 
-                    self.sim_env.process(self.sim_env.faas.scale_up(fname, 8))
+                # (Scale Down)
+                if act < 0:
+                    pods_to_remove = abs(act) # Transforme -3 en 3
+                    
+                    if current_replicas >= pods_to_remove:
+                        # (Scale to Zero autorisé)
+                        self.sim_env.process(self.sim_env.faas.scale_down(fname, pods_to_remove))
+                    elif current_replicas > 0:
+                        # S'il demande à enlever 8 pods mais qu'il n'en reste que 3, on enlève les 3 derniers
+                        self.sim_env.process(self.sim_env.faas.scale_down(fname, current_replicas))
+                # (Scale Up)
+                elif act > 0:
+                    # On s'assure de ne pas dépasser 15 pods maximum
+                    if current_replicas + act <= 15:
+                        self.sim_env.process(self.sim_env.faas.scale_up(fname, act))
+                    elif current_replicas < 15:
+                        # Si on demande trop, on remplit juste jusqu'à la limite de 15
+                        pods_to_add = 15 - current_replicas
+                        self.sim_env.process(self.sim_env.faas.scale_up(fname, pods_to_add))
+                # Si act == 0, on ne fait rien (Maintien de l'état)
             except Exception:
                 pass
 
