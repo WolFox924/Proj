@@ -1,1 +1,17 @@
-TODO : Travail réalisé à expliquer
+Pour pouvoir comparer toutes les stratégies entres elles, il nous a fallu tout d'abord sélectionner les métriques à comparer, puis les types de graphiques à mettre en place.
+
+Quatre indicateurs principaux ont été extraits du simulateur FaaS/Skippy :
+\begin{itemize}
+    \item \textbf{Latence d'exécution (\texttt{t\_exec})} : pour vérifier le respect du budget temps (SLA).
+    \item \textbf{Énergie totale (Joules)} : pour quantifier l'empreinte globale de la stratégie.
+    \item \textbf{Puissance instantanée (Watts)} : pour identifier les pics de consommation électrique.
+    \item \textbf{Dynamique de \textit{Scaling}} : pour analyser la réactivité de l'orchestrateur (nombre de pods allumés).
+\end{itemize}
+
+Afin de synthétiser ces données de manière visuelle, nous avons développé des scripts d'analyse (\texttt{pandas}, \texttt{seaborn}) générant les graphiques suivants :
+\begin{itemize}
+    \item \textbf{Fronts de Pareto (Latence vs Énergie):} outil décisionnel majeur permettant d'identifier le meilleur compromis possible entre rapidité et écologie.
+    \item \textbf{Boxplots et fonctions de répartition (CDF):} pour analyser la distribution exacte des temps de réponse (et ignorer les valeurs aberrantes).
+    \item \textbf{Barplots énergétiques:} une comparaison directe de la consommation brute de l'énergie de la stratégie.
+    \item \textbf{Diagrammes de Gantt et tracés de \textit{Scaling}:} pour observer les choix de placement sur le matériel hétérogène (NUC, Raspberry Pi) et valider l'efficacité de l'extinction des pods inactifs (\textit{Scale-to-Zero}).
+\end{itemize}

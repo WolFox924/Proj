@@ -1,7 +1,9 @@
-Avant que l'IA ne puisse apprendre, il a fallu traduire un simulateur complexe de \textit{Smart City} (FaaS/Skippy) en un environnement standardisé via l'interface \texttt{gymnasium}.
-Le simulateur d'origine tourne en continu. Nous l'avons discrétisé en créant une boucle où l'IA met l'environnement en pause toutes les $X$ secondes (\texttt{step\_duration}), observe l'état, prend une décision (\texttt{action}), puis laisse le simulateur avancer.
+Pour débuter le second semestre, notre approche pour trouver la meilleure stratégie était de mettre en place un algorithme de reinforcement learning afin de garantir un compromis énergie/latence avec les actions disponibles. (scaling) 
+
+Avant que l'IA ne puisse apprendre, il a fallu traduire la\textit{Smart City} (FaaS/Skippy) en un environnement standardisé via l'interface \texttt{gymnasium}.
+Le simulateur tourne en continu et nous l'avons discrétisé en créant une boucle où l'IA met l'environnement en pause toutes les $X$ secondes (\texttt{step\_duration}), observe l'état, prend une décision (\texttt{action}), puis laisse le simulateur avancer.
 On utilise également un certain espace d'observation, l'IA observe un espace continu (\texttt{spaces.Box}) contenant la latence moyenne des dernières requêtes et le nombre exact de pods (\texttt{replicas}) actuellement allumés pour chaque fonction.
-Comme espace d'action, l'algorithme PPO manipulant plus aisément des valeurs discrètes positives, nous avons utilisé un espace \texttt{MultiDiscrete} (de 0 à 16) pour chaque fonction. Un traducteur interne transforme cette action mathématique en commande de \textit{scaling} réelle : $action - 8$ permet d'obtenir un ordre allant de "Éteindre 8 pods" (-8) à "Allumer 8 pods" (+8).
+Comme espace d'action, l'algorithme PPO manipule plus aisément des valeurs discrètes positives, nous avons ainsi utilisé un espace \texttt{MultiDiscrete} (de 0 à 16) pour chaque fonction. Un traducteur interne transforme cette action mathématique en commande de \textit{scaling} réelle : $action - 8$ permet d'obtenir un ordre allant de "Éteindre 8 pods" (-8) à "Allumer 8 pods" (+8).
 
 \begin{lstlisting}[caption= Différentes actions possibles pour chaque step]
     #scale down ultra_5
