@@ -6,17 +6,20 @@ On utilise également un certain espace d'observation, l'IA observe un espace co
 Comme espace d'action, l'algorithme PPO manipule plus aisément des valeurs discrètes positives, nous avons ainsi utilisé un espace \texttt{MultiDiscrete} (de 0 à 16) pour chaque fonction. Un traducteur interne transforme cette action mathématique en commande de \textit{scaling} réelle : $action - 8$ permet d'obtenir un ordre allant de "Éteindre 8 pods" (-8) à "Allumer 8 pods" (+8).
 
 \begin{lstlisting}[caption= Différentes actions possibles pour chaque step]
-    #scale down ultra_5
-    if act == -8 and current_replicas > 8: 
-        self.sim_env.process(self.sim_env.faas.scale_down(fname, 8))
-    ...     # actions de -1 a -7
-    #does nothing
-    elif act == 0 : 
-        pass
-    ...     # actions de 1 a 7
-    #scale up ultra_5
-    elif act == 8 and current_replicas < 15: 
-        self.sim_env.process(self.sim_env.faas.scale_up(fname, 8))
+    if act < 0:
+        pods_to_remove = abs(act) # Transforme -3 en 3            
+        if current_replicas >= pods_to_remove: # (Scale to Zero autorise)
+            self.sim_env.process(self.sim_env.faas.scale_down(fname, pods_to_remove))
+        elif current_replicas > 0:
+            # S'il demande a enlever 8 pods mais qu'il n'en reste que 3, on enleve les 3 derniers
+            self.sim_env.process(self.sim_env.faas.scale_down(fname, current_replicas))
+    elif act > 0: # (Scale Up) 
+        if current_replicas + act <= 15: # On s'assure de ne pas depasser 15 pods maximum
+            self.sim_env.process(self.sim_env.faas.scale_up(fname, act))
+        elif current_replicas < 15: # Si on demande trop, on remplit juste jusqu'a la limite de 15
+            pods_to_add = 15 - current_replicas
+            self.sim_env.process(self.sim_env.faas.scale_up(fname, pods_to_add))
+    # Si act == 0, on ne fait rien (Maintien de l'etat)
 \end{lstlisting}
 
 Ici nous avons sélectionné un apprentissage par renforcement par \textbf{Optimisation de Politique Proximale (PPO)} cet algorithme a été sélectionné car il représente l'état de l'art pour les environnements comportant des actions discrètes multiples (système de scaling indépendant pour 6 fonctions).
@@ -35,12 +38,12 @@ Chaque métrique brute a été transformée en un score normalisé. Par exemple,
 $$ Reward = (\alpha \times SLA) + (\beta \times \mathrm{Energy}) + (\gamma \times \mathrm{Efficiency}) $$
 Avec des poids tels que $\alpha + \beta + \gamma = 1$, le score maximal de l'IA est strictement borné à 1.0, lui permettant d'évaluer précisément l'impact de chaque compromis.
 La consommation de base des serveurs (\textit{static power}) masquait l'impact énergétique direct de l'extinction d'un seul pod. L'ajout d'un score basé sur le ratio $\frac{\mathrm{Requêtes}}{\mathrm{Pods Actifs}}$ force l'IA à traquer le gaspillage logiciel (\textit{over-provisioning}).
-\begin{lstlisting}[caption= Différentes actions possibles pour chaque step]
-    ALPHA = rew_cfg.get("alpha_sla", 0.4)
-    BETA = rew_cfg.get("beta_power", 0.4)
-    GAMMA = rew_cfg.get("gamma_efficiency", 0.2) 
-    Reward = (ALPHA * avg_sla) + (BETA * power) + (GAMMA * efficiency)
-\end{lstlisting}
+%\begin{lstlisting}[caption= Différentes actions possibles pour chaque step]
+%    ALPHA = rew_cfg.get("alpha_sla", 0.4)
+%    BETA = rew_cfg.get("beta_power", 0.4)
+%    GAMMA = rew_cfg.get("gamma_efficiency", 0.2) 
+%    Reward = (ALPHA * avg_sla) + (BETA * power) + (GAMMA * efficiency)
+%\end{lstlisting}
 
 Lors des entraînements, l'IA a identifié une faille mathématique. Le code initial calculait la consommation maximale théorique du cluster en ne considérant que les nœuds réveillés. L'IA a donc appris à allumer massivement des pods inutiles pour gonfler artificiellement ce maximum, minimisant ainsi son ratio de consommation réelle et boostant sa note d'énergie.
 Ainsi le calcul a été verrouillé en interrogeant l'inventaire physique total (\texttt{self.sim\_env.cluster.nodes}) et les limites matérielles du \texttt{config.json}. Toute nouvelle machine allumée constitue désormais une véritable pénalité incontournable.
