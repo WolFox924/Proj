@@ -1,0 +1,49 @@
+
+Nous adoptons une architecture \textbf{Mixture of Experts (MoE)} inspirée des modèles d'apprentissage automatique modernes~\cite{jacobs1991moe}. L'idée centrale est de diviser le problème d'ordonnancement en sous-problèmes spécialisés, chacun traité par un agent expert, et de confier à un \textbf{meta-agent} le soin de sélectionner dynamiquement l'expert le plus adapté à la situation courante.
+
+\subsection{Les Experts Spécialisés}
+
+Trois agents experts sont entraînés indépendamment via l'algorithme \textbf{PPO}~\cite{schulman2017ppo} de la bibliothèque Ray RLlib~\cite{liang2018rllib}. Chacun agit sur un sous-espace de l'action globale $\mathbf{a} = [a_0,\ldots,a_5]$ où chaque $a_i \in [0, 16]$.
+
+Le \textit{ScalingExpert} contrôle le nombre de pods (dimensions $a_0, a_1$) :
+\[r_{\text{scaling}} = -15{,}0 \times \text{latence\_norm}\]
+
+Le \textit{PowerExpert} gère l'allumage/extinction des nœuds (dimensions $a_2, a_3$) :
+\[r_{\text{power}} = 10{,}0 \times \frac{n_{\text{off}}}{n_{\text{total}}} - 15{,}0 \times \text{latence\_norm}\]
+
+Le \textit{SchedulingExpert} choisit la stratégie de placement (dimensions $a_4, a_5$) :
+\[r_{\text{sched}} = -5{,}0 \times \text{latence\_norm} + \begin{cases} +5{,}0 & \text{si } 0{,}4 < \text{CPU} < 0{,}8 \\ -2{,}0 & \text{sinon} \end{cases}\]
+
+\begin{table}[h]
+\centering
+\footnotesize
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+\textbf{Expert} & $a_0$ & $a_1$ & $a_2$ & $a_3$ & $a_4$ & $a_5$ \\
+\hline
+ScalingExpert   & VAR & VAR & 8 & 8 & 8 & 8 \\
+PowerExpert     & 8 & 8 & VAR & VAR & 8 & 8 \\
+SchedulingExpert & 8 & 8 & 8 & 8 & VAR & VAR \\
+\hline
+\end{tabular}
+\caption{Répartition de l'espace d'action (8 = valeur neutre, VAR = dimension contrôlée).}
+\label{tab:action_space}
+\end{table}
+
+\subsection{Le Meta-Agent (Gating Network)}
+
+Le meta-agent joue le rôle de \textbf{réseau de sélection} (\textit{gating network}) : à chaque pas de temps, il observe l'état global du cluster (latence normalisée, utilisation CPU, réplicas par fonction) et décide quel expert doit agir. L'entraînement suit un protocole \textbf{séquentiel en deux phases} : les experts sont d'abord entraînés indépendamment via PPO (~120 itérations chacun), puis leurs poids sont gelés (\textit{frozen}). Le meta-agent est ensuite entraîné sur ces experts figés pendant 1\,000 itérations PPO avec la fonction de récompense unifiée ($n_{\text{off}}$ = nœuds éteints, $n_{\text{total}}$ = nœuds totaux) :
+\[
+r = -10{,}0 \times \text{latence\_norm} + 25{,}0 \times \frac{n_{\text{off}}}{n_{\text{total}}}
+\]
+Figer les experts garantit que le meta-agent apprend à composer avec des politiques stables, évitant ainsi le problème de \textbf{cible mouvante} (\textit{moving target problem}).
+
+\subsection{Discussion et Limites}
+\label{sec:discussion_limites}
+
+\begin{itemize}
+    \item \textbf{Surpondération de l'énergie :} La fonction de récompense unifiée accorde un poids de $+25$ à l'énergie contre $-10$ à la latence.
+    \item \textbf{Entraînement séquentiel et non-optimalité :} Les experts étant figés avant l'entraînement du meta-agent, l'optimalité jointe n'est pas garantie.
+    \item \textbf{Absence de coordination inter-experts :} Les trois experts partagent la même observation mais n'ont aucun mécanisme de communication entre eux.
+    \item \textbf{Généralisation :} La charge de travail est tirée aléatoirement dans $[10, 45]$ RPS à chaque épisode.
+\end{itemize}

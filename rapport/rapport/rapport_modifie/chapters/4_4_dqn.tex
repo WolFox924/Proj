@@ -1,0 +1,13 @@
+\label{sec:dqn}
+
+Le \textbf{Deep Q-Network (DQN)}~\cite{mnih2015dqn} est un algorithme d'apprentissage par renforcement de type valeur : au lieu d'optimiser directement une politique, il apprend à estimer la valeur $Q$ de chaque action, c'est-à-dire le gain futur espéré si l'on prend cette action depuis l'état courant. Il s'applique au même problème de placement et d'autoscaling que le PPO (section~4.3), avec le même espace d'observation et la même fonction de récompense, afin de garantir une comparaison équitable.
+
+\subsubsection{Espaces d'Observation et d'Action (Linéarisation)}
+Contrairement au PPO, le DQN ne gère pas nativement les espaces d'actions multidimensionnels (\texttt{MultiDiscrete}). L'espace d'action est donc linéarisé en un espace \texttt{Discrete} unique de 102 valeurs ($a \in [0, 101]$), correspondant aux 6 fonctions serverless multipliées par 17 intensités de \textit{scaling} distinctes. Le décodage de l'action scalaire $a$ se fait ainsi :
+\begin{itemize}
+    \item \textbf{Fonction ciblée :} $\lfloor a / 17 \rfloor \in [0, 5]$
+    \item \textbf{Ordre de scaling :} $(a \bmod 17) - 8 \in [-8, +8]$ pods
+\end{itemize}
+
+\subsubsection{Exploration et Apprentissage}
+Pour l'exploration, le DQN utilise une stratégie $\epsilon$-greedy : le paramètre d'exploration (\texttt{exploration\_fraction}) décroît linéairement de 1 à 0, faisant transiter l'agent d'une exploration aléatoire vers l'exploitation de sa meilleure politique apprise. La même fonction de récompense que le PPO (cf. section~4.3) est conservée.

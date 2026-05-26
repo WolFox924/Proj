@@ -1,0 +1,16 @@
+Chaque stratégie étudiée dans ce projet répond au même problème d'ordonnancement : décider à chaque instant sur quel nœud du cluster placer une fonction serverless (un \textbf{pod}\footnote{Un \textit{pod} est l'unité d'exécution de base : une instance d'une fonction serverless déployée sur un nœud.}) et combien d'instances en faire tourner simultanément. Pour comparer ces stratégies objectivement, il a fallu sélectionner des métriques communes et des types de graphiques adaptés.
+
+Quatre indicateurs ont été extraits du simulateur FaaS-Sim~\cite{philipp_raith_faas} :
+\begin{itemize}
+    \item \textbf{Latence d'exécution (\texttt{t\_exec})} : pour vérifier le respect du budget temps (SLA).
+    \item \textbf{Énergie totale (Joules)} : pour quantifier l'empreinte globale de la stratégie.
+    \item \textbf{Puissance instantanée (Watts)} : pour identifier les pics de consommation électrique.
+    \item \textbf{Nombre de pods allumés} : pour analyser la réactivité de l'orchestrateur face aux variations de charge.
+\end{itemize}
+
+Des scripts d'analyse (\texttt{pandas}, \texttt{seaborn}) génèrent les visualisations suivantes :
+\begin{itemize}
+    \item \textbf{Fronts de Pareto (Latence vs Énergie) :} permettent d'identifier le meilleur compromis entre rapidité et économie énergétique.
+    \item \textbf{Boxplots et fonctions de répartition (CDF) :} pour analyser la distribution exacte des temps de réponse en ignorant les valeurs aberrantes.
+\end{itemize}
+Seuls ces deux types de graphiques seront présentés dans ce rapport, étant les plus significatifs pour évaluer le compromis visé.

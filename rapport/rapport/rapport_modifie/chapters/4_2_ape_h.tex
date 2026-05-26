@@ -1,0 +1,15 @@
+\subsubsection{Stratégie Hybride Proposée : APE-H (Adaptive Performance-Energy Hybrid)}
+
+\textbf{APE-H} (\textit{Adaptive Performance-Energy Hybrid}) est une heuristique conçue pour équilibrer performance et économie énergétique, en combinant deux modes de fonctionnement : haute performance (\texttt{HPST} : \textit{High-Performance Short-Task}) et basse consommation (\texttt{LPLT} : \textit{Low-Power Long-Task}). APE-H adapte l'allocation des ressources en fonction des phases de charge : elle augmente rapidement la capacité (\textit{scale-up}) lors de pics de requêtes brefs et intenses, et réduit le nombre de réplicas (\textit{scale-down}) lors des périodes de faible charge.
+
+L'algorithme repose sur une métrique hybride combinant deux indicateurs majeurs :
+\begin{itemize}
+    \item La \textbf{latence} (pondérée à 60\,\%), évaluée via le temps de réponse normalisé par rapport à un seuil critique (fixé à 600\,ms).
+    \item L'\textbf{efficacité énergétique} (pondérée à 40\,\%), estimée en mesurant l'énergie consommée par requête par seconde (W/RPS).
+\end{itemize}
+
+Des seuils de charge absolus permettent également d'outrepasser ce calcul pour réagir en urgence, forçant le \textit{scale-up} au-delà de 15\,RPS et le \textit{scale-down} en deçà de 5\,RPS. Un délai de grâce (\textit{cooldown}) de 5 secondes est appliqué entre chaque action pour limiter les oscillations.
+
+D'un point de vue matériel (\textit{device-awareness}), APE-H sélectionne dynamiquement les ressources les plus pertinentes (processeurs standards, GPU ou nœuds basse consommation). Elle privilégie d'abord une approche de \textbf{consolidation} : placer les nouvelles instances sur des nœuds hébergeant déjà des réplicas du même déploiement, à condition que l'utilisation reste sous une limite de sécurité (85\,\% pour le CPU, 80\,\% pour la RAM). Si la consolidation n'est pas réalisable, un score hybride croisant la puissance brute du nœud et la marge de ressources restantes guide le choix du meilleur nœud candidat.
+
+APE-H offre ainsi une mise à l'échelle fluide et minimise le gaspillage énergétique. En contrepartie, si les pondérations et les seuils ne sont pas calibrés avec précision, cette complexité peut introduire des phénomènes d'oscillation (\textit{thrashing}) lors des décisions de \textit{scaling}.

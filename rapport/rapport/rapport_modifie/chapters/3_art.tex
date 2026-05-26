@@ -1,0 +1,7 @@
+Trois périmètres sont couverts par l'état de l'art : les \textbf{plateformes FaaS}, les \textbf{simulateurs FaaS} et les approches d'\textbf{ordonnancement FaaS}.
+
+\begin{itemize}
+    \item \textbf{Plateformes FaaS propriétaires :} Les leaders du Cloud proposent des offres packagées comme \textit{AWS Lambda} (et sa déclinaison \textit{Lambda@Edge} dédiée à la proximité réseau), \textit{Google Cloud Functions} ou \textit{Azure Functions}. Ces services masquent totalement l'infrastructure mais imposent une tarification et des règles de placement rigides, incompatibles avec une optimisation énergétique fine.
+    \item \textbf{Plateformes FaaS Open-source :} Pour maîtriser l'exécution et éviter le \textit{«~vendor lock-in~»}, des systèmes peuvent être déployés sur des clusters \textit{Kubernetes} (ex. OpenFaaS, Knative). Cela permet une personnalisation totale du placement des fonctions, condition nécessaire pour optimiser la consommation énergétique en milieu \textit{Edge}.
+    \item \textbf{Simulateurs FaaS :} Pour notre projet, nous utilisons \textit{FaaS-Sim}~\cite{philipp_raith_faas}, développé par Schahram Dustdar, Thomas Rausch, Alireza Furutanpey et Philipp Raith~\cite{philipp_raith}. Ce simulateur \textit{Python} reproduit fidèlement une infrastructure Edge et permet de développer et comparer des stratégies d'ordonnancement. Mahfoud Sayah~\cite{mahfoud} a travaillé sur ce simulateur dans le cadre d'un stage de recherche doctoral et ses stratégies constituent notre ligne de base.
+\end{itemize}
